@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>game</artifactId>
+        <groupId>dk.sdu.cookie.castle</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>libgdx</artifactId>
+
+    <properties>
+        <libgdx.version>1.5.0</libgdx.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>${libgdx.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-backend-lwjgl</artifactId>
+            <version>${libgdx.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- This will make Felix scan the library for imports -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-sources</id>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.badlogicgames.gdx</groupId>
+                                    <artifactId>gdx</artifactId>
+                                    <version>${libgdx.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.badlogicgames.gdx</groupId>
+                                    <artifactId>gdx-backend-lwjgl</artifactId>
+                                    <version>${libgdx.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- This configuration will tell the Felix bundle plugin to generate
+                 the bundle for the library. The original library will be embedded in the newly
+                 created bundle jar -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.3.4</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <!-- All library packages that are supposed to be exposed must be declared as exports -->
+                        <Export-Package>
+                            com.badlogic.gdx;version=${project.version},
+                        </Export-Package>
+                        <!-- You can specify additional imports that were not found by Felix -->
+                        <Import-Package>*</Import-Package>
+                        <!-- Bundle metadata for the newly created bundle -->
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <!-- We embed the original library -->
+                        <Embed-Dependency>gdx,gdx-backend-lwjgl;inline=true</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

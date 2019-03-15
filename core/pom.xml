@@ -28,27 +28,23 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Service-Component>OSGI-INF/service.xml</Service-Component>
-                        <Embed-Dependency>gdx,gdx-backend-lwjgl;scope=compile</Embed-Dependency>
+                        <Service-Component>OSGI-INF/service.xml,OSGI-INF/plugins.xml</Service-Component>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <!--suppress NonOsgiMavenDependency -->
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>1.5.0</version>
+            <groupId>dk.sdu.cookie.castle</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!--suppress NonOsgiMavenDependency -->
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>1.5.0</version>
-            <scope>compile</scope>
+            <groupId>dk.sdu.cookie.castle</groupId>
+            <artifactId>libgdx</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
