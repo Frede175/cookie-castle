@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-SymbolicName: core
-Bundle-Version: 1.0.0
-Service-Component: OSGI-INF/service.xml, OSGI-INF/plugins.xml
-Import-Package: org.osgi.framework, com.badlogic.gdx.*,
- dk.sdu.cookie.castle.common

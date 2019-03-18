@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Bundle-SymbolicName: libgdx
-Bundle-Version: 1.0
-Export-Package: com.badlogic.gdx

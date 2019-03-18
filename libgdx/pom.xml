@@ -3,93 +3,115 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>game</artifactId>
         <groupId>dk.sdu.cookie.castle</groupId>
+        <artifactId>game</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <packaging>bundle</packaging>
     <artifactId>libgdx</artifactId>
 
     <properties>
-        <libgdx.version>1.5.0</libgdx.version>
+        <libGDX.version>1.9.9</libGDX.version>
     </properties>
-
 
     <dependencies>
         <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
-            <version>${libgdx.version}</version>
-            <scope>provided</scope>
+            <version>${libGDX.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-platform</artifactId>
+            <version>${libGDX.version}</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>${libgdx.version}</version>
-            <scope>provided</scope>
+            <version>${libGDX.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d</artifactId>
+            <version>${libGDX.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype</artifactId>
+            <version>${libGDX.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-platform</artifactId>
+            <version>${libGDX.version}</version>
+            <classifier>natives-desktop</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d-platform</artifactId>
+            <classifier>natives-desktop</classifier>
+            <version>${libGDX.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype-platform</artifactId>
+            <classifier>natives-desktop</classifier>
+            <version>${libGDX.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-jnigen</artifactId>
+            <version>${libGDX.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl.osgi</groupId>
+            <artifactId>org.lwjgl.opengl</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.diffplug.osgi</groupId>
+            <artifactId>com.diffplug.osgi.extension.sun.misc</artifactId>
+            <version>0.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.diffplug.osgi</groupId>
+            <artifactId>com.diffplug.osgi.extension.sun.reflect</artifactId>
+            <version>0.0.0</version>
+        </dependency>-->
     </dependencies>
 
     <build>
         <plugins>
-            <!-- This will make Felix scan the library for imports -->
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack-sources</id>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.badlogicgames.gdx</groupId>
-                                    <artifactId>gdx</artifactId>
-                                    <version>${libgdx.version}</version>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.badlogicgames.gdx</groupId>
-                                    <artifactId>gdx-backend-lwjgl</artifactId>
-                                    <version>${libgdx.version}</version>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- This configuration will tell the Felix bundle plugin to generate
-                 the bundle for the library. The original library will be embedded in the newly
-                 created bundle jar -->
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.3.4</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <!-- All library packages that are supposed to be exposed must be declared as exports -->
                         <Export-Package>
-                            com.badlogic.gdx;version=${project.version},
+                            com.badlogic.gdx.*
                         </Export-Package>
-                        <!-- You can specify additional imports that were not found by Felix -->
-                        <Import-Package>*</Import-Package>
-                        <!-- Bundle metadata for the newly created bundle -->
+                        <Import-Package>
+                            !com.apple.eio,
+                            !com.sun.*,
+                            sun.*,
+                            !org.objectweb.*,
+                            !javax.annotation.*,
+                            *
+                        </Import-Package>
+                        <Embed-Dependency>*</Embed-Dependency>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <!-- We embed the original library -->
-                        <Embed-Dependency>gdx,gdx-backend-lwjgl;inline=true</Embed-Dependency>
-                        <Embed-Transitive>true</Embed-Transitive>
+                        <Bundle-Version>${project.version}</Bundle-Version>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-
 </project>

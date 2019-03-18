@@ -10,6 +10,7 @@ public class Activator {
     private LwjglApplication app;
 
     private void activate(BundleContext context) {
+        System.out.println("Starting Core!");
         g = new Game();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
@@ -19,7 +20,7 @@ public class Activator {
         cfg.useGL30 = false;
         cfg.resizable = false;
 
-        LwjglApplication app = new LwjglApplication(g, cfg);
+        app = new LwjglApplication(g, cfg);
     }
 
     private void deactivate() {

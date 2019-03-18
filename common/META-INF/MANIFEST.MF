@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Bundle-SymbolicName: common
-Bundle-Version: 1.0.0
-Export-Package: dk.sdu.cookie.castle.common
