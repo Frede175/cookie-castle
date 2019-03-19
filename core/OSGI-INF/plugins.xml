@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component name="core.plugins" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
+    <implementation class="dk.sdu.cookie.castle.game.Game"/>
+
+    <reference
+            name="Plugin"
+            interface="dk.sdu.cookie.castle.common.services.IGamePluginService"
+            bind="installPlugin"
+            unbind="uninstallPlugin"
+    />
+
+    <reference
+            name="ProcessingService"
+            interface="dk.sdu.cookie.castle.common.services.IEntityProcessingService"
+            bind="installProcessingService"
+            unbind="uninstallProcessingService"
+    />
+
+    <reference
+            name="PostProcessingService"
+            interface="dk.sdu.cookie.castle.common.services.IPostEntityProcessingService"
+            bind="installPostProcessingService"
+            unbind="uninstallPostProcessingService"
+    />
+
+
+
+</scr:component>
