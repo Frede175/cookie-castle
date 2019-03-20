@@ -6,12 +6,16 @@
             name="Plugin"
             interface="dk.sdu.cookie.castle.common.services.IGamePluginService"
             bind="installPlugin"
+            policy="dynamic"
+            cardinality="0..n"
             unbind="uninstallPlugin"
     />
 
     <reference
             name="ProcessingService"
             interface="dk.sdu.cookie.castle.common.services.IEntityProcessingService"
+            policy="dynamic"
+            cardinality="0..n"
             bind="installProcessingService"
             unbind="uninstallProcessingService"
     />
@@ -19,6 +23,8 @@
     <reference
             name="PostProcessingService"
             interface="dk.sdu.cookie.castle.common.services.IPostEntityProcessingService"
+            policy="dynamic"
+            cardinality="0..n"
             bind="installPostProcessingService"
             unbind="uninstallPostProcessingService"
     />

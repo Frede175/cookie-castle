@@ -18,7 +18,10 @@ public class Game implements ApplicationListener {
     private GameData gameData;
     private World world;
 
-    public Game() { }
+    public Game() {
+        world = new World();
+        gameData = new GameData();
+    }
 
 
     @Override
@@ -54,6 +57,7 @@ public class Game implements ApplicationListener {
 
     protected void installPlugin(IGamePluginService plugin) {
         plugin.start(gameData, world);
+        System.out.println("Called install");
         plugins.add(plugin);
     }
 

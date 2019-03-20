@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component name="player.processing" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
+    <implementation class="dk.sdu.cookie.castle.player.PlayerProcessing"/>
+
+    <service>
+        <scr:provide interface="dk.sdu.cookie.castle.common.services.IEntityProcessingService"/>
+    </service>
+</scr:component>
