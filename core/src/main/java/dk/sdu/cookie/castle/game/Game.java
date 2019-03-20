@@ -18,22 +18,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
 
-    private List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
-    private List<IPostEntityProcessingService> postProcessingServices = new CopyOnWriteArrayList<>();
-    private List<IEntityProcessingService> processingServices = new CopyOnWriteArrayList<>();
-    private OrthographicCamera cam;
-    private GameData gameData;
-    private ShapeRenderer sr;
-    private World world;
+    private static final List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
+    private static final List<IPostEntityProcessingService> postProcessingServices = new CopyOnWriteArrayList<>();
+    private static final List<IEntityProcessingService> processingServices = new CopyOnWriteArrayList<>();
+    private static OrthographicCamera cam;
+    private static final GameData gameData = new GameData();
+    private static ShapeRenderer sr;
+    private static final World world = new World();
 
     public Game() {
     }
 
     @Override
     public void create() {
-        gameData = new GameData();
         sr = new ShapeRenderer();
-        world = new World();
 
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
