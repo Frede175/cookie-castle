@@ -12,6 +12,7 @@
         <module>core</module>
         <module>common</module>
         <module>libgdx</module>
+        <module>enemy</module>
     </modules>
 
     <dependencies>

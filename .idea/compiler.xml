@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="common" />
         <module name="core" />
+        <module name="enemy" />
         <module name="libgdx" />
       </profile>
     </annotationProcessing>
