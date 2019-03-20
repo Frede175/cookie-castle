@@ -2,8 +2,11 @@ package dk.sdu.cookie.castle.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -13,6 +16,8 @@ import dk.sdu.cookie.castle.common.services.IGamePluginService;
 import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 import dk.sdu.cookie.castle.game.managers.GameInputProcessor;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -25,13 +30,18 @@ public class Game implements ApplicationListener {
     private static final GameData gameData = new GameData();
     private static ShapeRenderer sr;
     private static final World world = new World();
+    private SpriteBatch batch;
+    private Texture texture;
 
     public Game() {
     }
 
     @Override
     public void create() {
+        batch = new SpriteBatch();
         sr = new ShapeRenderer();
+
+        testFiles();
 
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -41,6 +51,27 @@ public class Game implements ApplicationListener {
         cam.update();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+    }
+
+    private void testFiles() {
+        String path = "/images/isaac.jpg";
+
+        // getFile
+        File getFile = new File(this.getClass().getResource(path).getFile());
+        FileHandle getFileHandle = new FileHandle(getFile);
+        System.out.println("Exists through getFile: " + getFileHandle.exists());
+
+        // Gdx.files
+//        System.out.println("GDX - Local storage path: " + Gdx.files.getLocalStoragePath());
+        FileHandle gdxFile = Gdx.files.classpath(path);
+        System.out.println("Exists through GDX: " + gdxFile.exists());
+
+        // InputStream
+        InputStream is = this.getClass().getResourceAsStream(path);
+        FileHandle isFileHandle = new FileHandle("image");
+        isFileHandle.write(is, false);
+        System.out.println("Exists through InputStream: " + isFileHandle.exists());
+        texture = new Texture(isFileHandle);
     }
 
     @Override
@@ -56,6 +87,10 @@ public class Game implements ApplicationListener {
 
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
+
+        batch.begin();
+        batch.draw(texture, 0, 0);
+        batch.end();
 
         update();
         draw();
