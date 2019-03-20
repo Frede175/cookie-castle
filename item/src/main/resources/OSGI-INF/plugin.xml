@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component name="item.plugin" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
+    <implementation class="dk.sdu.cookie.castle.item.ItemPlugin"/>
+
+    <service>
+        <scr:provide interface="dk.sdu.cookie.castle.common.services.IGamePluginService"/>
+    </service>
+</scr:component>

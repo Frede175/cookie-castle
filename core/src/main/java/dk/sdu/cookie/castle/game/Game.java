@@ -18,7 +18,10 @@ public class Game implements ApplicationListener {
     private GameData gameData;
     private World world;
 
-    public Game() { }
+    public Game() {
+        world = new World();
+        gameData = new GameData();
+    }
 
 
     @Override

@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="Osmorc" url="file://$PROJECT_DIR$/common" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/item" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/libgdx" />
   </component>
   <component name="MavenProjectsManager">
