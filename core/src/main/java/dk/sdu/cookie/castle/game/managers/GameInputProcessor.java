@@ -1,7 +1,5 @@
 package dk.sdu.cookie.castle.game.managers;
 
-
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputAdapter;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.GameKeys;
@@ -54,8 +52,3 @@ public class GameInputProcessor extends InputAdapter {
         }
     }
 }
-
-
-
-
-
