@@ -24,7 +24,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Import-Package>org.osgi.framework</Import-Package>
-                        <Export-Package>dk.sdu.cookie.castle.common</Export-Package>
+                        <Export-Package>dk.sdu.cookie.castle.common.*</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>

@@ -26,7 +26,7 @@
                         <Service-Component>OSGI-INF/service.xml,OSGI-INF/plugins.xml</Service-Component>
                         <Import-Package>
                             com.badlogic.gdx.*,
-                            dk.sdu.cookie.castle.common,
+                            dk.sdu.cookie.castle.common.*,
                             org.osgi.framework
                         </Import-Package>
                         <Include-Resource>
