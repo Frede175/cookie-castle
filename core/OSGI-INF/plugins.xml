@@ -5,6 +5,8 @@
     <reference
             name="Plugin"
             interface="dk.sdu.cookie.castle.common.services.IGamePluginService"
+            policy="dynamic"
+            cardinality="0..n"
             bind="installPlugin"
             policy="dynamic"
             cardinality="0..n"
@@ -28,7 +30,4 @@
             bind="installPostProcessingService"
             unbind="uninstallPostProcessingService"
     />
-
-
-
 </scr:component>
