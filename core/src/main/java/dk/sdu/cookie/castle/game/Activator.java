@@ -11,12 +11,13 @@ public class Activator {
 
     private void activate(BundleContext context) {
         System.out.println("Starting Core!");
+
         g = new Game();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Asteroids";
-        cfg.width = 800;
-        cfg.height = 600;
+        cfg.width = 1280;
+        cfg.height = 720;
         cfg.useGL30 = false;
         cfg.resizable = false;
 
