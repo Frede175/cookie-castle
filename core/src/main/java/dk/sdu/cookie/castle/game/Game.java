@@ -54,7 +54,7 @@ public class Game implements ApplicationListener {
     }
 
     private void testFiles() {
-        String path = "/images/isaac.jpg";
+        String path = "/images/background.png";
 
         // getFile
         File getFile = new File(this.getClass().getResource(path).getFile());
