@@ -14,11 +14,11 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-        enemy = createPlayer(gameData);
+        enemy = createEnemy(gameData);
         world.addEntity(enemy);
     }
 
-    private Entity createPlayer(GameData gameData) {
+    private Entity createEnemy(GameData gameData) {
 
         float deacceleration = 10;
         float acceleration = 200;
