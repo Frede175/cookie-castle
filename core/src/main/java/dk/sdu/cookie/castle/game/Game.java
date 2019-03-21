@@ -31,9 +31,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-
         sr = new ShapeRenderer();
-
 
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -111,9 +109,6 @@ public class Game implements ApplicationListener {
     }
 
     protected void installPlugin(IGamePluginService plugin) {
-        System.out.println(gameData);
-        System.out.println(gameData.getDisplayHeight());
-
         plugin.start(gameData, world);
         plugins.add(plugin);
     }
