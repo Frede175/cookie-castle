@@ -8,7 +8,6 @@ import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.TreeSet;
 
 public class CollisionPostProcessing implements IPostEntityProcessingService {
     private int sortAxis = 0;
@@ -35,8 +34,8 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
         for (int i = 0; i < abarray.length; i ++) {
             float[] p = new float[2];
-            p[0] = 0.5f * abarray[i].getMinPoint()[0] + abarray[i].getMaxPoint()[0];
-            p[1] = 0.5f * abarray[i].getMinPoint()[1] + abarray[i].getMaxPoint()[1];
+            p[0] = 0.5f * (abarray[i].getMinPoint()[0] + abarray[i].getMaxPoint()[0]);
+            p[1] = 0.5f * (abarray[i].getMinPoint()[1] + abarray[i].getMaxPoint()[1]);
 
 
             for(int c = 0; c < 2; c++) {
@@ -62,18 +61,6 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
         if(v[1] > v[0]) sortAxis = 1;
     }
 
-    private boolean circleCollision(Entity e, Entity f) {
-        PositionPart ep = e.getPart(PositionPart.class);
-        PositionPart fp = f.getPart(PositionPart.class);
-
-        if ((ep.getX() - fp.getX()) * (ep.getX() - fp.getX())
-                + (ep.getY() - fp.getY()) * (ep.getY() - fp.getY())
-                < (e.getRadius() + f.getRadius()) * (e.getRadius() + f.getRadius())) {
-            return true;
-        }
-
-        return false;
-    }
 
     private int compareAB(AB ab_1, AB ab_2) {
         float minA = ab_1.getMinPoint()[sortAxis];
@@ -84,9 +71,13 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
     }
 
     private boolean overlap(AB ab_1, AB ab_2) {
-        if(ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[1]) {
-            return true;
-        }
+        if (sortAxis == 0) {
+            if (ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[1]) {
+                return true;
+            } else if (sortAxis == 1)
+                if (ab_1.getMaxPoint()[0] > ab_2.getMinPoint()[0]) {
+                    return true;
+        }}
         return false;
     }
 }
