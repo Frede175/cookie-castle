@@ -72,10 +72,10 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
     private boolean overlap(AB ab_1, AB ab_2) {
         if (sortAxis == 0) {
-            if (ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[1]) {
+            if (ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[1] || ab_2.getMaxPoint()[0] > ab_1.getMinPoint()[0]) {
                 return true;
             } else if (sortAxis == 1)
-                if (ab_1.getMaxPoint()[0] > ab_2.getMinPoint()[0]) {
+                if (ab_1.getMaxPoint()[0] > ab_2.getMinPoint()[0] || ab_2.getMaxPoint()[0] > ab_1.getMinPoint()[0]) {
                     return true;
         }}
         return false;
