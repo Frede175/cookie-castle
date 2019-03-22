@@ -11,13 +11,12 @@ import java.util.Comparator;
 
 public class CollisionPostProcessing implements IPostEntityProcessingService {
     private int sortAxis = 0;
-    Comparator<AB> comparator = this::compareAB;
-    AB[] abarray;
+    private Comparator<AB> comparator = this::compareAB;
 
 
     @Override
     public void process(GameData gameData, World world) {
-        abarray = new AB[world.getEntities().size()];
+        AB[] abarray = new AB[world.getEntities().size()];
         {
             int i = 0;
             for (Entity entity: world.getEntities()) {
@@ -61,23 +60,20 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
         if(v[1] > v[0]) sortAxis = 1;
     }
 
-
     private int compareAB(AB ab_1, AB ab_2) {
         float minA = ab_1.getMinPoint()[sortAxis];
         float minB = ab_2.getMinPoint()[sortAxis];
-        if(minA < minB) return -1;
-        if(minA > minB) return 1;
-        return 0;
+        return Float.compare(minA, minB);
     }
 
     private boolean overlap(AB ab_1, AB ab_2) {
-        if (sortAxis == 0) {
-            if (ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[1] || ab_2.getMaxPoint()[0] > ab_1.getMinPoint()[0]) {
-                return true;
-            } else if (sortAxis == 1)
-                if (ab_1.getMaxPoint()[0] > ab_2.getMinPoint()[0] || ab_2.getMaxPoint()[0] > ab_1.getMinPoint()[0]) {
-                    return true;
-        }}
-        return false;
+        //Checking sorting axis. (x or y axis)
+        if (sortAxis == 0) { //Sorting on the x axis, checking overlap on the y axis
+            return (ab_1.getMinPoint()[1] < ab_2.getMinPoint()[1] && ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[0])
+                    || (ab_2.getMinPoint()[1] < ab_1.getMinPoint()[1] && ab_2.getMaxPoint()[1] > ab_1.getMinPoint()[0]);
+        } else { //Sorting on the y axis, checking overlap on the x axis
+            return (ab_1.getMinPoint()[0] < ab_2.getMinPoint()[0] && ab_1.getMaxPoint()[0] > ab_2.getMinPoint()[0])
+                    || (ab_2.getMinPoint()[0] < ab_1.getMinPoint()[0] && ab_2.getMaxPoint()[0] > ab_1.getMinPoint()[0]);
+        }
     }
 }
