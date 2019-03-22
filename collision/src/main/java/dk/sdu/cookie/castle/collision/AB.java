@@ -11,11 +11,12 @@ public class AB {
 
     public AB(Entity entity) {
         this.entity = entity;
+        minPoint = new float[2];
+        maxPoint = new float[2];
         calcMinMax();
-
     }
 
-    public void calcMinMax() {
+    private void calcMinMax() {
         PositionPart part = entity.getPart(PositionPart.class);
         if(part != null) {
 

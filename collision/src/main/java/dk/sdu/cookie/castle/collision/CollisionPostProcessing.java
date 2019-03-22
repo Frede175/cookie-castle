@@ -69,8 +69,8 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
     private boolean overlap(AB ab_1, AB ab_2) {
         //Checking sorting axis. (x or y axis)
         if (sortAxis == 0) { //Sorting on the x axis, checking overlap on the y axis
-            return (ab_1.getMinPoint()[1] < ab_2.getMinPoint()[1] && ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[0])
-                    || (ab_2.getMinPoint()[1] < ab_1.getMinPoint()[1] && ab_2.getMaxPoint()[1] > ab_1.getMinPoint()[0]);
+            return (ab_1.getMinPoint()[1] < ab_2.getMinPoint()[1] && ab_1.getMaxPoint()[1] > ab_2.getMinPoint()[1])
+                    || (ab_2.getMinPoint()[1] < ab_1.getMinPoint()[1] && ab_2.getMaxPoint()[1] > ab_1.getMinPoint()[1]);
         } else { //Sorting on the y axis, checking overlap on the x axis
             return (ab_1.getMinPoint()[0] < ab_2.getMinPoint()[0] && ab_1.getMaxPoint()[0] > ab_2.getMinPoint()[0])
                     || (ab_2.getMinPoint()[0] < ab_1.getMinPoint()[0] && ab_2.getMaxPoint()[0] > ab_1.getMinPoint()[0]);
