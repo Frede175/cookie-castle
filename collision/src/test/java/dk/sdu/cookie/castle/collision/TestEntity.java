@@ -10,5 +10,10 @@ public class TestEntity extends Entity {
         add(new CollisionPart());
         add(new PositionPart(x,y));
         setRadius(radius);
+
+        float[] shapeX = { x, x + radius, x, x - radius };
+        float[] shapeY = { y + radius, y, y - radius, y };
+        setShapeX(shapeX);
+        setShapeY(shapeY);
     }
 }

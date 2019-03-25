@@ -1,5 +1,7 @@
 package dk.sdu.cookie.castle.collision;
 
+import dk.sdu.cookie.castle.collision.util.Projection;
+import dk.sdu.cookie.castle.collision.util.Vector2;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -47,7 +49,7 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
             for (int j = i + 1; j < aabbArray.length; j++) {
 
                 if (aabbArray[j].getMinPoint()[sortAxis] > aabbArray[i].getMaxPoint()[sortAxis]) break;
-                if (overlap(aabbArray[j], aabbArray[i])) {
+                if (overlap(aabbArray[j], aabbArray[i]) && preciseCollision(aabbArray[j], aabbArray[i])) {
                     CollisionPart collisionPart1 = aabbArray[j].getEntity().getPart(CollisionPart.class);
                     CollisionPart collisionPart2 = aabbArray[i].getEntity().getPart(CollisionPart.class);
 
@@ -82,5 +84,58 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
             return (aabb1.getMinPoint()[0] < aabb2.getMinPoint()[0] && aabb1.getMaxPoint()[0] > aabb2.getMinPoint()[0])
                     || (aabb2.getMinPoint()[0] < aabb1.getMinPoint()[0] && aabb2.getMaxPoint()[0] > aabb1.getMinPoint()[0]);
         }
+    }
+
+    private boolean preciseCollision(AABB aabb1, AABB aabb2) {
+        Vector2[] points1 = getPoints(aabb1.getEntity().getShapeX(), aabb1.getEntity().getShapeY());
+        Vector2[] points2 = getPoints(aabb2.getEntity().getShapeX(), aabb2.getEntity().getShapeY());
+
+        Vector2[] axis1 = getAxes(points1);
+        Vector2[] axis2 = getAxes(points2);
+
+        if (checkProjectionOverlap(points1, points2, axis1)) return false;
+
+        return !checkProjectionOverlap(points1, points2, axis2);
+    }
+
+    private boolean checkProjectionOverlap(Vector2[] points1, Vector2[] points2, Vector2[] axis1) {
+        for (Vector2 axis : axis1) {
+            Projection p1 = project(axis, points1);
+            Projection p2 = project(axis, points2);
+            if (!p1.overlap(p2)) return true;
+        }
+        return false;
+    }
+
+    private Vector2[] getPoints(float[] shapeX, float[] shapeY) {
+        Vector2[] points = new Vector2[shapeX.length];
+        for (int i = 0; i < shapeX.length; i++) {
+            points[i] = new Vector2(shapeX[i], shapeY[i]);
+        }
+        return points;
+    }
+
+    private Vector2[] getAxes(Vector2[] edges) {
+        Vector2[] axis = new Vector2[edges.length];
+        for (int i = 0; i < axis.length; i++) {
+            Vector2 p1 = edges[i];
+            Vector2 p2 = edges[(i + 1) % axis.length];
+
+            axis[i] = p1.subtract(p2).perp().normalize();
+        }
+        return axis;
+    }
+
+    private Projection project(Vector2 axis, Vector2[] shape) {
+        float min = axis.dot(shape[0]);
+        float max = min;
+
+        for (int i = 1; i < shape.length; i++) {
+            float value = axis.dot(shape[i]);
+
+            if (value < min) min = value;
+            else if (value > max) max = value;
+        }
+        return new Projection(min, max);
     }
 }
