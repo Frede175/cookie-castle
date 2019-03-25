@@ -1,14 +1,11 @@
 package dk.sdu.cookie.castle.player;
 
 import dk.sdu.cookie.castle.common.data.Entity;
-import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
-import dk.sdu.cookie.castle.common.data.Entityparts.MovingPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
+import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
-import java.util.UUID;
 
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
@@ -36,13 +33,15 @@ public class PlayerPlugin implements IGamePluginService {
         colour[2] = 1.0f;
         colour[3] = 1.0f;
 
-        Entity playerShip = new Player();
-        playerShip.setRadius(8);
-        playerShip.add(new MovingPart(maxSpeed));
-        playerShip.add(new PositionPart(x, y));
-        playerShip.add(new LifePart(1,1,1,1));
+        Entity player = new Player();
+        player.setRadius(8);
+        player.add(new MovingPart(maxSpeed));
+        player.add(new PositionPart(x, y));
+        player.add(new LifePart(1,1,1,1));
+        player.add(new CollisionPart());
+        player.add(new InventoryPart());
 
-        return playerShip;
+        return player;
     }
 
     @Override
