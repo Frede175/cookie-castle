@@ -19,7 +19,7 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
         AB[] abarray = new AB[world.getEntities().size()];
         {
             int i = 0;
-            for (Entity entity: world.getEntities()) {
+            for (Entity entity : world.getEntities()) {
                 abarray[i++] = new AB(entity);
             }
         }
@@ -27,37 +27,38 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
         Arrays.sort(abarray, comparator);
 
-        float[] s = {0,0f, 0,0f};
-        float[] s2 ={0,0f, 0,0f};
+
+        float[] s = {0.0f, 0.0f};
+        float[] s2 = {0.0f, 0.0f};
         float[] v = new float[2];
 
-        for (int i = 0; i < abarray.length; i ++) {
+        for (int i = 0; i < abarray.length; i++) {
             float[] p = new float[2];
             p[0] = 0.5f * (abarray[i].getMinPoint()[0] + abarray[i].getMaxPoint()[0]);
             p[1] = 0.5f * (abarray[i].getMinPoint()[1] + abarray[i].getMaxPoint()[1]);
 
 
-            for(int c = 0; c < 2; c++) {
+            for (int c = 0; c < 2; c++) {
                 s[c] += p[c];
                 s2[c] += p[c] * p[c];
 
             }
 
-            for(int j = i + 1; j < abarray.length; j++) {
+            for (int j = i + 1; j < abarray.length; j++) {
 
-                if(abarray[j].getMinPoint()[sortAxis] > abarray[i].getMaxPoint()[sortAxis]) break;
-                if(overlap(abarray[j], abarray[i])) {
+                if (abarray[j].getMinPoint()[sortAxis] > abarray[i].getMaxPoint()[sortAxis]) break;
+                if (overlap(abarray[j], abarray[i])) {
                     // TODO Collision
                 }
             }
         }
 
-        for(int c = 0; c < 2; c++) {
+        for (int c = 0; c < 2; c++) {
             v[c] = s2[c] - s[c] * s[c] / abarray.length;
         }
 
         sortAxis = 0;
-        if(v[1] > v[0]) sortAxis = 1;
+        if (v[1] > v[0]) sortAxis = 1;
     }
 
     private int compareAB(AB ab_1, AB ab_2) {
