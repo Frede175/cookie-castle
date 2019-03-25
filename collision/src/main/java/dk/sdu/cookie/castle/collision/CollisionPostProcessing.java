@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.collision;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
@@ -47,7 +48,13 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
                 if (aabbArray[j].getMinPoint()[sortAxis] > aabbArray[i].getMaxPoint()[sortAxis]) break;
                 if (overlap(aabbArray[j], aabbArray[i])) {
-                    // TODO Collision
+                    CollisionPart collisionPart1 = aabbArray[j].getEntity().getPart(CollisionPart.class);
+                    CollisionPart collisionPart2 = aabbArray[i].getEntity().getPart(CollisionPart.class);
+
+                    collisionPart1.setHit(true);
+                    collisionPart2.setHit(true);
+                    collisionPart1.setCollidingEntity(aabbArray[j].getEntity());
+                    collisionPart2.setCollidingEntity(aabbArray[i].getEntity());
                 }
             }
         }

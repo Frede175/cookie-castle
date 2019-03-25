@@ -29,6 +29,10 @@ class AABB {
 
     }
 
+    Entity getEntity() {
+        return entity;
+    }
+
     float[] getMinPoint() {
         return minPoint;
     }
