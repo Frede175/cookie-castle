@@ -10,7 +10,6 @@
         <module name="common" />
         <module name="core" />
         <module name="libgdx" />
-        <module name="player" />
       </profile>
     </annotationProcessing>
   </component>
