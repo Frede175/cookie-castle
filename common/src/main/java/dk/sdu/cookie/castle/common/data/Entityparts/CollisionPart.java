@@ -6,23 +6,23 @@ import dk.sdu.cookie.castle.common.data.GameData;
 public class CollisionPart implements EntityPart {
 
     private Entity collidingEntity;
-    private Boolean isHit;
+    private boolean hit;
 
     public Entity getCollidingEntity() {
         return collidingEntity;
     }
 
-    public Boolean getHit() {
-        return isHit;
+    public boolean getHit() {
+        return hit;
     }
 
     public void setCollidingEntity(Entity collidingEntity) {
         this.collidingEntity = collidingEntity;
     }
 
-    public void setHit(Boolean hit) {
-        isHit = hit;
-        if (!isHit) {
+    public void setHit(boolean hit) {
+        this.hit = hit;
+        if (!hit) {
             collidingEntity = null;
         }
     }
