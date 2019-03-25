@@ -67,20 +67,20 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
         if (v[1] > v[0]) sortAxis = 1;
     }
 
-    private int compareAB(AABB AABB_1, AABB AABB_2) {
-        float minA = AABB_1.getMinPoint()[sortAxis];
-        float minB = AABB_2.getMinPoint()[sortAxis];
+    private int compareAB(AABB aabb1, AABB aabb2) {
+        float minA = aabb1.getMinPoint()[sortAxis];
+        float minB = aabb2.getMinPoint()[sortAxis];
         return Float.compare(minA, minB);
     }
 
-    private boolean overlap(AABB AABB_1, AABB AABB_2) {
+    private boolean overlap(AABB aabb1, AABB aabb2) {
         //Checking sorting axis. (x or y axis)
         if (sortAxis == 0) { //Sorting on the x axis, checking overlap on the y axis
-            return (AABB_1.getMinPoint()[1] < AABB_2.getMinPoint()[1] && AABB_1.getMaxPoint()[1] > AABB_2.getMinPoint()[1])
-                    || (AABB_2.getMinPoint()[1] < AABB_1.getMinPoint()[1] && AABB_2.getMaxPoint()[1] > AABB_1.getMinPoint()[1]);
+            return (aabb1.getMinPoint()[1] < aabb2.getMinPoint()[1] && aabb1.getMaxPoint()[1] > aabb2.getMinPoint()[1])
+                    || (aabb2.getMinPoint()[1] < aabb1.getMinPoint()[1] && aabb2.getMaxPoint()[1] > aabb1.getMinPoint()[1]);
         } else { //Sorting on the y axis, checking overlap on the x axis
-            return (AABB_1.getMinPoint()[0] < AABB_2.getMinPoint()[0] && AABB_1.getMaxPoint()[0] > AABB_2.getMinPoint()[0])
-                    || (AABB_2.getMinPoint()[0] < AABB_1.getMinPoint()[0] && AABB_2.getMaxPoint()[0] > AABB_1.getMinPoint()[0]);
+            return (aabb1.getMinPoint()[0] < aabb2.getMinPoint()[0] && aabb1.getMaxPoint()[0] > aabb2.getMinPoint()[0])
+                    || (aabb2.getMinPoint()[0] < aabb1.getMinPoint()[0] && aabb2.getMaxPoint()[0] > aabb1.getMinPoint()[0]);
         }
     }
 }

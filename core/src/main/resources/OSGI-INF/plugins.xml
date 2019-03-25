@@ -8,8 +8,6 @@
             policy="dynamic"
             cardinality="0..n"
             bind="installPlugin"
-            policy="dynamic"
-            cardinality="0..n"
             unbind="uninstallPlugin"
     />
 
