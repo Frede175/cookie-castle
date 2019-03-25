@@ -1,8 +1,9 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.GameData;
 
-public class CollisionPart {
+public class CollisionPart implements EntityPart {
 
     private Entity collidingEntity;
     private Boolean isHit;
@@ -24,5 +25,9 @@ public class CollisionPart {
         if (!isHit) {
             collidingEntity = null;
         }
+    }
+
+    @Override
+    public void process(GameData gameData, Entity entity) {
     }
 }
