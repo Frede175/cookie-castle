@@ -53,8 +53,8 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
                     collisionPart1.setHit(true);
                     collisionPart2.setHit(true);
-                    collisionPart1.setCollidingEntity(aabbArray[j].getEntity());
-                    collisionPart2.setCollidingEntity(aabbArray[i].getEntity());
+                    collisionPart1.setCollidingEntity(aabbArray[i].getEntity());
+                    collisionPart2.setCollidingEntity(aabbArray[j].getEntity());
                 }
             }
         }
