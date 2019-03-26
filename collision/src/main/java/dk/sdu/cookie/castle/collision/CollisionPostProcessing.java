@@ -18,7 +18,6 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
     private int sortAxis = 0;
     private Comparator<AABB> comparator = this::compareAB;
 
-
     @Override
     public void process(GameData gameData, World world) {
         AABB[] aabbArray = new AABB[world.getEntities().size()];
@@ -29,9 +28,7 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
             }
         }
 
-
         Arrays.sort(aabbArray, comparator);
-
 
         float[] s = {0.0f, 0.0f};
         float[] s2 = {0.0f, 0.0f};
@@ -42,57 +39,41 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
             p[0] = 0.5f * (aabbArray[i].getMinPoint()[0] + aabbArray[i].getMaxPoint()[0]);
             p[1] = 0.5f * (aabbArray[i].getMinPoint()[1] + aabbArray[i].getMaxPoint()[1]);
 
-
             for (int c = 0; c < 2; c++) {
                 s[c] += p[c];
                 s2[c] += p[c] * p[c];
-
             }
 
             for (int j = i + 1; j < aabbArray.length; j++) {
+                boolean entity1CanMove = canMove(aabbArray[j].getEntity());
+                boolean entity2CanMove = canMove(aabbArray[i].getEntity());
+
+                if (!entity1CanMove && !entity2CanMove) continue;
 
                 if (aabbArray[j].getMinPoint()[sortAxis] > aabbArray[i].getMaxPoint()[sortAxis]) break;
+
                 if (overlap(aabbArray[j], aabbArray[i])) {
                     MTV mtv = preciseCollision(aabbArray[j], aabbArray[i]);
                     if (mtv != null) {
                         CollisionPart collisionPart1 = aabbArray[j].getEntity().getPart(CollisionPart.class);
                         CollisionPart collisionPart2 = aabbArray[i].getEntity().getPart(CollisionPart.class);
+                        Vector2 vector = mtv.getAxis();
 
-                        //Calc which object need to move
-                        boolean entity1CanMove = canMove(aabbArray[j].getEntity());
-                        boolean entity2CanMove = canMove(aabbArray[i].getEntity());
-
-                        if (entity1CanMove && entity2CanMove) {
-                            PositionPart position1 = aabbArray[j].getEntity().getPart(PositionPart.class);
-                            PositionPart position2 = aabbArray[i].getEntity().getPart(PositionPart.class);
-
-
-
-
-                        } else if (entity1CanMove) {
-                            PositionPart position = aabbArray[j].getEntity().getPart(PositionPart.class);
-                            Vector2 vector = mtv.getAxis();
-                            if (shape1min) {
-                                vector = vector.invert();
+                        if (!entity1CanMove || !entity2CanMove) {
+                            if (entity1CanMove) {
+                                if (shape1min) {
+                                    vector = vector.invert();
+                                }
+                                vector = vector.mult(mtv.getDistance());
+                                updatePosition(aabbArray[j].getEntity(), vector);
+                            } else {
+                                if (!shape1min) {
+                                    vector = vector.invert();
+                                }
+                                vector = vector.mult(mtv.getDistance());
+                                updatePosition(aabbArray[i].getEntity(), vector);
                             }
-                            vector = vector.mult(mtv.getDistance());
-                            position.setX(position.getX() + vector.getX());
-                            position.setY(position.getY() + vector.getY());
-
-                        } else if (entity2CanMove) {
-                            PositionPart position = aabbArray[i].getEntity().getPart(PositionPart.class);
-                            Vector2 vector = mtv.getAxis();
-                            if (!shape1min) {
-                                vector = vector.invert();
-                            }
-                            vector = vector.mult(mtv.getDistance());
-                            position.setX(position.getX() + vector.getX());
-                            position.setY(position.getY() + vector.getY());
-                        } else {
-                            continue;
                         }
-
-                        //TODO Move objects!
 
                         collisionPart1.setHit(true);
                         collisionPart2.setHit(true);
@@ -109,6 +90,20 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
         sortAxis = 0;
         if (v[1] > v[0]) sortAxis = 1;
+    }
+
+    private void updatePosition(Entity entity, Vector2 mtv) {
+        PositionPart position = entity.getPart(PositionPart.class);
+        float[] x = entity.getShapeX();
+        float[] y = entity.getShapeY();
+
+        position.setX(position.getX() + mtv.getX());
+        position.setY(position.getY() + mtv.getY());
+
+        for (int i = 0; i < x.length; i++) {
+            x[i] += mtv.getX();
+            y[i] += mtv.getY();
+        }
     }
 
     private boolean canMove(Entity entity) {
