@@ -19,19 +19,13 @@ public class PlayerPlugin implements IGamePluginService {
 
     private Entity createPlayer(GameData gameData) {
 
-        float deacceleration = 10;
-        float acceleration = 200;
+        float[] shapex = new float[3];
+        float[] shapey = new float[3];
         float maxSpeed = 5;
-        float rotationSpeed = 5;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
-        float radians = 3.1415f / 2;
 
-        float[] colour = new float[4];
-        colour[0] = 1.0f;
-        colour[1] = 1.0f;
-        colour[2] = 1.0f;
-        colour[3] = 1.0f;
+
 
         Entity player = new Player();
         player.setRadius(8);
@@ -40,6 +34,8 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new LifePart(1,1,1,1));
         player.add(new CollisionPart());
         player.add(new InventoryPart());
+        player.setShapeY(shapey);
+        player.setShapeX(shapex);
 
         return player;
     }

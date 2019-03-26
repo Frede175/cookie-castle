@@ -60,8 +60,8 @@ public class PlayerProcessing implements IEntityProcessingService {
     }
 
     private void updateShape(Entity entity) {
-        float[] shapex = new float[4];
-        float[] shapey = new float[4];
+        float[] shapex = entity.getShapeX();
+        float[] shapey = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
@@ -73,11 +73,11 @@ public class PlayerProcessing implements IEntityProcessingService {
         shapex[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * entity.getRadius());
         shapey[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * entity.getRadius());
 
-        shapex[2] = (float) (x + Math.cos(radians + 3.1415f) * entity.getRadius() * 0.5);
-        shapey[2] = (float) (y + Math.sin(radians + 3.1415f) * entity.getRadius() * 0.5);
+        // shapex[2] = (float) (x + Math.cos(radians + 3.1415f) * entity.getRadius() * 0.5);
+        // shapey[2] = (float) (y + Math.sin(radians + 3.1415f) * entity.getRadius() * 0.5);
 
-        shapex[3] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
-        shapey[3] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
+        shapex[2] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
+        shapey[2] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
 
         entity.setShapeX(shapex);
         entity.setShapeY(shapey);
