@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.player;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
@@ -36,6 +37,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new InventoryPart());
         player.setShapeY(shapey);
         player.setShapeX(shapex);
+        player.setEntityType(EntityType.PLAYER);
 
         return player;
     }
