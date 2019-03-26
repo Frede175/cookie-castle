@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.item;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
@@ -40,6 +41,7 @@ public class ItemPlugin implements IGamePluginService {
         item.add(new CollisionPart());
         item.setShapeX(shapex);
         item.setShapeY(shapey);
+        item.setEntityType(EntityType.ITEM);
 
         return item;
     }
