@@ -2,9 +2,7 @@ package dk.sdu.cookie.castle.item;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
-import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
-import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
+import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
@@ -39,6 +37,7 @@ public class ItemPlugin implements IGamePluginService {
         item.add(new LifePart(1, 1,1, 30));
         item.setRadius(10);
         item.add(new CollisionPart());
+        item.add(new ItemPart(new WeaponPart(10,15,20)));
         item.setShapeX(shapex);
         item.setShapeY(shapey);
         item.setEntityType(EntityType.ITEM);
