@@ -6,6 +6,7 @@ import dk.sdu.cookie.castle.collision.util.Vector2;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
+import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
@@ -61,6 +62,36 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
                         boolean entity1CanMove = canMove(aabbArray[i].getEntity());
                         boolean entity2CanMove = canMove(aabbArray[j].getEntity());
 
+                        if (entity1CanMove && entity2CanMove) {
+                            PositionPart position1 = aabbArray[i].getEntity().getPart(PositionPart.class);
+                            PositionPart position2 = aabbArray[j].getEntity().getPart(PositionPart.class);
+
+                            
+
+
+                        } else if (entity1CanMove) {
+                            PositionPart position = aabbArray[i].getEntity().getPart(PositionPart.class);
+                            Vector2 vector = mtv.getAxis();
+                            if (shape1min) {
+                                vector = vector.invert();
+                            }
+                            vector = vector.mult(mtv.getDistance());
+                            position.setX(position.getX() + vector.getX());
+                            position.setY(position.getY() + vector.getY());
+
+                        } else if (entity2CanMove) {
+                            PositionPart position = aabbArray[i].getEntity().getPart(PositionPart.class);
+                            Vector2 vector = mtv.getAxis();
+                            if (!shape1min) {
+                                vector = vector.invert();
+                            }
+                            vector = vector.mult(mtv.getDistance());
+                            position.setX(position.getX() + vector.getX());
+                            position.setY(position.getY() + vector.getY());
+                        } else {
+                            continue;
+                        }
+
                         //TODO Move objects!
 
                         collisionPart1.setHit(true);
@@ -81,10 +112,10 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
     }
 
     private boolean canMove(Entity entity) {
-        return entity.getEntityType() == EntityType.DOOR ||
+        return !(entity.getEntityType() == EntityType.DOOR ||
                 entity.getEntityType() == EntityType.REMOVABLE_OBSTACLE ||
                 entity.getEntityType() == EntityType.STATIC_OBSTACLE ||
-                entity.getEntityType() == EntityType.WALL;
+                entity.getEntityType() == EntityType.WALL);
     }
 
     private int compareAB(AABB aabb1, AABB aabb2) {
@@ -106,6 +137,7 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
     private Vector2 smallestAxis;
     private float overlap;
+    private boolean shape1min = false;
 
     private MTV preciseCollision(AABB aabb1, AABB aabb2) {
         smallestAxis = null;
@@ -133,6 +165,7 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
                 if (o < overlap) {
                     overlap = o;
                     smallestAxis = axis;
+                    shape1min = p1.getMin() + p1.getMax() < p2.getMin() + p2.getMax();
                 }
             }
         }
