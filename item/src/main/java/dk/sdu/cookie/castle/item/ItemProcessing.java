@@ -24,7 +24,7 @@ public class ItemProcessing implements IEntityProcessingService {
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
-                        world.removeEntity(item);
+                        // world.removeEntity(item);
                         break;
                     case ENEMY:
                         break;
