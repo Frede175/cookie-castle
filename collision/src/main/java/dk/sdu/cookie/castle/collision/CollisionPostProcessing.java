@@ -59,18 +59,18 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
                         CollisionPart collisionPart2 = aabbArray[i].getEntity().getPart(CollisionPart.class);
 
                         //Calc which object need to move
-                        boolean entity1CanMove = canMove(aabbArray[i].getEntity());
-                        boolean entity2CanMove = canMove(aabbArray[j].getEntity());
+                        boolean entity1CanMove = canMove(aabbArray[j].getEntity());
+                        boolean entity2CanMove = canMove(aabbArray[i].getEntity());
 
                         if (entity1CanMove && entity2CanMove) {
-                            PositionPart position1 = aabbArray[i].getEntity().getPart(PositionPart.class);
-                            PositionPart position2 = aabbArray[j].getEntity().getPart(PositionPart.class);
+                            PositionPart position1 = aabbArray[j].getEntity().getPart(PositionPart.class);
+                            PositionPart position2 = aabbArray[i].getEntity().getPart(PositionPart.class);
 
-                            
+
 
 
                         } else if (entity1CanMove) {
-                            PositionPart position = aabbArray[i].getEntity().getPart(PositionPart.class);
+                            PositionPart position = aabbArray[j].getEntity().getPart(PositionPart.class);
                             Vector2 vector = mtv.getAxis();
                             if (shape1min) {
                                 vector = vector.invert();
