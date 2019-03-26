@@ -9,6 +9,7 @@
         <module name="collision" />
         <module name="common" />
         <module name="core" />
+        <module name="item" />
         <module name="libgdx" />
         <module name="player" />
       </profile>
