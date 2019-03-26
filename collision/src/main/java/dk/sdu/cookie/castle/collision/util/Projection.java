@@ -1,7 +1,7 @@
 package dk.sdu.cookie.castle.collision.util;
 
 public class Projection {
-    float min, max;
+    private float min, max;
 
     public Projection(float min, float max) {
         this.min = min;
@@ -20,5 +20,13 @@ public class Projection {
             return other.max - min;
         }
         return 0;
+    }
+
+    public float getMin() {
+        return min;
+    }
+
+    public float getMax() {
+        return max;
     }
 }

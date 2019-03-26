@@ -1,5 +1,7 @@
 package dk.sdu.cookie.castle.collision.util;
 
+import java.util.Vector;
+
 public class Vector2 {
     private float x, y;
 
@@ -35,6 +37,14 @@ public class Vector2 {
 
     public float dot(Vector2 other) {
         return x * other.x + y * other.y;
+    }
+
+    public Vector2 invert() {
+        return new Vector2(-x, -y);
+    }
+
+    public Vector2 mult(float d) {
+        return new Vector2(x * d, y * d);
     }
 
 }
