@@ -2,6 +2,7 @@ package dk.sdu.cookie.castle.item;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
+import dk.sdu.cookie.castle.common.data.Entityparts.ItemPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -20,10 +21,10 @@ public class ItemProcessing implements IEntityProcessingService {
             LifePart lifePart = item.getPart(LifePart.class);
             CollisionPart collisionPart = item.getPart(CollisionPart.class);
 
-
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
+                        world.removeEntity(item);
                         break;
                     case ENEMY:
                         break;
