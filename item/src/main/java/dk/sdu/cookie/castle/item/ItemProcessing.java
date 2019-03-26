@@ -60,8 +60,8 @@ public class ItemProcessing implements IEntityProcessingService {
                 float y = positionPart.getY();
 
                     for (int i = 0; i < numPoints; i++) {
-                        shapex[i] = x + (float) Math.cos(angle + radians) * 26;
-                        shapey[i] = y + (float) Math.sin(angle + radians) * 26;
+                        shapex[i] = x + (float) Math.cos(angle + radians) * 25;
+                        shapey[i] = y + (float) Math.sin(angle + radians) * 25;
                         angle += 2 * 3.1415f / numPoints;
                     }
 
