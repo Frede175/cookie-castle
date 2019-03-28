@@ -1,13 +1,8 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
-
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
-/**
- *
- * @author Alexander
- */
 public class PositionPart implements EntityPart {
 
     private float x;
@@ -16,7 +11,6 @@ public class PositionPart implements EntityPart {
     public PositionPart(float x, float y) {
         this.x = x;
         this.y = y;
-
     }
 
     public float getX() {
@@ -27,11 +21,11 @@ public class PositionPart implements EntityPart {
         return y;
     }
 
-    
+
     public void setX(float newX) {
         this.x = newX;
     }
-    
+
     public void setY(float newY) {
         this.y = newY;
     }
@@ -44,8 +38,8 @@ public class PositionPart implements EntityPart {
     @Override
     public void process(GameData gameData, Entity entity) {
     }
-    
-    
-    
-    
+
+
+
+
 }

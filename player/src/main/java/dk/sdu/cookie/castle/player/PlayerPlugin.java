@@ -1,24 +1,36 @@
 package dk.sdu.cookie.castle.player;
 
+import dk.sdu.cookie.castle.common.assets.Asset;
+import dk.sdu.cookie.castle.common.assets.AssetType;
+import dk.sdu.cookie.castle.common.assets.FileType;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
+    private Map<String, Asset> assets = new ConcurrentHashMap<>();
 
     @Override
     public void start(GameData gameData, World world) {
+        initializeAssets();
         player = createPlayer(gameData);
         world.addEntity(player);
         System.out.println("Started player");
     }
 
-    private Entity createPlayer(GameData gameData) {
+    private void initializeAssets() {
+        Asset sumo = new Asset("sumo", AssetType.TEXTURE, FileType.PNG);
+        assets.put(sumo.getId(), sumo);
+//        assets.add(new Asset("heart", AssetType.TEXTURE, FileType.JPG));
+    }
 
+    private Entity createPlayer(GameData gameData) {
         float deacceleration = 10;
         float acceleration = 200;
         float maxSpeed = 5;
@@ -33,13 +45,15 @@ public class PlayerPlugin implements IGamePluginService {
         colour[2] = 1.0f;
         colour[3] = 1.0f;
 
-        Entity player = new Player();
+        Entity player = new Player(this.getClass(), assets);
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
         player.add(new PositionPart(x, y));
-        player.add(new LifePart(1,1,1,1));
+        player.add(new LifePart(1, 1, 1, 1));
         player.add(new CollisionPart());
         player.add(new InventoryPart());
+
+        player.setCurrentTextureId("sumo");
 
         return player;
     }
