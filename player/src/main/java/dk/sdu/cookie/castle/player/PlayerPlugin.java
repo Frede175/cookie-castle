@@ -19,7 +19,6 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     private Entity createPlayer(GameData gameData) {
-
         float[] shapex = new float[3];
         float[] shapey = new float[3];
         float maxSpeed = 5;
@@ -37,6 +36,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new InventoryPart());
         player.setShapeY(shapey);
         player.setShapeX(shapex);
+        player.add(new ShootingPart());
         player.setEntityType(EntityType.PLAYER);
 
         return player;
