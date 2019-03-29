@@ -29,7 +29,7 @@
                     <instructions>
                         <Import-Package>dk.sdu.cookie.castle.common.*,org.osgi.framework</Import-Package>
                         <Bundle-Activator>dk.sdu.cookie.castle.ai.Activator</Bundle-Activator>
-                        <Service-Component>OSGI-INF/*.xml</Service-Component>
+                        <Service-Component></Service-Component>
                     </instructions>
                 </configuration>
             </plugin>
