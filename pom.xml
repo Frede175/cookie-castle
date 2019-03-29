@@ -12,6 +12,7 @@
         <module>core</module>
         <module>common</module>
         <module>libgdx</module>
+        <module>collision</module>
         <module>AI</module>
     </modules>
 
