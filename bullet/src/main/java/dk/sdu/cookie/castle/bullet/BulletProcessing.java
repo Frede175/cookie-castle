@@ -32,7 +32,7 @@ public class BulletProcessing implements IEntityProcessingService {
         Entity b = new Bullet();
 
         b.add(new PositionPart(x, y, radians));
-        b.add(new MovingPart(0, 5000, 300, 0));
+        b.add(new MovingPart(10));
         b.add(new TimerPart(3));
         b.add(new LifePart(1));
         // Projectile Part only used for better collision detection
