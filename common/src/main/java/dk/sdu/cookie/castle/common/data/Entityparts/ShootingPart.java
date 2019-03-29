@@ -28,6 +28,7 @@ public class ShootingPart implements EntityPart{
         this.ID = ID;
     }
 
+    
     @Override
     public void process(GameData gameData, Entity entity) {
 
