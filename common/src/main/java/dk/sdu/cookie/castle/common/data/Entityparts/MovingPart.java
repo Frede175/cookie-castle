@@ -55,18 +55,22 @@ public class MovingPart implements EntityPart {
         }
 
         if (left) {
+            positionPart.setRadians(3.1415f);
             deltaX -= buffedSpeed;
         }
 
         if (right) {
+            positionPart.setRadians(0);
             deltaX += buffedSpeed;
         }
 
         if (up) {
+            positionPart.setRadians(3.1415f/2f);
             deltaY += buffedSpeed;
         }
 
         if (down) {
+            positionPart.setRadians((float) (3.1415+(3.1415/2)));
             deltaY -= buffedSpeed;
         }
 

@@ -24,13 +24,14 @@ public class PlayerPlugin implements IGamePluginService {
         float maxSpeed = 5;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
+        float radians = 3.1415f / 2;
 
 
 
         Entity player = new Player();
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
-        player.add(new PositionPart(x, y));
+        player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1,1,1,1));
         player.add(new CollisionPart());
         player.add(new InventoryPart());
