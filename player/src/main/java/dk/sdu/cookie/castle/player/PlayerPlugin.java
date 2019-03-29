@@ -7,6 +7,8 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
+import java.util.UUID;
+
 
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
@@ -37,7 +39,8 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new InventoryPart());
         player.setShapeY(shapey);
         player.setShapeX(shapex);
-        player.add(new ShootingPart());
+        UUID uuid = UUID.randomUUID();
+        player.add(new ShootingPart(uuid.toString()));
         player.setEntityType(EntityType.PLAYER);
 
         return player;

@@ -8,8 +8,6 @@ import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
 public class BulletProcessing implements IEntityProcessingService {
 
-    private Entity bullet;
-
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
@@ -20,7 +18,7 @@ public class BulletProcessing implements IEntityProcessingService {
                 if (shootingPart.isShooting()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
                     //Add entity radius to initial position to avoid immideate collision.
-                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians(), shootingPart.getID());
+                    Entity bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians(), shootingPart.getID());
                     shootingPart.setShooting(false);
                     world.addEntity(bullet);
                 }
