@@ -45,7 +45,9 @@ public class PlayerPlugin implements IGamePluginService {
         colour[2] = 1.0f;
         colour[3] = 1.0f;
 
-        Entity player = new Player(this.getClass(), assets);
+        Entity player = new Player();
+        player.initializeAssets(assets);
+
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
         player.add(new PositionPart(x, y));
@@ -53,7 +55,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new CollisionPart());
         player.add(new InventoryPart());
 
-        player.setCurrentTextureId("sumo");
+        player.setCurrentTexture("sumo");
 
         return player;
     }

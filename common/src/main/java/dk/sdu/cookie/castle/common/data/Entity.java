@@ -2,7 +2,7 @@ package dk.sdu.cookie.castle.common.data;
 
 import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.data.Entityparts.EntityPart;
-import dk.sdu.cookie.castle.common.assets.AssetHelper;
+import dk.sdu.cookie.castle.common.assets.AssetLoader;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -18,22 +18,19 @@ public class Entity implements Serializable {
     private Map<Class, EntityPart> parts;
     private EntityType entityType;
     private Map<String, Asset> assets;
+    private Map<String, String> assetReferences;
     private String currentTextureId;
 
-    public Entity(Class c, Map<String, Asset> assets) {
-        initializeAssets(c, assets);
+    public Entity() {
         parts = new ConcurrentHashMap<>();
     }
 
-    public Entity() {
-    }
-
-    private void initializeAssets(Class c, Map<String, Asset> assets) {
+    public void initializeAssets(Map<String, Asset> assets) {
+        System.out.println("Initializing assets for class: " + this.getClass());
         if (assets.size() > 0) {
-            AssetHelper.loadAssetData(c, assets);
+            assetReferences = AssetLoader.loadAssets(this.getClass(), assets);
+            this.assets = assets;
         }
-
-        this.assets = assets;
     }
 
     public void add(EntityPart part) {
@@ -88,14 +85,14 @@ public class Entity implements Serializable {
         return assets;
     }
 
-    public void setCurrentTextureId(String name) {
-        System.out.println("setting texture id from name: " + name);
-        currentTextureId = assets.entrySet()
-                .stream()
-                .filter(asset -> name.equals(asset.getValue().getName()))
-                .findFirst()
-                .get()
-                .getKey();
+    public void setCurrentTexture(String name) {
+        if (assetReferences == null) {
+            System.out.println("Assets have not been loaded");
+            return;
+        }
+
+        currentTextureId = assetReferences.get(name);
+        System.out.println("setting texture id: " + currentTextureId + " name: " + name);
     }
 
     public String getCurrentTextureId() {

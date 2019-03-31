@@ -2,7 +2,6 @@ package dk.sdu.cookie.castle.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +17,6 @@ import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 import dk.sdu.cookie.castle.game.managers.GameInputProcessor;
 import dk.sdu.cookie.castle.game.managers.MyAssetManager;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,8 +30,7 @@ public class Game implements ApplicationListener {
     private static ShapeRenderer sr;
     private static final World world = new World();
     private static SpriteBatch batch;
-    private Texture texture;
-    private static MyAssetManager assetManager = null;
+    private MyAssetManager assetManager;
 
     public Game() {
     }
@@ -45,9 +42,6 @@ public class Game implements ApplicationListener {
         sr = new ShapeRenderer();
         assetManager = new MyAssetManager();
 
-        testFiles();
-        loadAssets();
-
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
@@ -58,20 +52,6 @@ public class Game implements ApplicationListener {
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
     }
 
-    private void loadAssets() {
-        assetManager.loadEntities(world);
-    }
-
-    private void testFiles() {
-        String path = "/images/background.png";
-
-        // InputStream
-        InputStream is = this.getClass().getResourceAsStream(path);
-        FileHandle isFileHandle = new FileHandle("image");
-        isFileHandle.write(is, false);
-        texture = new Texture(isFileHandle);
-    }
-
     @Override
     public void resize(int i, int i1) {
 
@@ -79,6 +59,11 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+        // Ensure that all assets have been loaded before continuing
+        if (!assetManager.update(world)) {
+            return;
+        }
+
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -102,7 +87,7 @@ public class Game implements ApplicationListener {
         for (Entity entity : world.getEntities()) {
             if (!entity.getCurrentTextureId().equals("")) {
                 PositionPart position = entity.getPart(PositionPart.class);
-                batch.draw(assetManager.getTexture(entity.getCurrentTextureId()), position.getX(), position.getY());
+                batch.draw(assetManager.get(entity.getCurrentTextureId(), Texture.class), position.getX(), position.getY());
             }
         }
     }
@@ -156,15 +141,6 @@ public class Game implements ApplicationListener {
 
     protected void installPlugin(IGamePluginService plugin) {
         plugin.start(gameData, world);
-
-        /*
-        Prevent asset manager NullPointerException due to not having been initialized
-        when plugins are first loaded without the game having been created yet.
-         */
-        if (assetManager != null) {
-            assetManager.loadEntities(world);
-        }
-
         plugins.add(plugin);
     }
 

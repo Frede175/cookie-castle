@@ -1,5 +1,6 @@
 package dk.sdu.cookie.castle.common.assets;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -38,5 +39,13 @@ public class Asset {
 
     String getPath() {
         return assetType.getPath() + name + fileType.getExtension();
+    }
+
+    public void closeInputStream() {
+        try {
+            data.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
