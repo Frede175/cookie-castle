@@ -17,11 +17,13 @@ public class PlayerProcessing implements IEntityProcessingService {
             LifePart lifePart = player.getPart(LifePart.class);
             CollisionPart collisionPart = player.getPart(CollisionPart.class);
             InventoryPart inventoryPart = player.getPart(InventoryPart.class);
+            ShootingPart shootingPart = player.getPart(ShootingPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
+            shootingPart.setShooting(gameData.getKeys().isDown(GameKeys.SPACE));
 
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
@@ -53,6 +55,7 @@ public class PlayerProcessing implements IEntityProcessingService {
             positionPart.process(gameData, player);
             lifePart.process(gameData, player);
             inventoryPart.process(gameData, player);
+            shootingPart.process(gameData, player);
 
             updateShape(player);
 

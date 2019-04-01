@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.bullet;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
@@ -24,6 +25,24 @@ public class BulletProcessing implements IEntityProcessingService {
                 }
             }
         }
+        for (Entity b : world.getEntities(Bullet.class)) {
+            PositionPart positionPart = b.getPart(PositionPart.class);
+            MovingPart movingPart = b.getPart(MovingPart.class);
+            TimerPart timerPart = b.getPart(TimerPart.class);
+            movingPart.setUp(true);
+            LifePart lifePart = b.getPart(LifePart.class);
+            //If duration is exceeded, remove the bullet.
+            if (timerPart.getExpiration() < 0) {
+                world.removeEntity(b);
+            }
+
+            positionPart.process(gameData, b);
+            movingPart.process(gameData, b);
+            timerPart.process(gameData, b);
+            lifePart.process(gameData, b);
+
+            updateShape(b);
+        }
     }
 
     private Entity createBullet(float x, float y, float radians, String uuid) {
@@ -33,7 +52,7 @@ public class BulletProcessing implements IEntityProcessingService {
         b.add(new MovingPart(10));
         b.add(new TimerPart(3));
         b.add(new LifePart(1));
-        // Projectile Part only used for better collision detection
+        b.setEntityType(EntityType.PLAYER_BULLET);
         b.setRadius(2);
 
         return b;
