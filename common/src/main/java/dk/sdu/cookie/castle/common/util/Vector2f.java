@@ -8,6 +8,11 @@ public class Vector2f {
         this.y = y;
     }
 
+    public Vector2f(float radians) {
+        x = (float) Math.cos(radians);
+        y = (float) Math.sin(radians);
+    }
+
     public float getX() {
         return x;
     }
