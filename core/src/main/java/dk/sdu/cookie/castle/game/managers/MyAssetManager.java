@@ -16,11 +16,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MyAssetManager extends AssetManager {
-    private Map<String, ArrayList<String>> entityAssets;
+    private Map<Class, ArrayList<String>> classAssets;
     private String backgroundId;
 
     public MyAssetManager() {
-        entityAssets = new ConcurrentHashMap<>();
+        classAssets = new ConcurrentHashMap<>();
         initializeLocalAssets();
     }
 
@@ -31,24 +31,24 @@ public class MyAssetManager extends AssetManager {
      * @return boolean
      */
     public boolean update(World world) {
-        if (world.getEntities().size() == entityAssets.size()) {
-            // Maybe find a way to skip the rest if no action is needed
-        }
-
-        ArrayList<String> activeEntityIds = new ArrayList<>();
+        ArrayList<Class> activeClasses = new ArrayList<>();
 
         for (Map.Entry<String, Entity> entity : world.getEntityMap().entrySet()) {
-            activeEntityIds.add(entity.getKey());
+            if (!activeClasses.contains(entity.getValue().getClass())) {
+                activeClasses.add(entity.getValue().getClass());
+            }
 
-            if (!entityAssets.containsKey(entity.getKey())) {
-                loadAssets(entity.getValue().getAssets(), entity.getKey());
+            if (!classAssets.containsKey(entity.getValue().getClass())) {
+                loadAssets(entity.getValue().getAssets(), entity.getValue().getClass());
             }
         }
 
         boolean isUpdated = super.update();
 
         if (isUpdated) {
-            checkForUnusedAssets(activeEntityIds);
+            checkForUnusedAssets(activeClasses);
+        } else {
+            System.out.println("Loading assets: " + super.getProgress());
         }
 
         return isUpdated;
@@ -57,12 +57,12 @@ public class MyAssetManager extends AssetManager {
     /**
      * Check for unused assets and unload them if needed
      *
-     * @param activeEntityIds Currently active entities
+     * @param activeEntityClasses Currently active entity classes
      */
-    private void checkForUnusedAssets(ArrayList<String> activeEntityIds) {
-        for (Map.Entry<String, ArrayList<String>> entityAsset : entityAssets.entrySet()) {
-            if (!activeEntityIds.contains(entityAsset.getKey())) {
-                unloadEntityAssets(entityAsset.getKey());
+    private void checkForUnusedAssets(ArrayList<Class> activeEntityClasses) {
+        for (Map.Entry<Class, ArrayList<String>> classAsset : classAssets.entrySet()) {
+            if (!activeEntityClasses.contains(classAsset.getKey())) {
+                unloadClassAssets(classAsset.getKey());
             }
         }
     }
@@ -79,7 +79,7 @@ public class MyAssetManager extends AssetManager {
     }
 
     /**
-     * Load assets without linking them to an entity
+     * Load assets without linking them to a class
      *
      * @param assets Assets mapped by their id
      */
@@ -90,13 +90,13 @@ public class MyAssetManager extends AssetManager {
     }
 
     /**
-     * Load assets and link them to the corresponding entity
+     * Load assets and link them to the corresponding class
      *
-     * @param assets   Assets mapped by their id
-     * @param entityId Entity id for mapping all assets to the corresponding entity
+     * @param assets Assets mapped by their id
+     * @param c      Class for mapping all assets to the corresponding classes
      */
-    private void loadAssets(Map<String, Asset> assets, String entityId) {
-        System.out.println("Loading assets for entity: " + entityId);
+    private void loadAssets(Map<String, Asset> assets, Class c) {
+        System.out.println("Loading assets for class: " + c);
 
         // Collection of all asset ids belonging to the entity
         ArrayList<String> assetIds = new ArrayList<>();
@@ -106,9 +106,9 @@ public class MyAssetManager extends AssetManager {
             assetIds.add(asset.getValue().getId());
         }
 
-        // Link asset to owner entity
-        entityAssets.put(entityId, assetIds);
-        System.out.println("entityAssets size: " + entityAssets.size());
+        // Link asset to owner class
+        classAssets.put(c, assetIds);
+        System.out.println("classAssets size: " + classAssets.size());
     }
 
     /**
@@ -144,17 +144,17 @@ public class MyAssetManager extends AssetManager {
     /**
      * Unload all assets for an entity
      *
-     * @param entityId Entity id
+     * @param c Entity id
      */
-    private void unloadEntityAssets(String entityId) {
-        for (String assetId : entityAssets.get(entityId)) {
+    private void unloadClassAssets(Class c) {
+        for (String assetId : classAssets.get(c)) {
             if (super.isLoaded(assetId)) {
                 System.out.println("Unloading asset: " + assetId);
                 super.unload(assetId);
             }
         }
 
-        entityAssets.remove(entityId);
+        classAssets.remove(c);
     }
 
     public Texture getBackground() {
