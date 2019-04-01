@@ -36,12 +36,10 @@ public class Node implements Comparable<Node> {
         return Double.compare(cost + heuristic, o.cost + o.heuristic);
     }
 
-    public void setHeuristic(double heuristic) {
-        this.heuristic = heuristic;
-    }
-
-    public void setCost(float cost) {
-        this.cost = cost;
+    public void updateNode(Node node) {
+        cost = node.cost;
+        heuristic = node.heuristic;
+        parent = node.parent;
     }
 
     @Override
