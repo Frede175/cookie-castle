@@ -19,7 +19,7 @@ public class BulletProcessing implements IEntityProcessingService {
                 if (shootingPart.isShooting()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
                     //Add entity radius to initial position to avoid immideate collision.
-                    Entity bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians(), shootingPart.getID());
+                    Entity bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians());
                     shootingPart.setShooting(false);
                     world.addEntity(bullet);
                 }
@@ -27,9 +27,7 @@ public class BulletProcessing implements IEntityProcessingService {
         }
         for (Entity b : world.getEntities(Bullet.class)) {
             PositionPart positionPart = b.getPart(PositionPart.class);
-            MovingPart movingPart = b.getPart(MovingPart.class);
             TimerPart timerPart = b.getPart(TimerPart.class);
-            movingPart.setUp(true);
             LifePart lifePart = b.getPart(LifePart.class);
             //If duration is exceeded, remove the bullet.
             if (timerPart.getExpiration() < 0) {
@@ -37,7 +35,6 @@ public class BulletProcessing implements IEntityProcessingService {
             }
 
             positionPart.process(gameData, b);
-            movingPart.process(gameData, b);
             timerPart.process(gameData, b);
             lifePart.process(gameData, b);
 
@@ -45,11 +42,10 @@ public class BulletProcessing implements IEntityProcessingService {
         }
     }
 
-    private Entity createBullet(float x, float y, float radians, String uuid) {
+    private Entity createBullet(float x, float y, float radians) {
         Entity b = new Bullet();
 
         b.add(new PositionPart(x, y, radians));
-        b.add(new MovingPart(10));
         b.add(new TimerPart(3));
         b.add(new LifePart(1));
         b.setEntityType(EntityType.PLAYER_BULLET);
@@ -81,5 +77,11 @@ public class BulletProcessing implements IEntityProcessingService {
 
         entity.setShapeX(shapex);
         entity.setShapeY(shapey);
+    }
+
+    private void move(Entity entity) {
+
+
+
     }
 }
