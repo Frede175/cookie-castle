@@ -12,44 +12,80 @@ public class BulletProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
-            if (entity.getPart(ShootingPart.class) != null) {
+            if (entity.getPart(ShootingPart.class) != null && entity.getPart(WeaponPart.class) != null) {
 
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
                 //Shoot if isShooting is true, ie. space is pressed.
+
                 if (shootingPart.isShooting()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
                     //Add entity radius to initial position to avoid immideate collision.
-                    Entity bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians());
+                    Entity bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
                     world.addEntity(bullet);
                 }
             }
         }
-        for (Entity b : world.getEntities(Bullet.class)) {
-            PositionPart positionPart = b.getPart(PositionPart.class);
-            TimerPart timerPart = b.getPart(TimerPart.class);
-            LifePart lifePart = b.getPart(LifePart.class);
+        for (Entity bullet : world.getEntities(Bullet.class)) {
+            PositionPart positionPart = bullet.getPart(PositionPart.class);
+            TimerPart timerPart = bullet.getPart(TimerPart.class);
+            LifePart lifePart = bullet.getPart(LifePart.class);
+            BulletMovingPart bulletMovingPart = bullet.getPart(BulletMovingPart.class);
+            CollisionPart collisionPart = bullet.getPart(CollisionPart.class);
+            DamagePart damagePart = bullet.getPart(DamagePart.class);
             //If duration is exceeded, remove the bullet.
             if (timerPart.getExpiration() < 0) {
-                world.removeEntity(b);
+                world.removeEntity(bullet);
             }
 
-            positionPart.process(gameData, b);
-            timerPart.process(gameData, b);
-            lifePart.process(gameData, b);
+            if (collisionPart.getHit()) {
+                switch (collisionPart.getCollidingEntity().getEntityType()) {
+                    case PLAYER:
+                        if (bullet.getEntityType() == EntityType.ENEMY_BULLET) {
+                            world.removeEntity(bullet);
+                        } else
+                            break;
+                    case ENEMY:
+                        if (bullet.getEntityType() == EntityType.PLAYER_BULLET) {
+                            world.removeEntity(bullet);
+                        } else
+                            break;
+                    case STATIC_OBSTACLE:
+                    case WALL:
+                    case DOOR:
+                        world.removeEntity(bullet);
+                    default:
+                        break;
+                }
+            }
+            positionPart.process(gameData, bullet);
+            timerPart.process(gameData, bullet);
+            lifePart.process(gameData, bullet);
+            bulletMovingPart.process(gameData, bullet);
+            collisionPart.process(gameData, bullet);
+            damagePart.process(gameData, bullet);
 
-            updateShape(b);
+            updateShape(bullet);
+
         }
     }
 
-    private Entity createBullet(float x, float y, float radians) {
+    private Entity createBullet(float x, float y, float radians, Entity entity) {
         Entity b = new Bullet();
 
         b.add(new PositionPart(x, y, radians));
-        b.add(new TimerPart(3));
+        b.add(new TimerPart(1));
         b.add(new LifePart(1));
-        b.setEntityType(EntityType.PLAYER_BULLET);
+        b.add(new BulletMovingPart());
+        b.add(new CollisionPart());
+        if (entity.getEntityType() == EntityType.PLAYER) {
+            b.setEntityType(EntityType.PLAYER_BULLET);
+        } else if (entity.getEntityType() == EntityType.ENEMY) {
+            b.setEntityType(EntityType.ENEMY_BULLET);
+        }
         b.setRadius(2);
+        WeaponPart EntityWeaponPart = entity.getPart(WeaponPart.class);
+        b.add(new DamagePart(EntityWeaponPart.getDamage()));
 
         return b;
     }
@@ -77,11 +113,5 @@ public class BulletProcessing implements IEntityProcessingService {
 
         entity.setShapeX(shapex);
         entity.setShapeY(shapey);
-    }
-
-    private void move(Entity entity) {
-
-
-
     }
 }
