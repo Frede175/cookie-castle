@@ -25,26 +25,20 @@ public class AIProcessing implements IEntityProcessingService {
             if (p.getEntityType() == EntityType.PLAYER) {
                 player = p;
                 playerPos = player.getPart(PositionPart.class);
+                break;
             }
         }
         // Change to find direct enemy class
         for (Entity enemy : world.getEntities()) {
             if (enemy.getEntityType() == EntityType.ENEMY) {
-                PositionPart positionPart = enemy.getPart(PositionPart.class);
                 AIMovingPart AIMovingPart = enemy.getPart(AIMovingPart.class);
 
-                // Calc direction
-                LinkedList<Point> route = aStar.calculateRoute(new Point(positionPart.getX(), positionPart.getY()), new Point(playerPos.getX(), playerPos.getY()));
-            }
+                if (AIMovingPart.needUpdate()) {
+                    PositionPart positionPart = enemy.getPart(PositionPart.class);
 
-        }
-        for (Entity enemy : world.getEntities()) {
-            if (enemy.getEntityType() == EntityType.ENEMY) {
-                PositionPart positionPart = enemy.getPart(PositionPart.class);
-                AIMovingPart AIMovingPart = enemy.getPart(AIMovingPart.class);
-
-                AIMovingPart.process(gameData, enemy);
-                positionPart.process(gameData, enemy);
+                    LinkedList<Point> route = aStar.calculateRoute(new Point(positionPart.getX(), positionPart.getY()), new Point(playerPos.getX(), playerPos.getY()));
+                    AIMovingPart.setRoute(route);
+                }
             }
 
         }
