@@ -24,7 +24,7 @@ public class BulletProcessing implements IEntityProcessingService {
                     Vector2f positionsVector = new Vector2f(positionPart.getRadians());
                     positionsVector.mult(entity.getRadius());
                     //Add entity radius to initial position to avoid immideate collision.
-                    Entity bullet = createBullet(positionPart.getX() + positionsVector.getX() ,positionPart.getY() + positionsVector.getY(), positionPart.getRadians(), entity);
+                    Entity bullet = createBullet(positionPart.getX() + positionsVector.getX(), positionPart.getY() + positionsVector.getY(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
                     shootingPart.setCanShoot(false);
                     world.addEntity(bullet);
@@ -48,21 +48,22 @@ public class BulletProcessing implements IEntityProcessingService {
                     case PLAYER:
                         if (bullet.getEntityType() == EntityType.ENEMY_BULLET) {
                             world.removeEntity(bullet);
-                        } else
-                            break;
+                        }
+                        break;
                     case ENEMY:
                         if (bullet.getEntityType() == EntityType.PLAYER_BULLET) {
                             world.removeEntity(bullet);
-                        } else
-                            break;
-                    case STATIC_OBSTACLE:
-                    case WALL:
-                    case DOOR:
-                        world.removeEntity(bullet);
+                        }
+                        break;
+                    case PLAYER_BULLET:
+                        System.out.println("Hitting another player bullet");
+                        break;
                     default:
                         break;
                 }
+                collisionPart.setHit(false);
             }
+
             positionPart.process(gameData, bullet);
             timerPart.process(gameData, bullet);
             lifePart.process(gameData, bullet);
@@ -92,6 +93,7 @@ public class BulletProcessing implements IEntityProcessingService {
         WeaponPart EntityWeaponPart = entity.getPart(WeaponPart.class);
         b.add(new DamagePart(EntityWeaponPart.getDamage()));
         b.add(new TimerPart(EntityWeaponPart.getRange()));
+
         return b;
     }
 

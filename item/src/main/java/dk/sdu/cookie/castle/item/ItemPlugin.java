@@ -33,11 +33,11 @@ public class ItemPlugin implements IGamePluginService {
 
 
         Entity item = new Item();
-        item.add(new PositionPart(x, y));
-        item.add(new LifePart(1, 1,1, 30));
-        item.setRadius(10);
+        item.add(new PositionPart(x, y, 0));
+        item.add(new LifePart(1, 1, 1, 30));
+        item.setRadius(30);
         item.add(new CollisionPart());
-        item.add(new ItemPart(new WeaponPart(10,15,20)));
+        item.add(new ItemPart(new WeaponPart(10, 15, 20)));
         item.setShapeX(shapex);
         item.setShapeY(shapey);
         item.setEntityType(EntityType.ITEM);

@@ -15,8 +15,5 @@
         <module name="player" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="item" target="10" />
-    </bytecodeTargetLevel>
   </component>
 </project>

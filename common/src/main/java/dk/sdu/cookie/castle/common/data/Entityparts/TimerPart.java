@@ -30,7 +30,7 @@ public class TimerPart implements EntityPart {
     }
 
     public float conversion(float convertible) {
-        return  convertible/500;
+        return convertible / 500;
     }
 
     @Override
