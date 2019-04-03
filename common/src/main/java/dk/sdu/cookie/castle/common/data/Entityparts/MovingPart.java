@@ -5,6 +5,8 @@ import dk.sdu.cookie.castle.common.data.Buff;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.abs;
 import static java.lang.StrictMath.sqrt;
 
@@ -54,6 +56,8 @@ public class MovingPart implements EntityPart {
             }
         }
 
+        buffedSpeed *= gameData.getDelta();
+
         if (left) {
             positionPart.setRadians(3.1415f);
             deltaX -= buffedSpeed;
@@ -70,13 +74,30 @@ public class MovingPart implements EntityPart {
         }
 
         if (down) {
-            positionPart.setRadians((float) (3.1415+(3.1415/2)));
+            positionPart.setRadians( 3.1415f+(3.1415f/2f));
             deltaY -= buffedSpeed;
+        }
+
+        if(up && right) {
+            positionPart.setRadians(3.1415f/4f);
+        }
+
+        if(up && left) {
+            positionPart.setRadians(((3.1415f/2f)+(3.1415f/4f)));
+        }
+
+        if(down && left) {
+            positionPart.setRadians((3.1415f+(3.1415f/4f)));
+        }
+
+        if(down && right) {
+            positionPart.setRadians((3.1415f+(3.1415f/4f*3)));
         }
 
         if((abs(deltaX) + abs(deltaY)) > buffedSpeed) {
             deltaX = (deltaX/ (float) sqrt((deltaX*deltaX) + (deltaY*deltaY))) * buffedSpeed;
             deltaY = (deltaY/ (float) sqrt((deltaX*deltaX) + (deltaY*deltaY))) * buffedSpeed;
+
             x += deltaX;
             y += deltaY;
 
