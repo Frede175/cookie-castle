@@ -17,27 +17,20 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <version>4.1.0</version>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Version>${project.version}</Bundle-Version>
-                        <Service-Component>OSGI-INF/service.xml,OSGI-INF/plugins.xml</Service-Component>
                         <Import-Package>
                             com.badlogic.gdx.*,
                             dk.sdu.cookie.castle.common.*,
                             org.osgi.framework
                         </Import-Package>
-                        <Include-Resource>
-                            OSGI-INF/service.xml=OSGI-INF/service.xml,
-                            OSGI-INF/plugins.xml=OSGI-INF/plugins.xml
-                        </Include-Resource>
+                        <Service-Component>OSGI-INF/*.xml</Service-Component>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>dk.sdu.cookie.castle</groupId>
