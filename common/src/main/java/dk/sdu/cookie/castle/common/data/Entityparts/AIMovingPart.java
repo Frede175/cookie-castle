@@ -1,6 +1,5 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
-import dk.sdu.cookie.castle.common.data.Direction;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.Point;
@@ -8,7 +7,6 @@ import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.util.LinkedList;
 
-import static java.lang.Math.sqrt;
 
 public class AIMovingPart implements EntityPart {
 
@@ -45,7 +43,6 @@ public class AIMovingPart implements EntityPart {
 
 
         if (route.isEmpty()) {
-            System.out.println("Empty");
             return;
         }
 
@@ -64,7 +61,6 @@ public class AIMovingPart implements EntityPart {
 
         if (Math.abs(x - to.getX()) <= speed && Math.abs(y - to.getY()) <= speed) {
             route.removeFirst();
-            System.out.println("Remove!");
         }
 
         positionPart.setPosition(x, y);
