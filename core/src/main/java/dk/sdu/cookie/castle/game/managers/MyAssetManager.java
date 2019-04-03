@@ -14,7 +14,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MyAssetManager extends AssetManager {
-    // Internal registry of loaded and managed assets
+    /**
+     * Internal registry of loaded and managed assets
+     */
     private Map<String, Asset> loadedAssets = new ConcurrentHashMap<>();
     private String backgroundId;
 
@@ -68,6 +70,9 @@ public class MyAssetManager extends AssetManager {
         }
     }
 
+    /**
+     * Initialize local assets without adding them to managed loadedAssets
+     */
     private void initializeLocalAssets() {
         // Initialize local assets
         Map<String, Asset> assets = new ConcurrentHashMap<>();

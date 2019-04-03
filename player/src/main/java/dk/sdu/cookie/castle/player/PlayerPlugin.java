@@ -28,7 +28,6 @@ public class PlayerPlugin implements IGamePluginService {
     private void initializeAssets() {
         Asset sumo = new Asset("sumo", AssetType.TEXTURE, FileType.PNG);
         assets.put(sumo.getId(), sumo);
-//        assets.add(new Asset("heart", AssetType.TEXTURE, FileType.JPG));
     }
 
     private Entity createPlayer(GameData gameData) {
