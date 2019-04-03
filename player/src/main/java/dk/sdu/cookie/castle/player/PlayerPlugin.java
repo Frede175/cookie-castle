@@ -22,7 +22,7 @@ public class PlayerPlugin implements IGamePluginService {
 
         float[] shapex = new float[3];
         float[] shapey = new float[3];
-        float maxSpeed = 5;
+        float maxSpeed = 150;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;

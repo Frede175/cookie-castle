@@ -54,6 +54,8 @@ public class MovingPart implements EntityPart {
             }
         }
 
+        buffedSpeed *= gameData.getDelta();
+
         if (left) {
             positionPart.setRadians(3.1415f);
             deltaX -= buffedSpeed;
