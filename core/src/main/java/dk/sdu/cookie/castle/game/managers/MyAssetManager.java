@@ -8,45 +8,44 @@ import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.assets.AssetLoader;
 import dk.sdu.cookie.castle.common.assets.AssetType;
 import dk.sdu.cookie.castle.common.assets.FileType;
-import dk.sdu.cookie.castle.common.data.Entity;
-import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.data.GameData;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MyAssetManager extends AssetManager {
-    private Map<Class, ArrayList<String>> classAssets;
+    // Internal registry of loaded and managed assets
+    private Map<String, Asset> loadedAssets = new ConcurrentHashMap<>();
     private String backgroundId;
 
     public MyAssetManager() {
-        classAssets = new ConcurrentHashMap<>();
         initializeLocalAssets();
     }
 
     /**
-     * Manage assets by loading or unloading them depending on the active entities
+     * Manage assets by loading or unloading them depending on activeAssets
      *
-     * @param world Current game world with entities
-     * @return boolean
+     * @param gameData Current gameData containing active assets
+     * @return boolean Whether the AssetManager has finished loading
      */
-    public boolean update(World world) {
-        ArrayList<Class> activeClasses = new ArrayList<>();
+    public boolean update(GameData gameData) {
+        Map<String, Asset> activeAssets = gameData.getActiveAssets();
+        if (loadedAssets.size() == activeAssets.size()) {
+            return super.update();
+        }
 
-        for (Map.Entry<String, Entity> entity : world.getEntityMap().entrySet()) {
-            if (!activeClasses.contains(entity.getValue().getClass())) {
-                activeClasses.add(entity.getValue().getClass());
-            }
+        System.out.println("Active assets: " + gameData.getActiveAssets().size());
 
-            if (!classAssets.containsKey(entity.getValue().getClass())) {
-                loadAssets(entity.getValue().getAssets(), entity.getValue().getClass());
+        for (Map.Entry<String, Asset> asset : gameData.getActiveAssets().entrySet()) {
+            if (!loadedAssets.containsKey(asset.getKey())) {
+                loadAsset(asset.getValue(), true);
             }
         }
 
         boolean isUpdated = super.update();
 
         if (isUpdated) {
-            checkForUnusedAssets(activeClasses);
+            checkForUnusedAssets(activeAssets);
         } else {
             System.out.println("Loading assets: " + super.getProgress());
         }
@@ -57,12 +56,14 @@ public class MyAssetManager extends AssetManager {
     /**
      * Check for unused assets and unload them if needed
      *
-     * @param activeEntityClasses Currently active entity classes
+     * @param activeAssets Currently active assets
      */
-    private void checkForUnusedAssets(ArrayList<Class> activeEntityClasses) {
-        for (Map.Entry<Class, ArrayList<String>> classAsset : classAssets.entrySet()) {
-            if (!activeEntityClasses.contains(classAsset.getKey())) {
-                unloadClassAssets(classAsset.getKey());
+    private void checkForUnusedAssets(Map<String, Asset> activeAssets) {
+        for (Map.Entry<String, Asset> asset : loadedAssets.entrySet()) {
+            if (!activeAssets.containsKey(asset.getKey())) {
+                System.out.println("Unloading asset: " + asset.getKey());
+                super.unload(asset.getKey());
+                loadedAssets.remove(asset.getKey());
             }
         }
     }
@@ -79,44 +80,23 @@ public class MyAssetManager extends AssetManager {
     }
 
     /**
-     * Load assets without linking them to a class
+     * Load assets without registering them in loadedAssets
      *
      * @param assets Assets mapped by their id
      */
     private void loadAssets(Map<String, Asset> assets) {
         for (Map.Entry<String, Asset> asset : assets.entrySet()) {
-            loadAsset(asset.getValue());
+            loadAsset(asset.getValue(), false);
         }
     }
 
     /**
-     * Load assets and link them to the corresponding class
-     *
-     * @param assets Assets mapped by their id
-     * @param c      Class for mapping all assets to the corresponding classes
-     */
-    private void loadAssets(Map<String, Asset> assets, Class c) {
-        System.out.println("Loading assets for class: " + c);
-
-        // Collection of all asset ids belonging to the entity
-        ArrayList<String> assetIds = new ArrayList<>();
-
-        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
-            loadAsset(asset.getValue());
-            assetIds.add(asset.getValue().getId());
-        }
-
-        // Link asset to owner class
-        classAssets.put(c, assetIds);
-        System.out.println("classAssets size: " + classAssets.size());
-    }
-
-    /**
-     * Load asset data and add to managed assets
+     * Load asset data
      *
      * @param asset Asset to be loaded
      */
     private void loadAsset(Asset asset) {
+        System.out.println("Loading asset: " + asset.getName() + " - " + asset.getId());
         FileHandle file = new FileHandle(asset.getId());
         file.write(asset.getData(), false);
         asset.closeInputStream();
@@ -125,6 +105,20 @@ public class MyAssetManager extends AssetManager {
         AssetDescriptor assetDescriptor = getAssetDescriptor(file, assetClass);
 
         super.load(assetDescriptor);
+    }
+
+    /**
+     * Handle asset loading and optionally register in loadedAssets
+     *
+     * @param asset          Asset to be loaded
+     * @param isFromGameData Whether to register or not
+     */
+    private void loadAsset(Asset asset, boolean isFromGameData) {
+        loadAsset(asset);
+
+        if (isFromGameData) {
+            loadedAssets.put(asset.getId(), asset);
+        }
     }
 
     private Class getAssetClass(AssetType type) {
@@ -141,22 +135,6 @@ public class MyAssetManager extends AssetManager {
         return returnClass;
     }
 
-    /**
-     * Unload all assets for an entity
-     *
-     * @param c Entity id
-     */
-    private void unloadClassAssets(Class c) {
-        for (String assetId : classAssets.get(c)) {
-            if (super.isLoaded(assetId)) {
-                System.out.println("Unloading asset: " + assetId);
-                super.unload(assetId);
-            }
-        }
-
-        classAssets.remove(c);
-    }
-
     public Texture getBackground() {
         return super.get(backgroundId, Texture.class);
     }
@@ -169,7 +147,7 @@ public class MyAssetManager extends AssetManager {
      * @param <T>  Type of asset
      * @return AssetDescriptor
      */
-    private <T> AssetDescriptor getAssetDescriptor(FileHandle file, Class type) {
-        return new AssetDescriptor<T>(file, type);
+    private <T> AssetDescriptor getAssetDescriptor(FileHandle file, Class<T> type) {
+        return new AssetDescriptor<>(file, type);
     }
 }

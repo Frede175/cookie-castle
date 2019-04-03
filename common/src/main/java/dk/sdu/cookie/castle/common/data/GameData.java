@@ -1,9 +1,12 @@
 package dk.sdu.cookie.castle.common.data;
 
+import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.events.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameData {
@@ -13,6 +16,7 @@ public class GameData {
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
+    private Map<String, Asset> activeAssets = new ConcurrentHashMap<>();
 
     public void addEvent(Event e) {
         events.add(e);
@@ -63,5 +67,25 @@ public class GameData {
         }
 
         return r;
+    }
+
+    public Map<String, Asset> getActiveAssets() {
+        return activeAssets;
+    }
+
+    public void addAsset(Asset asset) {
+        activeAssets.put(asset.getId(), asset);
+    }
+
+    public void addAssets(Map<String, Asset> assets) {
+        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
+            activeAssets.put(asset.getKey(), asset.getValue());
+        }
+    }
+
+    public void removeAssets(Map<String, Asset> assets) {
+        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
+            activeAssets.remove(asset.getKey());
+        }
     }
 }

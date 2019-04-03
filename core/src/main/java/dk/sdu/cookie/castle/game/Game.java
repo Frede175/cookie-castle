@@ -60,7 +60,7 @@ public class Game implements ApplicationListener {
     @Override
     public void render() {
         // Ensure that all assets have been loaded before continuing
-        if (!assetManager.update(world)) {
+        if (!assetManager.update(gameData)) {
             return;
         }
 

@@ -19,6 +19,7 @@ public class PlayerPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
         initializeAssets();
+        gameData.addAssets(assets);
         player = createPlayer(gameData);
         world.addEntity(player);
         System.out.println("Started player");
@@ -63,6 +64,7 @@ public class PlayerPlugin implements IGamePluginService {
     @Override
     public void stop(GameData gameData, World world) {
         world.removeEntity(player);
+        gameData.removeAssets(assets);
         System.out.println("Removed player");
     }
 }
