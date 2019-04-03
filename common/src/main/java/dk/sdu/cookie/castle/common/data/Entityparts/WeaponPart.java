@@ -5,8 +5,19 @@ import dk.sdu.cookie.castle.common.data.GameData;
 
 public class WeaponPart implements EntityPart {
 
+    /**
+     * The bullet range in pixels.
+     */
     private float range;
+
+    /**
+     * The damage done by the bullet.
+     */
     private float damage;
+
+    /**
+     * The attack speed of the weapon in rounds per second.
+     */
     private float attackSpeed;
 
     public float getRange() {
@@ -21,6 +32,12 @@ public class WeaponPart implements EntityPart {
         return attackSpeed;
     }
 
+    /**
+     * Constructor for weapon part
+     * @param range The range the bullet flies before dying. (pixels)
+     * @param damage The damage done to the entity
+     * @param attackSpeed The speed at which the weapon can be shot. (rounds per second)
+     */
     public WeaponPart(float range, float damage, float attackSpeed) {
         this.range = range;
         this.damage = damage;

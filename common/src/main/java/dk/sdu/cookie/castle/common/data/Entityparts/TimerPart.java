@@ -29,8 +29,8 @@ public class TimerPart implements EntityPart {
         return isExpired;
     }
 
-    public float conversion(float convertable) {
-        return  convertable/30;
+    public float conversion(float convertible) {
+        return  convertible/500;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new CollisionPart());
         player.add(new InventoryPart());
         // TODO Temporary weaponpart
-        WeaponPart weaponPart = new WeaponPart(15f,10f,5f);
+        WeaponPart weaponPart = new WeaponPart(400f,10f,5f);
         player.add(weaponPart);
 
         player.setShapeY(shapey);
