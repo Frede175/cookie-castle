@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component name="world.plugin" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
-    <implementation class="dk.sdu.cookie.castle.world.WorldPlugin"/>
+<scr:component name="map.plugin" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
+    <implementation class="dk.sdu.cookie.castle.map.MapPlugin"/>
 
     <service>
         <scr:provide interface="dk.sdu.cookie.castle.common.services.IGamePluginService"/>

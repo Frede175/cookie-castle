@@ -14,7 +14,7 @@
         <module>libgdx</module>
         <module>collision</module>
         <module>ai</module>
-        <module>world</module>
+        <module>map</module>
     </modules>
 
     <properties>
