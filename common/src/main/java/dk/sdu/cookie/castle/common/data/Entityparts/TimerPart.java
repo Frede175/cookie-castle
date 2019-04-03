@@ -37,7 +37,6 @@ public class TimerPart implements EntityPart {
     public void process(GameData gameData, Entity entity) {
         if (expiration > 0) {
             reduceExpiration(gameData.getDelta());
-            System.out.println(gameData.getDelta());
         } else {
             isExpired = true;
         }
