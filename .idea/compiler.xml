@@ -13,5 +13,9 @@
         <module name="libgdx" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bullet" target="10" />
+      <module name="player" target="10" />
+    </bytecodeTargetLevel>
   </component>
 </project>
