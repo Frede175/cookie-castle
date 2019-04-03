@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="Osmorc" url="file://$PROJECT_DIR$/ai" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/collision" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/common" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/enemy" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/libgdx" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/pathfinder" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
