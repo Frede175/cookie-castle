@@ -7,46 +7,45 @@ public class ShootingPart implements EntityPart {
 
     private boolean isShooting;
     private boolean canShoot;
-    private float nextShoot;
-    private float UPDATE_TIME;
-    private String ID;
+    private float nextShot;
+    private float updateTime;
 
-    public ShootingPart(String ID, float attackspeed) {
-        this.ID = ID;
-        UPDATE_TIME = 1 / attackspeed;
-        nextShoot = 0;
+    public ShootingPart(float attackSpeed) {
+        updateTime = 1 / attackSpeed;
+        nextShot = 0;
     }
 
     public boolean isShooting() {
-        return this.isShooting;
+        return isShooting;
     }
 
     public void setShooting(boolean shooting) {
         isShooting = shooting;
     }
 
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
     public void setCanShoot(boolean canShoot) {
         this.canShoot = canShoot;
     }
 
-    public boolean isCanShoot() {
+    public boolean canShoot() {
         return canShoot;
+    }
+
+    /**
+     * Updates the updateTime variable to the new attackspeed. Resulting in different lengths between the shots.
+     *
+     * @param attackSpeed: The attack speed of the weapon in rounds per second.
+     */
+    public void updateShootingSpeed(float attackSpeed) {
+        this.updateTime = 1 / attackSpeed;
     }
 
     @Override
     public void process(GameData gameData, Entity entity) {
         if (!canShoot) {
-            nextShoot -= gameData.getDelta();
-            if (nextShoot <= 0) {
-                nextShoot = UPDATE_TIME;
+            nextShot -= gameData.getDelta();
+            if (nextShot <= 0) {
+                nextShot = updateTime;
                 canShoot = true;
             }
         }

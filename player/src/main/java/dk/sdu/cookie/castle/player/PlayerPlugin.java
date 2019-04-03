@@ -35,14 +35,14 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new LifePart(1,1,1,1));
         player.add(new CollisionPart());
         player.add(new InventoryPart());
-        // TODO Temporary weaponpart
+
+        // Starting weapon for the player
         WeaponPart weaponPart = new WeaponPart(400f,10f,5f);
         player.add(weaponPart);
 
         player.setShapeY(shapey);
         player.setShapeX(shapex);
-        UUID uuid = UUID.randomUUID();
-        player.add(new ShootingPart(uuid.toString(), weaponPart.getAttackSpeed()));
+        player.add(new ShootingPart(weaponPart.getAttackSpeed()));
         player.setEntityType(EntityType.PLAYER);
 
         return player;

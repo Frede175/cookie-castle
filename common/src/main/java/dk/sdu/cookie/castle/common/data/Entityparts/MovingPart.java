@@ -5,11 +5,6 @@ import dk.sdu.cookie.castle.common.data.Buff;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
-import java.util.ArrayList;
-
-import static java.lang.Math.abs;
-import static java.lang.StrictMath.sqrt;
-
 public class MovingPart implements EntityPart {
     private float speed;
     private boolean left, right, up, down;
@@ -47,9 +42,9 @@ public class MovingPart implements EntityPart {
         float deltaX = 0;
         float deltaY = 0;
         float buffedSpeed = speed;
-        if(inventoryPart != null) {
+        if (inventoryPart != null) {
             for (ItemPart itemPart : inventoryPart.getItemParts()) {
-                if(!itemPart.isWeapon()) {
+                if (!itemPart.isWeapon()) {
                     BuffPart buffPart = itemPart.getBuff();
                     buffedSpeed += buffPart.getSpecificBuff(Buff.MOVEMENT_SPEED);
                 }
@@ -69,39 +64,39 @@ public class MovingPart implements EntityPart {
         }
 
         if (up) {
-            positionPart.setRadians(3.1415f/2f);
+            positionPart.setRadians(3.1415f / 2f);
             deltaY += buffedSpeed;
         }
 
         if (down) {
-            positionPart.setRadians( 3.1415f+(3.1415f/2f));
+            positionPart.setRadians(3.1415f + (3.1415f / 2f));
             deltaY -= buffedSpeed;
         }
 
-        if(up && right) {
-            positionPart.setRadians(3.1415f/4f);
+        if (up && right) {
+            positionPart.setRadians(3.1415f / 4f);
         }
 
-        if(up && left) {
-            positionPart.setRadians(((3.1415f/2f)+(3.1415f/4f)));
+        if (up && left) {
+            positionPart.setRadians(((3.1415f / 2f) + (3.1415f / 4f)));
         }
 
-        if(down && left) {
-            positionPart.setRadians((3.1415f+(3.1415f/4f)));
+        if (down && left) {
+            positionPart.setRadians((3.1415f + (3.1415f / 4f)));
         }
 
-        if(down && right) {
-            positionPart.setRadians((3.1415f+(3.1415f/4f*3)));
+        if (down && right) {
+            positionPart.setRadians((3.1415f + (3.1415f / 4f * 3)));
         }
 
-        if((abs(deltaX) + abs(deltaY)) > buffedSpeed) {
-            deltaX = (deltaX/ (float) sqrt((deltaX*deltaX) + (deltaY*deltaY))) * buffedSpeed;
-            deltaY = (deltaY/ (float) sqrt((deltaX*deltaX) + (deltaY*deltaY))) * buffedSpeed;
+        if (Math.abs(deltaX) + Math.abs(deltaY) > buffedSpeed) {
+            deltaX = (deltaX / (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY))) * buffedSpeed;
+            deltaY = (deltaY / (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY))) * buffedSpeed;
 
             x += deltaX;
             y += deltaY;
 
-        }   else {
+        } else {
             x += deltaX;
             y += deltaY;
         }

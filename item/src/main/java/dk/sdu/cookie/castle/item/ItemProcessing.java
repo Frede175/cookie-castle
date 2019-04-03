@@ -31,7 +31,6 @@ public class ItemProcessing implements IEntityProcessingService {
             lifePart.process(gameData, item);
 
             updateShape(item);
-
         }
     }
 
@@ -50,8 +49,6 @@ public class ItemProcessing implements IEntityProcessingService {
 
         entity.setShapeX(shapex);
         entity.setShapeY(shapey);
-
     }
-
 }
 

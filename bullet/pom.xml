@@ -25,7 +25,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Import-Package>dk.sdu.cookie.castle.common.*,org.osgi.framework</Import-Package>
-                        <Service-Component>OSGI-INF/plugin.xml,OSGI-INF/processing.xml</Service-Component>
+                        <Service-Component>OSGI-INF/*.xml</Service-Component>
                     </instructions>
                 </configuration>
             </plugin>

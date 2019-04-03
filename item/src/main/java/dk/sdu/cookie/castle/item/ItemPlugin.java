@@ -15,13 +15,11 @@ public class ItemPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
         item = createItem(gameData);
         world.addEntity(item);
-        System.out.println("Jeff");
     }
 
     @Override
     public void stop(GameData gameData, World world) {
         world.removeEntity(item);
-        System.out.println("No Jeff");
     }
 
     private Entity createItem(GameData gameData) {
@@ -44,5 +42,4 @@ public class ItemPlugin implements IGamePluginService {
 
         return item;
     }
-
 }
