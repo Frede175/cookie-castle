@@ -9,8 +9,8 @@ public class TimerPart implements EntityPart {
     private boolean isExpired = false;
     private float expiration;
 
-    public TimerPart(float expiration) {
-        this.expiration = expiration;
+    public TimerPart(float weaponRange) {
+        expiration = conversion(weaponRange);
     }
 
     public float getExpiration() {
@@ -29,10 +29,15 @@ public class TimerPart implements EntityPart {
         return isExpired;
     }
 
+    public float conversion(float convertable) {
+        return  convertable/30;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
         if (expiration > 0) {
             reduceExpiration(gameData.getDelta());
+            System.out.println(gameData.getDelta());
         } else {
             isExpired = true;
         }

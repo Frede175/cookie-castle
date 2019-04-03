@@ -28,8 +28,6 @@ public class PlayerPlugin implements IGamePluginService {
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
 
-
-
         Entity player = new Player();
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
@@ -38,12 +36,13 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new CollisionPart());
         player.add(new InventoryPart());
         // TODO Temporary weaponpart
-        player.add(new WeaponPart(15f, 10f,5));
+        WeaponPart weaponPart = new WeaponPart(15f,10f,5f);
+        player.add(weaponPart);
 
         player.setShapeY(shapey);
         player.setShapeX(shapex);
         UUID uuid = UUID.randomUUID();
-        player.add(new ShootingPart(uuid.toString()));
+        player.add(new ShootingPart(uuid.toString(), weaponPart.getAttackSpeed()));
         player.setEntityType(EntityType.PLAYER);
 
         return player;

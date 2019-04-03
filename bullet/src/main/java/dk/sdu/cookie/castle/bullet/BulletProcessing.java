@@ -6,6 +6,7 @@ import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 public class BulletProcessing implements IEntityProcessingService {
 
@@ -15,13 +16,17 @@ public class BulletProcessing implements IEntityProcessingService {
             if (entity.getPart(ShootingPart.class) != null && entity.getPart(WeaponPart.class) != null) {
 
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
+
                 //Shoot if isShooting is true, ie. space is pressed.
 
-                if (shootingPart.isShooting()) {
+                if (shootingPart.isShooting() && shootingPart.isCanShoot()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
+                    Vector2f positionsVector = new Vector2f(positionPart.getRadians());
+                    positionsVector.mult(entity.getRadius());
                     //Add entity radius to initial position to avoid immideate collision.
-                    Entity bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians(), entity);
+                    Entity bullet = createBullet(positionPart.getX() + positionsVector.getX() ,positionPart.getY() + positionsVector.getY(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
+                    shootingPart.setCanShoot(false);
                     world.addEntity(bullet);
                 }
             }
@@ -74,7 +79,7 @@ public class BulletProcessing implements IEntityProcessingService {
         Entity b = new Bullet();
 
         b.add(new PositionPart(x, y, radians));
-        b.add(new TimerPart(1));
+
         b.add(new LifePart(1));
         b.add(new BulletMovingPart());
         b.add(new CollisionPart());
@@ -86,7 +91,7 @@ public class BulletProcessing implements IEntityProcessingService {
         b.setRadius(2);
         WeaponPart EntityWeaponPart = entity.getPart(WeaponPart.class);
         b.add(new DamagePart(EntityWeaponPart.getDamage()));
-
+        b.add(new TimerPart(EntityWeaponPart.getRange()));
         return b;
     }
 

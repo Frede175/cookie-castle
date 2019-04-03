@@ -6,10 +6,15 @@ import dk.sdu.cookie.castle.common.data.GameData;
 public class ShootingPart implements EntityPart{
 
     boolean isShooting;
-    public String ID;
+    boolean canShoot;
+    private float nextShoot;
+    private float UPDATE_TIME;
+    private String ID;
 
-    public ShootingPart(String ID) {
+    public ShootingPart(String ID, float attackspeed) {
+        canShoot = true;
         this.ID = ID;
+        UPDATE_TIME = 1/attackspeed;
     }
 
     public boolean isShooting() {
@@ -28,9 +33,22 @@ public class ShootingPart implements EntityPart{
         this.ID = ID;
     }
 
-    
+    public void setCanShoot(boolean canShoot) {
+        this.canShoot = canShoot;
+    }
+
+    public boolean isCanShoot() {
+        return canShoot;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
-
+        if (!canShoot) {
+            nextShoot -= gameData.getDelta();
+            if (nextShoot <= 0) {
+                nextShoot = UPDATE_TIME;
+                canShoot = true;
+            }
+        }
     }
 }
