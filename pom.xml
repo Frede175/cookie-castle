@@ -15,6 +15,9 @@
         <module>collision</module>
         <module>ai</module>
         <module>map</module>
+        <module>item</module>
+        <module>player</module>
+        <module>bullet</module>
     </modules>
 
     <properties>

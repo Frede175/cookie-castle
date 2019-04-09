@@ -9,7 +9,7 @@ public class TestEntity extends Entity {
 
     public TestEntity(float x, float y, float radius, EntityType tag) {
         add(new CollisionPart());
-        add(new PositionPart(x,y));
+        add(new PositionPart(x,y,0.0f));
         setRadius(radius);
 
         float[] shapeX = { x, x + radius, x, x - radius };
