@@ -38,7 +38,7 @@ public class ItemPlugin implements IGamePluginService {
         item.add(new ItemPart(new WeaponPart(10, 15, 20)));
         item.setShapeX(shapex);
         item.setShapeY(shapey);
-        item.setEntityType(EntityType.ITEM);
+        item.setEntityType(EntityType.DOOR);
 
         return item;
     }

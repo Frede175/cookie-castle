@@ -39,6 +39,7 @@ public class PlayerProcessing implements IEntityProcessingService {
                         ItemPart itemPart = collisionPart.getCollidingEntity().getPart(ItemPart.class);
                         inventoryPart.addItem(itemPart);
                 }
+                collisionPart.setIsHit(false);
             }
 
             movingPart.process(gameData, player);
