@@ -24,6 +24,10 @@ public class LifePart implements EntityPart {
         this.damageReduction = damageReduction;
     }
 
+    public LifePart(float health) {
+        this.health = health;
+    }
+
     public float getHealth() {
         return health;
     }

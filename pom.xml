@@ -13,7 +13,10 @@
         <module>common</module>
         <module>libgdx</module>
         <module>collision</module>
+        <module>ai</module>
+        <module>item</module>
         <module>player</module>
+        <module>bullet</module>
     </modules>
 
     <properties>

@@ -17,29 +17,21 @@ public class PlayerProcessing implements IEntityProcessingService {
             LifePart lifePart = player.getPart(LifePart.class);
             CollisionPart collisionPart = player.getPart(CollisionPart.class);
             InventoryPart inventoryPart = player.getPart(InventoryPart.class);
+            ShootingPart shootingPart = player.getPart(ShootingPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
+            shootingPart.setShooting(gameData.getKeys().isDown(GameKeys.SPACE));
 
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
-                    case PLAYER:
-                        break;
                     case ENEMY:
-                        break;
-                    case STATIC_OBSTACLE:
-                        break;
-                    case REMOVABLE_OBSTACLE:
-                        break;
-                    case PLAYER_BULLET:
                         break;
                     case ENEMY_BULLET:
                         DamagePart damagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
                         lifePart.setHealth(lifePart.getHealth() - damagePart.getDamage());
-                        break;
-                    case WALL:
                         break;
                     case DOOR:
                         break;
@@ -53,33 +45,30 @@ public class PlayerProcessing implements IEntityProcessingService {
             positionPart.process(gameData, player);
             lifePart.process(gameData, player);
             inventoryPart.process(gameData, player);
+            shootingPart.process(gameData, player);
 
             updateShape(player);
-
         }
     }
 
     private void updateShape(Entity entity) {
-        float[] shapex = new float[4];
-        float[] shapey = new float[4];
+        float[] shapeX = entity.getShapeX();
+        float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
-        float radians = 1;
+        float radians = positionPart.getRadians();
 
-        shapex[0] = (float) (x + Math.cos(radians) * entity.getRadius());
-        shapey[0] = (float) (y + Math.sin(radians) * entity.getRadius());
+        shapeX[0] = (float) (x + Math.cos(radians) * entity.getRadius());
+        shapeY[0] = (float) (y + Math.sin(radians) * entity.getRadius());
 
-        shapex[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * entity.getRadius());
-        shapey[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * entity.getRadius());
+        shapeX[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * entity.getRadius());
+        shapeY[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * entity.getRadius());
 
-        shapex[2] = (float) (x + Math.cos(radians + 3.1415f) * entity.getRadius() * 0.5);
-        shapey[2] = (float) (y + Math.sin(radians + 3.1415f) * entity.getRadius() * 0.5);
+        shapeX[2] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
+        shapeY[2] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
 
-        shapex[3] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
-        shapey[3] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
-
-        entity.setShapeX(shapex);
-        entity.setShapeY(shapey);
+        entity.setShapeX(shapeX);
+        entity.setShapeY(shapeY);
     }
 }

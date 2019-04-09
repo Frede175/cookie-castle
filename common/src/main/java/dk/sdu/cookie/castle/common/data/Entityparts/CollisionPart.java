@@ -20,7 +20,7 @@ public class CollisionPart implements EntityPart {
         this.collidingEntity = collidingEntity;
     }
 
-    public void setHit(boolean hit) {
+    public void setIsHit(boolean hit) {
         this.hit = hit;
         if (!hit) {
             collidingEntity = null;

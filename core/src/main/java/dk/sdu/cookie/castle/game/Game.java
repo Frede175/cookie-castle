@@ -85,7 +85,7 @@ public class Game implements ApplicationListener {
 
     private void drawEntities() {
         for (Entity entity : world.getEntities()) {
-            if (!entity.getCurrentTextureId().equals("")) {
+            if (entity.getCurrentTextureId() != null && !entity.getCurrentTextureId().isEmpty()) {
                 PositionPart position = entity.getPart(PositionPart.class);
                 batch.draw(assetManager.get(entity.getCurrentTextureId(), Texture.class), position.getX(), position.getY());
             }
