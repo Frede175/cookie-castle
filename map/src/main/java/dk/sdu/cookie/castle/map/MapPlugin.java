@@ -7,6 +7,7 @@ import dk.sdu.cookie.castle.common.services.IGamePluginService;
 public class MapPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
+
         System.out.println("I exist");
     }
 
