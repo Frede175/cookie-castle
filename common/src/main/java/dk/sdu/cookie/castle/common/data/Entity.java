@@ -46,7 +46,7 @@ public class Entity implements Serializable {
     }
 
     public void setRadius(float r) {
-        this.radius = r;
+        radius = r;
     }
 
     public float getRadius() {
@@ -74,11 +74,11 @@ public class Entity implements Serializable {
     }
 
     public void setEntityType(EntityType ent) {
-        this.entityType = ent;
+        entityType = ent;
     }
 
     public EntityType getEntityType() {
-        return this.entityType;
+        return entityType;
     }
 
     public Map<String, Asset> getAssets() {

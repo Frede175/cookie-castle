@@ -43,7 +43,7 @@ public class GameData {
     }
 
     public void setDisplayWidth(int width) {
-        this.displayWidth = width;
+        displayWidth = width;
     }
 
     public int getDisplayWidth() {
@@ -51,7 +51,7 @@ public class GameData {
     }
 
     public void setDisplayHeight(int height) {
-        this.displayHeight = height;
+        displayHeight = height;
     }
 
     public int getDisplayHeight() {
@@ -78,9 +78,7 @@ public class GameData {
     }
 
     public void addAssets(Map<String, Asset> assets) {
-        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
-            activeAssets.put(asset.getKey(), asset.getValue());
-        }
+        activeAssets.putAll(assets);
     }
 
     public void removeAssets(Map<String, Asset> assets) {

@@ -37,7 +37,7 @@ public class ShootingPart implements EntityPart {
      * @param attackSpeed: The attack speed of the weapon in rounds per second.
      */
     public void updateShootingSpeed(float attackSpeed) {
-        this.updateTime = 1 / attackSpeed;
+        updateTime = 1 / attackSpeed;
     }
 
     @Override

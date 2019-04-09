@@ -10,7 +10,7 @@ public class MovingPart implements EntityPart {
     private boolean left, right, up, down;
 
     public MovingPart(float maxSpeed) {
-        this.speed = maxSpeed;
+        speed = maxSpeed;
     }
 
     public void setSpeed(float speed) {

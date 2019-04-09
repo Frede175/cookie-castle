@@ -32,16 +32,16 @@ public class PositionPart implements EntityPart {
     }
 
     public void setX(float newX) {
-        this.x = newX;
+        x = newX;
     }
 
     public void setY(float newY) {
-        this.y = newY;
+        y = newY;
     }
 
     public void setPosition(float newX, float newY) {
-        this.x = newX;
-        this.y = newY;
+        x = newX;
+        y = newY;
     }
 
     @Override
