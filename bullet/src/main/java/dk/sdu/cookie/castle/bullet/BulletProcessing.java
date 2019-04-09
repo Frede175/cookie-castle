@@ -79,9 +79,9 @@ public class BulletProcessing implements IEntityProcessingService {
         b.add(new BulletMovingPart());
         b.add(new CollisionPart());
         b.setRadius(2);
-        WeaponPart EntityWeaponPart = entity.getPart(WeaponPart.class);
-        b.add(new DamagePart(EntityWeaponPart.getDamage()));
-        b.add(new TimerPart(EntityWeaponPart.getRange()));
+        WeaponPart entityWeaponPart = entity.getPart(WeaponPart.class);
+        b.add(new DamagePart(entityWeaponPart.getDamage()));
+        b.add(new TimerPart(entityWeaponPart.getRange()));
 
 
         if (entity.getEntityType() == EntityType.PLAYER) {
@@ -94,27 +94,27 @@ public class BulletProcessing implements IEntityProcessingService {
     }
 
     private void updateShape(Entity entity) {
-        float[] shapex = entity.getShapeX();
-        float[] shapey = entity.getShapeY();
+        float[] shapeX = entity.getShapeX();
+        float[] shapeY = entity.getShapeY();
 
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
 
-        shapex[0] = (float) (x + Math.cos(radians) * entity.getRadius());
-        shapey[0] = (float) (y + Math.sin(radians) * entity.getRadius());
+        shapeX[0] = (float) (x + Math.cos(radians) * entity.getRadius());
+        shapeY[0] = (float) (y + Math.sin(radians) * entity.getRadius());
 
-        shapex[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * entity.getRadius());
-        shapey[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * entity.getRadius());
+        shapeX[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * entity.getRadius());
+        shapeY[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * entity.getRadius());
 
-        shapex[2] = (float) (x + Math.cos(radians + 3.1415f) * entity.getRadius() * 0.5);
-        shapey[2] = (float) (y + Math.sin(radians + 3.1415f) * entity.getRadius() * 0.5);
+        shapeX[2] = (float) (x + Math.cos(radians + 3.1415f) * entity.getRadius() * 0.5);
+        shapeY[2] = (float) (y + Math.sin(radians + 3.1415f) * entity.getRadius() * 0.5);
 
-        shapex[3] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
-        shapey[3] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
+        shapeX[3] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
+        shapeY[3] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
 
-        entity.setShapeX(shapex);
-        entity.setShapeY(shapey);
+        entity.setShapeX(shapeX);
+        entity.setShapeY(shapeY);
     }
 }

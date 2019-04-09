@@ -27,7 +27,7 @@ public class AIMovingPart implements EntityPart {
     }
 
     public AIMovingPart(float maxSpeed) {
-        this.speed = maxSpeed;
+        speed = maxSpeed;
     }
 
     @Override

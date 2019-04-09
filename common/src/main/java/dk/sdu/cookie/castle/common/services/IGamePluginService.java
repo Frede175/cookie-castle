@@ -1,6 +1,5 @@
 package dk.sdu.cookie.castle.common.services;
 
-
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 
