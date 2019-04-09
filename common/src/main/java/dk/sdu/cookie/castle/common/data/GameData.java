@@ -82,8 +82,6 @@ public class GameData {
     }
 
     public void removeAssets(Map<String, Asset> assets) {
-        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
-            activeAssets.remove(asset.getKey());
-        }
+        activeAssets.keySet().removeAll(assets.keySet());
     }
 }
