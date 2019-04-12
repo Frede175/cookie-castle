@@ -3,6 +3,11 @@ package dk.sdu.cookie.castle.map;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// Map class (Singleton)
+// Used to keep track of all the rooms on a specific level
+// Also keeps track of the current room the player is in
+
 public class Map {
 
     private static Map map = null;

@@ -71,6 +71,7 @@ public class BulletProcessing implements IEntityProcessingService {
         }
     }
 
+
     private Entity createBullet(float x, float y, float radians, Entity entity) {
         Entity b = new Bullet();
 
