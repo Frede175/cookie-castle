@@ -3,7 +3,6 @@ package dk.sdu.cookie.castle.item;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.ItemPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -35,20 +34,20 @@ public class ItemProcessing implements IEntityProcessingService {
     }
 
     private void updateShape(Entity entity) {
-        float[] shapex = entity.getShapeX();
-        float[] shapey = entity.getShapeY();
+        float[] shapeX = entity.getShapeX();
+        float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
 
         for (int i = 0; i < numPoints; i++) {
-            shapex[i] = x + (float) Math.cos(angle + radians) * 26;
-            shapey[i] = y + (float) Math.sin(angle + radians) * 26;
+            shapeX[i] = x + (float) Math.cos(angle + radians) * 26;
+            shapeY[i] = y + (float) Math.sin(angle + radians) * 26;
             angle += 2 * 3.1415f / numPoints;
         }
 
-        entity.setShapeX(shapex);
-        entity.setShapeY(shapey);
+        entity.setShapeX(shapeX);
+        entity.setShapeY(shapeY);
     }
 }
 
