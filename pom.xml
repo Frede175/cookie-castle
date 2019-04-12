@@ -18,6 +18,7 @@
         <module>item</module>
         <module>player</module>
         <module>bullet</module>
+        <module>raycasting</module>
     </modules>
 
     <properties>

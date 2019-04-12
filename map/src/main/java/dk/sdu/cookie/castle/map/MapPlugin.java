@@ -10,16 +10,19 @@ import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
-        world.addEntity(createDoor(gameData));
 
-        for (DoorPosition doorPosition : DoorPosition.values()) {
-            doorPosition.setPosition(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        List<Entity> entities = new ArrayList<>();
+        entities.add(createDoor(gameData));
+        Room room = new Room(entities);
+        Map.getInstance().setCurrentRoom(room);
+        for (Entity e : entities) {
+            world.addEntity(e);
         }
-
         // skal initiate singleton og kalde "generateNewMap" func
 
 
@@ -31,14 +34,13 @@ public class MapPlugin implements IGamePluginService {
     }
 
     private Entity createDoor(GameData gameData) {
-        float x = gameData.getDisplayWidth() / 2 + 200;
+        float x = gameData.getDisplayWidth() / 2 + 300;
         float y = gameData.getDisplayHeight() / 2 + 150;
 
         float[] shapeX = new float[6];
         float[] shapeY = new float[6];
 
-
-        Entity item = new Door(new Room(new ArrayList<Entity>()));
+        Entity item = new Door(new Room(new ArrayList<>()));
         item.add(new PositionPart(x, y, 0));
         item.setRadius(30);
         item.add(new CollisionPart());

@@ -13,8 +13,7 @@ public class ItemPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-        item = createItem(gameData);
-        world.addEntity(item);
+
     }
 
     @Override
@@ -39,7 +38,6 @@ public class ItemPlugin implements IGamePluginService {
         item.setShapeX(shapeX);
         item.setShapeY(shapeY);
         item.setEntityType(EntityType.ITEM);
-
         return item;
     }
 }
