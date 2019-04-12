@@ -49,11 +49,6 @@ public class AStar implements AIService {
             }
         }
 
-        for (Point point : route) {
-            System.out.println(point.getX() + ", " + point.getY());
-        }
-
-
         return route;
     }
 

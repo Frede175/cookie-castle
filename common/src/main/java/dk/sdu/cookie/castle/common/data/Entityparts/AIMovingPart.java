@@ -12,7 +12,7 @@ public class AIMovingPart implements EntityPart {
     private final float UPDATE_TIME = 0.5f;
 
     private float speed;
-    private LinkedList<Point> route;
+    private LinkedList<Point> route = new LinkedList<>();
     private boolean update = true;
 
     private float nextUpdate = UPDATE_TIME;
