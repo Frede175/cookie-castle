@@ -24,7 +24,7 @@ public class RaycastingTest {
         world.addEntity(testEntity2);
 
         Raycasting raycasting = new Raycasting();
-        boolean result = raycasting.lineOfSight(world, new Vector2f(50, 50), new Vector2f(250, 250));
+        boolean result = raycasting.isInlineOfSight(world, new Vector2f(50, 50), new Vector2f(250, 250));
         assertFalse(result);
     }
 
@@ -42,7 +42,7 @@ public class RaycastingTest {
         world.addEntity(testEntity2);
 
         Raycasting raycasting = new Raycasting();
-        boolean result = raycasting.lineOfSight(world, new Vector2f(350, 350), new Vector2f(400, 400));
+        boolean result = raycasting.isInlineOfSight(world, new Vector2f(350, 350), new Vector2f(400, 400));
         assertTrue(result);
     }
 
@@ -60,7 +60,7 @@ public class RaycastingTest {
         world.addEntity(testEntity2);
 
         Raycasting raycasting = new Raycasting();
-        boolean result = raycasting.lineOfSight(world, new Vector2f(100, 250), new Vector2f(250, 100));
+        boolean result = raycasting.isInlineOfSight(world, new Vector2f(100, 250), new Vector2f(250, 100));
         assertTrue(result);
     }
 }
