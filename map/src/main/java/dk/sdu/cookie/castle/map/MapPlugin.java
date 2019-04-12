@@ -15,6 +15,9 @@ import java.util.List;
 public class MapPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
+        for (DoorPosition doorPosition : DoorPosition.values()) {
+            doorPosition.setPosition(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        }
 
         List<Entity> entities = new ArrayList<>();
         entities.add(createDoor(gameData));
