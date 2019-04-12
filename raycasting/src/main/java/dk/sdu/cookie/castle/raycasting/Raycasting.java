@@ -13,6 +13,7 @@ public class Raycasting implements ILineOfSightService {
 
     /**
      * {@inheritDoc}
+     * 
      * Only checks the entities with the entitytypes: STATIC_OBSTACLE, REMOVABLE_OBSTACLE and WALL for line of sight.
      */
     @Override
