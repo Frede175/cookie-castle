@@ -40,16 +40,7 @@ public class MapPlugin implements IGamePluginService {
         float[] shapeX = new float[6];
         float[] shapeY = new float[6];
 
-        Entity door = new Door(new Room(new ArrayList<>()));
-        door.add(new PositionPart(x * 2, y * 2, 0));
-        door.setRadius(30);
-        door.add(new CollisionPart());
-        door.setShapeX(shapeX);
-        door.setShapeY(shapeY);
-        door.setEntityType(EntityType.DOOR);
-        List<Entity> entities = new ArrayList();
-        entities.add(door);
-        Entity item = new Door(new Room(entities));
+        Entity item = new Door(new Room(new ArrayList<>()));
         item.add(new PositionPart(x, y, 0));
         item.setRadius(30);
         item.add(new CollisionPart());
