@@ -18,8 +18,14 @@ public enum DoorPosition {
         return positionPart;
     }
 
+    /**
+     * Set the possible centered door locations and account for game area margin
+     *
+     * @param displayWidth  Display pixel width
+     * @param displayHeight Display pixel height
+     */
     public void setPosition(int displayWidth, int displayHeight) {
-        int margin = 150;
+        int margin = 150; // This is the margin in pixels from the edges
         switch (this) {
             case TOP:
                 positionPart.setX(displayWidth / 2);

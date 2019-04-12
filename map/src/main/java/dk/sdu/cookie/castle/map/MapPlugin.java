@@ -15,6 +15,7 @@ import java.util.List;
 public class MapPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
+        // Set door positions with display dimensions from GameData
         for (DoorPosition doorPosition : DoorPosition.values()) {
             doorPosition.setPosition(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         }
