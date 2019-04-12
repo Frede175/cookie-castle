@@ -10,7 +10,7 @@ public class MovingPart implements EntityPart {
     private boolean left, right, up, down;
 
     public MovingPart(float maxSpeed) {
-        this.speed = maxSpeed;
+        speed = maxSpeed;
     }
 
     public void setSpeed(float speed) {
@@ -39,30 +39,66 @@ public class MovingPart implements EntityPart {
         InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
+        float deltaX = 0;
+        float deltaY = 0;
         float buffedSpeed = speed;
-        if(inventoryPart != null) {
+        if (inventoryPart != null) {
             for (ItemPart itemPart : inventoryPart.getItemParts()) {
-                if(!itemPart.isWeapon()) {
+                if (!itemPart.isWeapon()) {
                     BuffPart buffPart = itemPart.getBuff();
                     buffedSpeed += buffPart.getSpecificBuff(Buff.MOVEMENT_SPEED);
                 }
             }
         }
 
+        buffedSpeed *= gameData.getDelta();
+
         if (left) {
-            x -= buffedSpeed;
+            positionPart.setRadians(3.1415f);
+            deltaX -= buffedSpeed;
         }
 
         if (right) {
-            x += buffedSpeed;
+            positionPart.setRadians(0);
+            deltaX += buffedSpeed;
         }
 
         if (up) {
-            y += buffedSpeed;
+            positionPart.setRadians(3.1415f / 2f);
+            deltaY += buffedSpeed;
         }
 
         if (down) {
-            y -= buffedSpeed;
+            positionPart.setRadians(3.1415f + (3.1415f / 2f));
+            deltaY -= buffedSpeed;
+        }
+
+        if (up && right) {
+            positionPart.setRadians(3.1415f / 4f);
+        }
+
+        if (up && left) {
+            positionPart.setRadians(((3.1415f / 2f) + (3.1415f / 4f)));
+        }
+
+        if (down && left) {
+            positionPart.setRadians((3.1415f + (3.1415f / 4f)));
+        }
+
+        if (down && right) {
+            positionPart.setRadians((3.1415f + (3.1415f / 4f * 3)));
+        }
+
+        if (Math.abs(deltaX) + Math.abs(deltaY) > buffedSpeed) {
+            deltaX = (deltaX / (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY))) * buffedSpeed;
+            deltaY = (deltaY / (float) Math.sqrt((deltaX * deltaX) + (deltaY * deltaY))) * buffedSpeed;
+
+            x += deltaX;
+            y += deltaY;
+
+        } else {
+            x += deltaX;
+            y += deltaY;
         }
 
         positionPart.setPosition(x, y);

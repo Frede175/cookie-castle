@@ -1,6 +1,8 @@
 package dk.sdu.cookie.castle.common.data;
 
+import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.data.Entityparts.EntityPart;
+import dk.sdu.cookie.castle.common.assets.AssetLoader;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -14,28 +16,40 @@ public class Entity implements Serializable {
     private float[] shapeY = new float[4];
     private float radius;
     private Map<Class, EntityPart> parts;
-    
+    private EntityType entityType;
+    private Map<String, Asset> assets;
+    private Map<String, String> assetReferences;
+    private String currentTextureId;
+
     public Entity() {
         parts = new ConcurrentHashMap<>();
     }
-    
+
+    public void initializeAssets(Map<String, Asset> assets) {
+        System.out.println("Initializing assets for class: " + this.getClass());
+        if (assets.size() > 0) {
+            assetReferences = AssetLoader.loadAssets(this.getClass(), assets);
+            this.assets = assets;
+        }
+    }
+
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }
-    
+
     public void remove(Class partClass) {
         parts.remove(partClass);
     }
-    
+
     public <E extends EntityPart> E getPart(Class partClass) {
         return (E) parts.get(partClass);
     }
-    
-    public void setRadius(float r){
-        this.radius = r;
+
+    public void setRadius(float r) {
+        radius = r;
     }
-    
-    public float getRadius(){
+
+    public float getRadius() {
         return radius;
     }
 
@@ -57,5 +71,31 @@ public class Entity implements Serializable {
 
     public void setShapeY(float[] shapeY) {
         this.shapeY = shapeY;
+    }
+
+    public void setEntityType(EntityType ent) {
+        entityType = ent;
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public Map<String, Asset> getAssets() {
+        return assets;
+    }
+
+    public void setCurrentTexture(String name) {
+        if (assetReferences == null) {
+            System.out.println("Assets have not been loaded");
+            return;
+        }
+
+        currentTextureId = assetReferences.get(name);
+        System.out.println("setting texture id: " + currentTextureId + " name: " + name);
+    }
+
+    public String getCurrentTextureId() {
+        return currentTextureId;
     }
 }

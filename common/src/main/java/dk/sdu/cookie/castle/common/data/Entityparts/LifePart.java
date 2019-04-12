@@ -13,15 +13,19 @@ public class LifePart implements EntityPart {
     private boolean dead = false;
     private float health;
     private float healthRegen;
-    private float maxhealth;
+    private float maxHealth;
     private float damageReduction;
     private boolean isHit = false;
 
-    public LifePart(float health, float healthRegen, float maxhealth, float damageReduction) {
+    public LifePart(float health, float healthRegen, float maxHealth, float damageReduction) {
         this.health = health;
         this.healthRegen = healthRegen;
-        this.maxhealth = maxhealth;
+        this.maxHealth = maxHealth;
         this.damageReduction = damageReduction;
+    }
+
+    public LifePart(float health) {
+        this.health = health;
     }
 
     public float getHealth() {
@@ -39,13 +43,13 @@ public class LifePart implements EntityPart {
     public void setIsHit(boolean isHit) {
         this.isHit = isHit;
     }
-    
+
     public boolean isDead() {
         return dead;
     }
 
-    
-    
+
+
     @Override
     public void process(GameData gameData, Entity entity) {
         InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
@@ -62,10 +66,10 @@ public class LifePart implements EntityPart {
 
                     // Checks if the healing over heals the maximum health limit
                     float healing = itemPart.getBuff().getSpecificBuff(Buff.HEALTH);
-                    if(health + healing <= maxhealth) {
+                    if(health + healing <= maxHealth) {
                         health += healing;
                     } else {
-                        health = maxhealth;
+                        health = maxHealth;
                     }
 
                     // Uses the item in the inventory (Removes the item from the inventory)
@@ -103,6 +107,6 @@ public class LifePart implements EntityPart {
         if (health <= 0) {
             dead = true;
         }
-        
+
     }
 }

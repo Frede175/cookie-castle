@@ -25,6 +25,10 @@ public class InventoryPart implements EntityPart {
         this.itemParts = itemParts;
     }
 
+    public InventoryPart() {
+        itemParts = new ArrayList<>();
+    }
+
     /**
      * Constructs an Inventory with starting items and current weapon
      * @param currentWeapon The current weapon at the start

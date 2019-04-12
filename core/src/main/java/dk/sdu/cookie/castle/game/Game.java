@@ -4,36 +4,43 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 import dk.sdu.cookie.castle.game.managers.GameInputProcessor;
+import dk.sdu.cookie.castle.game.managers.MyAssetManager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
 
-    private List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
-    private List<IPostEntityProcessingService> postProcessingServices = new CopyOnWriteArrayList<>();
-    private List<IEntityProcessingService> processingServices = new CopyOnWriteArrayList<>();
-    private OrthographicCamera cam;
-    private GameData gameData;
-    private ShapeRenderer sr;
-    private World world;
+    private static final List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
+    private static final List<IPostEntityProcessingService> postProcessingServices = new CopyOnWriteArrayList<>();
+    private static final List<IEntityProcessingService> processingServices = new CopyOnWriteArrayList<>();
+    private static OrthographicCamera cam;
+    private static final GameData gameData = new GameData();
+    private static ShapeRenderer sr;
+    private static final World world = new World();
+    private static SpriteBatch batch;
+    private MyAssetManager assetManager;
 
     public Game() {
     }
 
     @Override
     public void create() {
-        gameData = new GameData();
+        System.out.println("Game created");
+        batch = new SpriteBatch();
         sr = new ShapeRenderer();
-        world = new World();
+        assetManager = new MyAssetManager();
 
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -52,6 +59,11 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+        // Ensure that all assets have been loaded before continuing
+        if (!assetManager.update(gameData)) {
+            return;
+        }
+
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -59,8 +71,25 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
-        update();
+        batch.begin();
+
+        // Draw background
+        Texture background = assetManager.getBackground();
+        batch.draw(background, 0, 0);
+        drawEntities();
+        batch.end();
+
         draw();
+        update();
+    }
+
+    private void drawEntities() {
+        for (Entity entity : world.getEntities()) {
+            if (entity.getCurrentTextureId() != null && !entity.getCurrentTextureId().isEmpty()) {
+                PositionPart position = entity.getPart(PositionPart.class);
+                batch.draw(assetManager.get(entity.getCurrentTextureId(), Texture.class), position.getX(), position.getY());
+            }
+        }
     }
 
     private void update() {

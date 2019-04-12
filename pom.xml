@@ -13,7 +13,17 @@
         <module>common</module>
         <module>libgdx</module>
         <module>enemy</module>
+        <module>collision</module>
+        <module>ai</module>
+        <module>item</module>
+        <module>player</module>
+        <module>bullet</module>
+        <module>raycasting</module>
     </modules>
+
+    <properties>
+        <resourcesFolder>src/main/resources</resourcesFolder>
+    </properties>
 
     <dependencies>
         <dependency>
