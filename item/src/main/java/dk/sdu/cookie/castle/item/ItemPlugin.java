@@ -25,8 +25,8 @@ public class ItemPlugin implements IGamePluginService {
         float x = gameData.getDisplayWidth() / 2 + 200;
         float y = gameData.getDisplayHeight() / 2 + 150;
 
-        float[] shapex = new float[6];
-        float[] shapey = new float[6];
+        float[] shapeX = new float[6];
+        float[] shapeY = new float[6];
 
 
         Entity item = new Item();
@@ -35,10 +35,9 @@ public class ItemPlugin implements IGamePluginService {
         item.setRadius(30);
         item.add(new CollisionPart());
         item.add(new ItemPart(new WeaponPart(10, 15, 20)));
-        item.setShapeX(shapex);
-        item.setShapeY(shapey);
-        item.setEntityType(EntityType.DOOR);
-
+        item.setShapeX(shapeX);
+        item.setShapeY(shapeY);
+        item.setEntityType(EntityType.ITEM);
         return item;
     }
 }

@@ -18,8 +18,8 @@ public class CollisionPostProcessingTest {
     public void shouldCollide() {
         World world = new World();
 
-        TestEntity testEntity1 = new  TestEntity(0,0, 10, EntityType.PLAYER);
-        TestEntity testEntity2 = new  TestEntity(7,7, 10, EntityType.STATIC_OBSTACLE);
+        TestEntity testEntity1 = new TestEntity(0, 0, 10, EntityType.PLAYER);
+        TestEntity testEntity2 = new TestEntity(7, 7, 10, EntityType.STATIC_OBSTACLE);
         world.addEntity(testEntity1);
         world.addEntity(testEntity2);
 
@@ -39,8 +39,8 @@ public class CollisionPostProcessingTest {
     public void shouldNotCollide() {
         World world = new World();
 
-        TestEntity testEntity1 = new  TestEntity(0,0, 10, EntityType.PLAYER);
-        TestEntity testEntity2 = new  TestEntity(30,30, 10, EntityType.STATIC_OBSTACLE);
+        TestEntity testEntity1 = new TestEntity(0, 0, 10, EntityType.PLAYER);
+        TestEntity testEntity2 = new TestEntity(30, 30, 10, EntityType.STATIC_OBSTACLE);
         world.addEntity(testEntity1);
         world.addEntity(testEntity2);
 
@@ -58,8 +58,8 @@ public class CollisionPostProcessingTest {
     public void shouldNotCollideSpecial() {
         World world = new World();
 
-        TestEntity testEntity1 = new  TestEntity(0,0, 10, EntityType.PLAYER);
-        TestEntity testEntity2 = new  TestEntity(19,19, 10, EntityType.STATIC_OBSTACLE);
+        TestEntity testEntity1 = new TestEntity(0, 0, 10, EntityType.PLAYER);
+        TestEntity testEntity2 = new TestEntity(19, 19, 10, EntityType.STATIC_OBSTACLE);
         world.addEntity(testEntity1);
         world.addEntity(testEntity2);
 

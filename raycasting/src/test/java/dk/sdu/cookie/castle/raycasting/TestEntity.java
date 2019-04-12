@@ -1,4 +1,4 @@
-package dk.sdu.cookie.castle.collision;
+package dk.sdu.cookie.castle.raycasting;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
@@ -20,3 +20,4 @@ public class TestEntity extends Entity {
         setEntityType(tag);
     }
 }
+
