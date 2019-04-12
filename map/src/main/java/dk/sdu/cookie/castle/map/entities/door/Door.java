@@ -6,6 +6,8 @@ import dk.sdu.cookie.castle.map.Room;
 
 import static dk.sdu.cookie.castle.common.data.EntityType.STATIC_OBSTACLE;
 
+// Door class, static obstacle,  used to transport player from room to room
+// Keeps track of what room it leads to
 public class Door extends Entity {
     EntityType type = STATIC_OBSTACLE;
     Room leadsTo;

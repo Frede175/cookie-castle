@@ -11,6 +11,7 @@ public class BulletPlugin implements IGamePluginService {
 
     }
 
+    // keeps track of removing bullets when timer is up
     @Override
     public void stop(GameData gameData, World world) {
         for (Entity e : world.getEntities()) {
