@@ -3,12 +3,11 @@ package dk.sdu.cookie.castle.map;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
-import dk.sdu.cookie.castle.map.entities.Door;
+import dk.sdu.cookie.castle.map.entities.door.Door;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +25,6 @@ public class MapProcessing implements IEntityProcessingService {
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
-                        System.out.println("Oh hella");
                         // Changes current room to the door room
                         Room room = ((Door) door).getLeadsTo();
                         unloadRoom(world);
@@ -38,7 +36,6 @@ public class MapProcessing implements IEntityProcessingService {
             }
             updateShape(door);
         }
-
     }
 
     private void updateShape(Entity entity) {

@@ -6,7 +6,8 @@ import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
-import dk.sdu.cookie.castle.map.entities.Door;
+import dk.sdu.cookie.castle.map.entities.door.Door;
+import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +37,15 @@ public class MapPlugin implements IGamePluginService {
         float x = gameData.getDisplayWidth() / 2 + 300;
         float y = gameData.getDisplayHeight() / 2 + 150;
 
-        float[] shapex = new float[6];
-        float[] shapey = new float[6];
+        float[] shapeX = new float[6];
+        float[] shapeY = new float[6];
 
         Entity door = new Door(new Room(new ArrayList<>()));
         door.add(new PositionPart(x * 2, y * 2, 0));
         door.setRadius(30);
         door.add(new CollisionPart());
-        door.setShapeX(shapex);
-        door.setShapeY(shapey);
+        door.setShapeX(shapeX);
+        door.setShapeY(shapeY);
         door.setEntityType(EntityType.DOOR);
         List<Entity> entities = new ArrayList();
         entities.add(door);
@@ -52,8 +53,8 @@ public class MapPlugin implements IGamePluginService {
         item.add(new PositionPart(x, y, 0));
         item.setRadius(30);
         item.add(new CollisionPart());
-        item.setShapeX(shapex);
-        item.setShapeY(shapey);
+        item.setShapeX(shapeX);
+        item.setShapeY(shapeY);
         item.setEntityType(EntityType.DOOR);
 
         return item;

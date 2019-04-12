@@ -1,4 +1,4 @@
-package dk.sdu.cookie.castle.map.entities;
+package dk.sdu.cookie.castle.map.entities.door;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
