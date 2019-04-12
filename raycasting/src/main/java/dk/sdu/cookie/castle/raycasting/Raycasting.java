@@ -13,16 +13,17 @@ public class Raycasting implements ILineOfSightService {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * Only checks the entities with the entitytypes: STATIC_OBSTACLE, REMOVABLE_OBSTACLE and WALL for line of sight.
      */
     @Override
-    public boolean lineOfSight(World world, Vector2f start, Vector2f end) {
+    public boolean isInlineOfSight(World world, Vector2f start, Vector2f end) {
         Line2D rayline = new Line2D.Float(start.getX(), start.getY(), end.getX(), end.getY());
 
         for (Entity entity : world.getEntities()) {
-
-            if (entity.getEntityType() != EntityType.STATIC_OBSTACLE && entity.getEntityType() != EntityType.REMOVABLE_OBSTACLE && entity.getEntityType() != EntityType.WALL) {
+            if (entity.getEntityType() != EntityType.STATIC_OBSTACLE
+                    && entity.getEntityType() != EntityType.REMOVABLE_OBSTACLE
+                    && entity.getEntityType() != EntityType.WALL) {
                 continue;
             }
 
