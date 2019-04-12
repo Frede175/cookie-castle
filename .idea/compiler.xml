@@ -14,6 +14,7 @@
         <module name="item" />
         <module name="libgdx" />
         <module name="player" />
+        <module name="raycasting" />
       </profile>
     </annotationProcessing>
   </component>
