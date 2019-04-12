@@ -11,7 +11,7 @@ public enum DoorPosition {
     private PositionPart positionPart;
 
     DoorPosition() {
-        positionPart = null;
+        positionPart = new PositionPart(0, 0, 0);
     }
 
     public PositionPart getPositionPart() {
