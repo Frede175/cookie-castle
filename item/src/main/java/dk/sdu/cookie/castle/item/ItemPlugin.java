@@ -13,8 +13,7 @@ public class ItemPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-        item = createItem(gameData);
-        world.addEntity(item);
+
     }
 
     @Override

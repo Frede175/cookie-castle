@@ -19,4 +19,8 @@ public class Room {
     public Room(List<Entity> entityList) {
         this.entityList = entityList;
     }
+
+    public void removeEntity(Entity entity) {
+        entityList.remove(entity);
+    }
 }

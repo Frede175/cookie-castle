@@ -10,6 +10,9 @@ import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.map.entities.Door;
 
+import java.util.Collection;
+import java.util.List;
+
 public class MapProcessing implements IEntityProcessingService {
 
     private float angle = 0;
@@ -23,9 +26,11 @@ public class MapProcessing implements IEntityProcessingService {
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
+                        System.out.println("Oh hella");
                         // Changes current room to the door room
                         Room room = ((Door) door).getLeadsTo();
-                        Map.getInstance().setCurrentRoom(room);
+                        unloadRoom(world);
+                        loadRoom(room, world);
                         System.out.println("Go to " + room.toString());
                         break;
                 }
@@ -53,10 +58,22 @@ public class MapProcessing implements IEntityProcessingService {
         entity.setShapeY(shapey);
     }
 
+    private void unloadRoom(World world) {
+        for (Entity entity : Map.getInstance().getCurrentRoom().getEntityList()) {
+            if(world.getEntities().contains(entity)){
+                world.getEntities().remove(entity);
+                continue;
+            } else {
+                Map.getInstance().getCurrentRoom().removeEntity(entity);
+            }
+        }
+    }
 
-    // der skal laves en func der skal tage imod currentRoom, Items, checke hvilke der skal ligge/ikke skal ligge i world
-    // skal fjerne de ting, der er blevet fjernet fra world, fra current room.
-    // Til sidst skal alle entiteter som ligger i currentRoom fjernes fra wold (da disse er gemt i Rummet)
-    // Indsæt alle entities fra det nye currentRoom i World
+    private void loadRoom(Room nextRoom, World world) {
+        for (Entity e : nextRoom.getEntityList()) {
+            world.addEntity(e);
+        }
+        Map.getInstance().setCurrentRoom(nextRoom);
+    }
 
 }
