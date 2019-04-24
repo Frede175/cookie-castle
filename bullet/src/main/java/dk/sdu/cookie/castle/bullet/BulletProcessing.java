@@ -29,6 +29,9 @@ public class BulletProcessing implements IEntityProcessingService {
                 }
             }
         }
+
+        // loop to keep track of all the bullets in the world
+        // Keeping track of collision, dmg, and if it should be removed from the game
         for (Entity bullet : world.getEntities(Bullet.class)) {
             PositionPart positionPart = bullet.getPart(PositionPart.class);
             TimerPart timerPart = bullet.getPart(TimerPart.class);
@@ -40,6 +43,7 @@ public class BulletProcessing implements IEntityProcessingService {
                 world.removeEntity(bullet);
             }
 
+            // Checks what the bullet hits
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
@@ -52,26 +56,27 @@ public class BulletProcessing implements IEntityProcessingService {
                             world.removeEntity(bullet);
                         }
                         break;
-                    case PLAYER_BULLET:
-                        System.out.println("Hitting another player bullet");
-                        break;
                     default:
                         break;
                 }
                 collisionPart.setIsHit(false);
             }
 
+            // Keep refreshing all the data concerning bullets
             positionPart.process(gameData, bullet);
             timerPart.process(gameData, bullet);
             bulletMovingPart.process(gameData, bullet);
             collisionPart.process(gameData, bullet);
             damagePart.process(gameData, bullet);
-
             updateShape(bullet);
         }
     }
 
 
+    // Creates a bullet based on the players location
+    //gives the bullet the needed parts for the movement and collision to work,
+    // sets the damagepart and bulletMovingPart for the bullet to contain the info for dmg and the movement for a bullet
+    // Sets the bullet-type to either enemy or player, depending on who shot the bullet
     private Entity createBullet(float x, float y, float radians, Entity entity) {
         Entity b = new Bullet();
 
@@ -93,6 +98,8 @@ public class BulletProcessing implements IEntityProcessingService {
 
         return b;
     }
+
+
 
     private void updateShape(Entity entity) {
         float[] shapeX = entity.getShapeX();
