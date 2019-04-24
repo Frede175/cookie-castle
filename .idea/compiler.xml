@@ -13,5 +13,12 @@
         <module name="player" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ai" target="10" />
+      <module name="bullet" target="10" />
+      <module name="item" target="10" />
+      <module name="map" target="10" />
+      <module name="raycasting" target="10" />
+    </bytecodeTargetLevel>
   </component>
 </project>

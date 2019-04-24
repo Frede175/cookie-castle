@@ -18,6 +18,11 @@ public class PlayerPlugin implements IGamePluginService {
         System.out.println("Started player");
     }
 
+    /**
+     * Creating player and setting all the parts of the player-object
+     * @param gameData
+     * @return
+     */
     private Entity createPlayer(GameData gameData) {
 
         float[] shapex = new float[3];
