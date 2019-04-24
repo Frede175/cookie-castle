@@ -17,6 +17,12 @@ public class EnemyPlugin implements IGamePluginService {
         world.addEntity(enemy);
     }
 
+    /**
+     * Creates an enemy ship, with the different parts and parameters needed.
+     *
+     * @param gameData The gamedata
+     * @return The enemy created
+     */
     private Entity createEnemy(GameData gameData) {
         float[] shapeX = new float[3];
         float[] shapeY = new float[3];
