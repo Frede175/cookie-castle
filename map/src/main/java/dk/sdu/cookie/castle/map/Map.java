@@ -1,7 +1,8 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.Direction;
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
 
@@ -51,8 +52,7 @@ public class Map {
     private ArrayList<Room> createRooms(int roomCount) {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
-            //TODO fix null
-            List<Entity> entityList = null;
+            List<Entity> entityList = new ArrayList<>();
             Room room = new Room(entityList);
             rooms.add(room);
         }
@@ -62,25 +62,24 @@ public class Map {
     public void generateMap(int numberOfRooms) {
 
 
-/*
+        System.out.println("I am run");
         // Creates the ArrayList that contains all the free rooms.
-        ArrayList<Room> freeRooms = createRooms(roomCount);
+        ArrayList<Room> freeRooms = createRooms(numberOfRooms);
 
-        rooms.addAll(freeRooms);
+        listOfRooms.addAll(freeRooms);
 
-        Direction[] directions = Direction.values();
+        DoorPosition[] doorPositions = DoorPosition.values();
 
         // Sets the start room to the first free room.
         Room startRoom = freeRooms.get(0);
-        startRoom.setInspected();
-        startRoom.setCoordinate(new Coordinate(0, 0));
+        startRoom.setPoint(new Point(0, 0));
         // Creates the queue where all the rooms that needs to be processed is stored.
         Queue<Room> roomsToProcess = new LinkedList<>();
         // Adds the first free room to the queue.
         roomsToProcess.add(freeRooms.remove(0));
         // used to hold the used coordinates, for rooms not to have duplicate coordinates.
-        Set<ICoordinate> usedCoordinates = new HashSet<>();
-        usedCoordinates.add(new Coordinate(0, 0));
+        Set<Point> usedPoints = new HashSet<>();
+        usedPoints.add(new Point(0, 0));
         // As long as the queue is not empty.
         while (!roomsToProcess.isEmpty()) {
             // Gets the next room in the queue.
@@ -92,21 +91,20 @@ public class Map {
             while (i <= exitCount && !freeRooms.isEmpty()) {
                 // Generates the random direction.
                 int index = (int) (Math.random() * 4);
-                Direction direction = directions[index];
+                DoorPosition direction = doorPositions[index];
                 // Calculates the opponent direction.
-                Direction oppoDirection = directions[(index + 2) % 4];
+                DoorPosition oppoDirection = doorPositions[(index + 2) % 4];
                 // Random selecting the neighbor room.
                 int neighbor = (int) (Math.random() * freeRooms.size());
                 // If the room dosent have an exit at that direction
-                Coordinate c = Coordinate.add((Coordinate) currentRoom.getCoordinate(), getCoordinateDirection(direction));
-                if (currentRoom.getExit(direction) == null && !usedCoordinates.contains(c)) {
-                    // Sets an exit with the direction and the neighbor.
-                    currentRoom.setExit(direction, freeRooms.get(neighbor));
+                Point p = Point.add(currentRoom.getPoint(), getPointDirection(direction));
+                if (currentRoom.checkIfFree(direction) && !usedPoints.contains(p)) {
+                    currentRoom.setDoor(direction, freeRooms.get(neighbor));
                     // sets coordinates to every freeroom.
-                    freeRooms.get(neighbor).setCoordinate((Coordinate) c);
-                    usedCoordinates.add(c);
+                    freeRooms.get(neighbor).setPoint(p);
+                    usedPoints.add(p);
                     // Sets the neighbor rooms exit to be the current room.
-                    freeRooms.get(neighbor).setExit(oppoDirection, currentRoom);
+                    freeRooms.get(neighbor).setDoor(oppoDirection, currentRoom);
                     // Adds the neighbor room to the queue.
                     roomsToProcess.add(freeRooms.get(neighbor));
                     // Remove the neighbor room from the free rooms ArrayList.
@@ -116,6 +114,22 @@ public class Map {
                 i++;
             }
         }
-*/
+
+    }
+    private Point getPointDirection(DoorPosition d) {
+        switch (d) {
+            case BOTTOM:
+                return new Point(0, -1);
+            case TOP:
+                return new Point(0, 1);
+            case RIGHT:
+                return new Point(1, 0);
+            case LEFT:
+                return new Point(-1, 0);
+            default:
+                throw new AssertionError(d.name());
+
+        }
+
     }
 }

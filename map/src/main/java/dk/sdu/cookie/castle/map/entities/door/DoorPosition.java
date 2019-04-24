@@ -43,7 +43,7 @@ public enum DoorPosition {
                 positionPart.setRadians(3.14159f);
                 break;
             case LEFT:
-                positionPart.setX(displayWidth - margin);
+                positionPart.setX(margin);
                 positionPart.setY(displayHeight / 2);
                 positionPart.setRadians(4.71239f);
                 break;

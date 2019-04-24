@@ -20,16 +20,12 @@ public class MapPlugin implements IGamePluginService {
             doorPosition.setPosition(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         }
 
-        List<Entity> entities = new ArrayList<>();
-        entities.add(createDoor(gameData));
-        Room room = new Room(entities);
-        Map.getInstance().setCurrentRoom(room);
-        for (Entity e : entities) {
+        // skal initiate singleton og kalde "generateNewMap" func
+        Map.getInstance().generateMap(3);
+        Map.getInstance().setCurrentRoom(Map.getInstance().getListOfRooms().get(0));
+        for (Entity e : Map.getInstance().getCurrentRoom().getEntityList()) {
             world.addEntity(e);
         }
-        // skal initiate singleton og kalde "generateNewMap" func
-
-
     }
 
     @Override

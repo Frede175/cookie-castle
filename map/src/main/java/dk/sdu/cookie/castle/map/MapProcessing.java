@@ -25,6 +25,8 @@ public class MapProcessing implements IEntityProcessingService {
                         Room room = ((Door) door).getLeadsTo();
                         unloadRoom(world);
                         loadRoom(room, world);
+                        PositionPart doorPos = door.getPart(PositionPart.class);
+
                         System.out.println("Go to " + room.toString());
                         break;
                 }
@@ -72,5 +74,6 @@ public class MapProcessing implements IEntityProcessingService {
         }
         Map.getInstance().setCurrentRoom(nextRoom);
     }
+
 
 }
