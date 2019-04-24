@@ -2,6 +2,8 @@ package dk.sdu.cookie.castle.ai;
 
 import dk.sdu.cookie.castle.common.data.Point;
 
+// The node class is used for the AStar AI
+// Nodes contain the information for the AStar, to find the best choice of movement towards the goal
 public class Node implements Comparable<Node> {
     private Point point;
     private double heuristic;
@@ -42,6 +44,7 @@ public class Node implements Comparable<Node> {
         parent = node.parent;
     }
 
+    //Comparator for nodes, to be able to compare the nodes with each other, based on the cost and heuristic
     @Override
     public boolean equals(Object o) {
         if (o instanceof Node) {
