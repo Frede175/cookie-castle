@@ -6,11 +6,11 @@ import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
 
-
-// Map class (Singleton)
-// Used to keep track of all the rooms on a specific level
-// Also keeps track of the current room the player is in
-
+/**
+ * Map class (Singleton)
+ * Used to keep track of all the rooms on a specific level
+ * Also keeps track of the current room the player is in
+ */
 public class Map {
 
     private static Map map = null;

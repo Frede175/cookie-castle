@@ -14,6 +14,9 @@ public class Activator implements BundleActivator {
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
+
+        //We create a new AStar object, and register it in the bundcontext
+        //We register the AIService and the EntetyProcessingService for the AI, when the bundle is registered/started
         aStar = new AStar();
         aiServiceServiceRegistration = bundleContext.registerService(AIService.class, aStar, null);
         iEntityProcessingServiceServiceRegistration = bundleContext.registerService(IEntityProcessingService.class, new AIProcessing(), null);

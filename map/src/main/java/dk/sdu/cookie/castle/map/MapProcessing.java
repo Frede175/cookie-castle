@@ -53,8 +53,11 @@ public class MapProcessing implements IEntityProcessingService {
         entity.setShapeY(shapey);
     }
 
-    // unloads the room
-    // Clears all the entities in the current room from the world
+    /**
+     * Unloads the room
+     * Clears all the entities in the current room from the world
+     * @param world
+     */
     private void unloadRoom(World world) {
         for (Entity entity : Map.getInstance().getCurrentRoom().getEntityList()) {
             if(world.getEntities().contains(entity)){
@@ -66,8 +69,12 @@ public class MapProcessing implements IEntityProcessingService {
         }
     }
 
-    //loads the new room
-    //inserting all entities from the room being loaded into the "world"
+    /**
+     * loads the new room
+     * Inserting all entities from the room being loaded into the "world"
+     * @param nextRoom
+     * @param world
+     */
     private void loadRoom(Room nextRoom, World world) {
         for (Entity e : nextRoom.getEntityList()) {
             world.addEntity(e);

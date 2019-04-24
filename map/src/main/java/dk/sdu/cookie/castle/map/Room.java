@@ -13,8 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 
 
-// Room class,
-// Used to contain all the entities for the current room in a list
+
+/**
+ * Room class,
+ * Used to contain all the entities for the current room in a list
+ */
 public class Room {
     private List<Entity> entityList;
     private Point point;

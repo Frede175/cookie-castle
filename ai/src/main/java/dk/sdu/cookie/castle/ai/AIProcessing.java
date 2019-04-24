@@ -14,13 +14,17 @@ public class AIProcessing implements IEntityProcessingService {
         aStar = Activator.getaStar();
     }
 
-    // Check for every enemy, calculate the path, and give the enemys movingpart the next move direction
+    /**
+     * Check for every enemy, calculate the path, and give the all the enemies' movingparts the next move direction
+     * @param gameData
+     * @param world
+     */
     @Override
     public void process(GameData gameData, World world) {
         aStar.updateGrid(world, gameData);
         Entity player = null;
         PositionPart playerPos = null;
-        // Change to find direct player class
+        // Finds the player, and the position of the player on the map
         for (Entity p : world.getEntities()) {
             if (p.getEntityType() == EntityType.PLAYER) {
                 player = p;
@@ -28,11 +32,13 @@ public class AIProcessing implements IEntityProcessingService {
                 break;
             }
         }
-        // Change to find direct enemy class
+        // Finds all enemies, and get a hold of their movingpart
         for (Entity enemy : world.getEntities()) {
             if (enemy.getEntityType() == EntityType.ENEMY) {
                 AIMovingPart AIMovingPart = enemy.getPart(AIMovingPart.class);
 
+                // Checks if the timelimit for updating the path has been exceeded
+                // Updates the list of points to walk to get to the player
                 if (AIMovingPart.needUpdate()) {
                     PositionPart positionPart = enemy.getPart(PositionPart.class);
 

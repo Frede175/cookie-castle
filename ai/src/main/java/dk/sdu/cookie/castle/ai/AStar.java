@@ -35,20 +35,24 @@ public class AStar implements AIService {
         Node endNode = new Node(endGrid, 0, 0, null);
         findNeighbours(startNode, endNode);
         Node nextNode = fringe.poll();
+
+        //Loop that keeps updating the fringe for the next move towards the position of the player
         while (!fringe.isEmpty() && !nextNode.equals(endNode)) {
             findNeighbours(nextNode, endNode);
             usedNodes.add(nextNode);
             nextNode = fringe.poll();
         }
+        //Check if the next node is the end-node (the node where the player is/was)
         if (nextNode.equals(endNode)) {
             route.addFirst(end);
             nextNode = nextNode.getParent();
+            // while the next node has a parent, keep adding the next nodes parent to the route towards the player
             while (nextNode.getParent() != null) {
                 route.addFirst(new Point(nextNode.getPoint().getX() * SIZE_OF_CELL, nextNode.getPoint().getY() * SIZE_OF_CELL));
                 nextNode = nextNode.getParent();
             }
         }
-
+        //printing loop
         for (Point point : route) {
             System.out.println(point.getX() + ", " + point.getY());
         }
@@ -57,13 +61,29 @@ public class AStar implements AIService {
         return route;
     }
 
+
+    /**
+     * Calculating the heuristic for calculating the route to the player
+     * @param start point
+     * @param end point
+     * @return void
+     */
     private double calculateHeuristic(Point start, Point end) {
         return Math.sqrt(((end.getX() - start.getX()) * (end.getX() - start.getX())) + (end.getY() - start.getY()) * (end.getY() - start.getY()));
     }
 
+    /**
+     * Finding the neighbours of a given node, based on the path from start to end
+     * to be able to find our way towards the player/end of the path
+     * @param parent
+     * @param end
+     */
     private void findNeighbours(Node parent, Node end) {
         ArrayList<Node> neighbors = new ArrayList<>();
         int index = WIDTH_OF_GRID * (int) parent.getPoint().getY() + (int) parent.getPoint().getX();
+
+        //Linked if-statements for finding neighbours of a given node, based on the math of the grid
+        //the AI uses on top of the map
         if (index % WIDTH_OF_GRID != WIDTH_OF_GRID - 1 && !grid[index + 1]) {
             neighbors.add(createNode(1, 0, parent, end, STRAIGHT_COST));
         }
@@ -89,10 +109,15 @@ public class AStar implements AIService {
         if (index % WIDTH_OF_GRID != WIDTH_OF_GRID - 1 && index + WIDTH_OF_GRID <= WIDTH_OF_GRID * HEIGHT_OF_GRID - 1 && !grid[index + WIDTH_OF_GRID]) {
             neighbors.add(createNode(1, 1, parent, end, DIAGONAL_COST));
         }
+
+        //Loop for checking wether a node is previously walked on
         for (Node node : neighbors) {
+            //If it is not in the previously marked nodes, and is not in the fringe, it is added to the fringe
             if (usedNodes.contains(node)) continue;
             if (!fringe.contains(node)) {
                 fringe.add(node);
+            //checks for each node in the fringe if there is another node in the fringe that is better
+            //compared to the one we are standing on, based on the cost and heuristic of the pathfinding
             } else {
                 for (Node temp : fringe) {
                     if (temp.equals(node)) {
@@ -106,6 +131,12 @@ public class AStar implements AIService {
         }
     }
 
+    /**
+     * Updates the grid based on the obstacles/objects that are loaded in when a new room is loaded
+     * Also places the walls of the room
+     * @param world
+     * @param gameData
+     */
     void updateGrid(World world, GameData gameData) {
         for (Entity entity : world.getEntities()) {
             switch (entity.getEntityType()) {
@@ -128,6 +159,12 @@ public class AStar implements AIService {
         }
     }
 
+
+    /**
+     * Method for calculating a point to a grid coordinate #quickMaths
+     * @param point
+     * @return Point
+     */
     private Point toGrid(Point point) {
         // TODO If you place an entity off the map, then in the edge there will be a blocked path
         int xGridCoordinate = (int) point.getX() / SIZE_OF_CELL;
@@ -153,7 +190,15 @@ public class AStar implements AIService {
         return new Point(x, y);
     }
 
-
+    /**
+     * Creates a node with a heuristic for the AStar to use when needed
+     * @param x parents x-value
+     * @param y parents y-value
+     * @param parent parent-node reference
+     * @param end the end-point of the astar
+     * @param cost to the goal
+     * @return
+     */
     private Node createNode(int x, int y, Node parent, Node end, float cost) {
         Point newPoint = new Point(parent.getPoint().getX() + x, parent.getPoint().getY() + y);
         return new Node(newPoint, calculateHeuristic(newPoint, end.getPoint()), cost + parent.getCost(), parent);
