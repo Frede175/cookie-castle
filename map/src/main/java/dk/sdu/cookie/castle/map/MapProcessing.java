@@ -1,16 +1,12 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entity;
-import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.map.entities.door.Door;
-
-import java.util.Collection;
-import java.util.List;
 
 public class MapProcessing implements IEntityProcessingService {
 
