@@ -98,12 +98,8 @@ public class LifePart implements EntityPart {
 
         // Regens health
         health += buffedHealthRegen;
+        if (health > maxHealth) health = maxHealth;
 
-        // Decreases health based on damage taken and damage reduction (NOT DONE YET)
-        if (isHit) {
-            health =- 1;
-            isHit = false;
-        }
         if (health <= 0) {
             dead = true;
         }

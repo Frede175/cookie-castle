@@ -28,9 +28,17 @@ public class AStar implements AIService {
 
     @Override
     public LinkedList<Point> calculateRoute(Point start, Point end) {
+        fringe.clear();
+        usedNodes.clear();
         LinkedList<Point> route = new LinkedList<>();
         Point startGrid = toGrid(start);
         Point endGrid = toGrid(end);
+
+        if (startGrid.getX() == endGrid.getX() && startGrid.getY() == endGrid.getY()) {
+            route.add(end);
+            return route;
+        }
+
         Node startNode = new Node(startGrid, calculateHeuristic(startGrid, endGrid), 0, null);
         Node endNode = new Node(endGrid, 0, 0, null);
         findNeighbours(startNode, endNode);
@@ -40,6 +48,7 @@ public class AStar implements AIService {
             usedNodes.add(nextNode);
             nextNode = fringe.poll();
         }
+
         if (nextNode.equals(endNode)) {
             route.addFirst(end);
             nextNode = nextNode.getParent();
@@ -102,6 +111,7 @@ public class AStar implements AIService {
     }
 
     void updateGrid(World world, GameData gameData) {
+        Arrays.fill(grid, false);
         for (Entity entity : world.getEntities()) {
             switch (entity.getEntityType()) {
                 case STATIC_OBSTACLE:
