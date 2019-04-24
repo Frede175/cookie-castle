@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The GameData class keeps track of the keys used for the game,
+ * and it is also an overall event-handler for the game
+ */
 public class GameData {
 
     private float delta;

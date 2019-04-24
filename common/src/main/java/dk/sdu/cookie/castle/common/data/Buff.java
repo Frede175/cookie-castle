@@ -1,5 +1,8 @@
 package dk.sdu.cookie.castle.common.data;
 
+/**
+ * Buff enum class, to be able to have temporary buffs in the game
+ */
 public enum Buff {
     DAMAGE,
     MOVEMENT_SPEED,

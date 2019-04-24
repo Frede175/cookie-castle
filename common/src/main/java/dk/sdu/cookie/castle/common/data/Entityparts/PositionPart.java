@@ -6,7 +6,7 @@ import dk.sdu.cookie.castle.common.data.GameData;
 
 /**
  *
- * @author Alexander
+ * @author niemeijeren
  */
 public class PositionPart implements EntityPart {
 

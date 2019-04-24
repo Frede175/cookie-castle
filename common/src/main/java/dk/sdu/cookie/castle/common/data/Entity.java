@@ -7,6 +7,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Entity class
+ * All classes/elements in the game that have to be visually shown in the game are a subclass of Entity.
+ * This is the super-class to all "objects" in the game, and therefore contains a list of Entity-parts
+ * The entityParts are specifically given to each subclass in their specific plugin.
+ */
 public class Entity implements Serializable {
     private final UUID ID = UUID.randomUUID();
 

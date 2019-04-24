@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
- * @author jcs
+ * The World class is the overall object that has a list of all the entities in the world at a given time
+ * this will be all the entities that have to be shown in the current room of the map
  */
 public class World {
 

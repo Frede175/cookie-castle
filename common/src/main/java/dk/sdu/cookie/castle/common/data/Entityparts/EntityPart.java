@@ -11,7 +11,7 @@ import dk.sdu.cookie.castle.common.data.GameData;
 
 /**
  *
- * @author Alexander
+ * @author niemeijeren
  */
 public interface EntityPart {
     void process(GameData gameData, Entity entity);

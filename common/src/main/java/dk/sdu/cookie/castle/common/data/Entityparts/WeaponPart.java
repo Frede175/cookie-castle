@@ -21,6 +21,13 @@ public class WeaponPart implements EntityPart {
         return attackSpeed;
     }
 
+    /**
+     * Weaponpart is used for items of the type "weapon"
+     * This item will alter the dmg and range of an entity
+     * @param range
+     * @param damage
+     * @param attackSpeed
+     */
     public WeaponPart(float range, float damage, float attackSpeed) {
         this.range = range;
         this.damage = damage;
