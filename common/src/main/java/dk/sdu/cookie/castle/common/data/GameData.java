@@ -1,9 +1,12 @@
 package dk.sdu.cookie.castle.common.data;
 
+import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.events.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -17,6 +20,7 @@ public class GameData {
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
+    private Map<String, Asset> activeAssets = new ConcurrentHashMap<>();
 
     public void addEvent(Event e) {
         events.add(e);
@@ -43,7 +47,7 @@ public class GameData {
     }
 
     public void setDisplayWidth(int width) {
-        this.displayWidth = width;
+        displayWidth = width;
     }
 
     public int getDisplayWidth() {
@@ -51,7 +55,7 @@ public class GameData {
     }
 
     public void setDisplayHeight(int height) {
-        this.displayHeight = height;
+        displayHeight = height;
     }
 
     public int getDisplayHeight() {
@@ -67,5 +71,21 @@ public class GameData {
         }
 
         return r;
+    }
+
+    public Map<String, Asset> getActiveAssets() {
+        return activeAssets;
+    }
+
+    public void addAsset(Asset asset) {
+        activeAssets.put(asset.getId(), asset);
+    }
+
+    public void addAssets(Map<String, Asset> assets) {
+        activeAssets.putAll(assets);
+    }
+
+    public void removeAssets(Map<String, Asset> assets) {
+        activeAssets.keySet().removeAll(assets.keySet());
     }
 }

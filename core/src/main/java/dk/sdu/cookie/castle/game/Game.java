@@ -2,22 +2,21 @@ package dk.sdu.cookie.castle.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 import dk.sdu.cookie.castle.game.managers.GameInputProcessor;
+import dk.sdu.cookie.castle.game.managers.MyAssetManager;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -26,52 +25,32 @@ public class Game implements ApplicationListener {
     private static final List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postProcessingServices = new CopyOnWriteArrayList<>();
     private static final List<IEntityProcessingService> processingServices = new CopyOnWriteArrayList<>();
+    private static final int displayWidth = 1280;
+    private static final int displayHeight = 720;
     private static OrthographicCamera cam;
     private static final GameData gameData = new GameData();
     private static ShapeRenderer sr;
     private static final World world = new World();
-    private SpriteBatch batch;
-    private Texture texture;
+    private static SpriteBatch batch;
+    private MyAssetManager assetManager;
 
     public Game() {
+        gameData.setDisplayWidth(displayWidth);
+        gameData.setDisplayHeight(displayHeight);
     }
 
     @Override
     public void create() {
+        System.out.println("Game created");
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
+        assetManager = new MyAssetManager();
 
-        testFiles();
-
-        gameData.setDisplayWidth(Gdx.graphics.getWidth());
-        gameData.setDisplayHeight(Gdx.graphics.getHeight());
-
-        cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
+        cam = new OrthographicCamera(displayWidth, displayHeight);
+        cam.translate(displayWidth / 2, displayHeight / 2);
         cam.update();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-    }
-
-    private void testFiles() {
-        String path = "/images/background.png";
-
-        // getFile
-        File getFile = new File(this.getClass().getResource(path).getFile());
-        FileHandle getFileHandle = new FileHandle(getFile);
-        System.out.println("Exists through getFile: " + getFileHandle.exists());
-
-        // Gdx.files
-//        System.out.println("GDX - Local storage path: " + Gdx.files.getLocalStoragePath());
-        FileHandle gdxFile = Gdx.files.classpath(path);
-        System.out.println("Exists through GDX: " + gdxFile.exists());
-
-        // InputStream
-        InputStream is = this.getClass().getResourceAsStream(path);
-        FileHandle isFileHandle = new FileHandle("image");
-        isFileHandle.write(is, false);
-        System.out.println("Exists through InputStream: " + isFileHandle.exists());
-        texture = new Texture(isFileHandle);
     }
 
     @Override
@@ -81,6 +60,11 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+        // Ensure that all assets have been loaded before continuing
+        if (!assetManager.update(gameData)) {
+            return;
+        }
+
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -89,11 +73,24 @@ public class Game implements ApplicationListener {
         gameData.getKeys().update();
 
         batch.begin();
-        batch.draw(texture, 0, 0);
+
+        // Draw background
+        Texture background = assetManager.getBackground();
+        batch.draw(background, 0, 0);
+        drawEntities();
         batch.end();
 
-        update();
         draw();
+        update();
+    }
+
+    private void drawEntities() {
+        for (Entity entity : world.getEntities()) {
+            if (entity.getCurrentTextureId() != null && !entity.getCurrentTextureId().isEmpty()) {
+                PositionPart position = entity.getPart(PositionPart.class);
+                batch.draw(assetManager.get(entity.getCurrentTextureId(), Texture.class), position.getX(), position.getY());
+            }
+        }
     }
 
     private void update() {
@@ -126,6 +123,14 @@ public class Game implements ApplicationListener {
 
             sr.end();
         }
+    }
+
+    int getDisplayWidth() {
+        return displayWidth;
+    }
+
+    int getDisplayHeight() {
+        return displayHeight;
     }
 
     @Override

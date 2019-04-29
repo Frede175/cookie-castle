@@ -2,10 +2,18 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="Osmorc" url="file://$PROJECT_DIR$/ai" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/bullet" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/collision" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/common" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/enemy" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/item" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/libgdx" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/map" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/pathfinder" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/player" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/raycasting" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -14,7 +22,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_10" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="Osmorc">
+    <option name="bundlesOutputPath" value="$PROJECT_DIR$/out/bundles" />
+    <option name="frameworkInstanceName" value="Felix (6.0.2)" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_10" project-jdk-name="10" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

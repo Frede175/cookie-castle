@@ -6,22 +6,21 @@ import org.osgi.framework.BundleContext;
 
 public class Activator {
 
-    private Game g;
     private LwjglApplication app;
 
     private void activate(BundleContext context) {
         System.out.println("Starting Core!");
 
-        g = new Game();
+        Game game = new Game();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Asteroids";
-        cfg.width = 1280;
-        cfg.height = 720;
+        cfg.width = game.getDisplayWidth();
+        cfg.height = game.getDisplayHeight();
         cfg.useGL30 = false;
         cfg.resizable = false;
 
-        app = new LwjglApplication(g, cfg);
+        app = new LwjglApplication(game, cfg);
     }
 
     private void deactivate() {

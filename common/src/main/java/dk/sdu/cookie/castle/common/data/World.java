@@ -26,9 +26,13 @@ public class World {
     public void removeEntity(Entity entity) {
         entityMap.remove(entity.getID());
     }
-    
+
     public Collection<Entity> getEntities() {
         return entityMap.values();
+    }
+
+    public Map<String, Entity> getEntityMap() {
+        return entityMap;
     }
 
     public <E extends Entity> List<Entity> getEntities(Class<E>... entityTypes) {
@@ -46,5 +50,4 @@ public class World {
     public Entity getEntity(String ID) {
         return entityMap.get(ID);
     }
-
 }
