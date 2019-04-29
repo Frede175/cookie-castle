@@ -23,7 +23,6 @@ public class PlayerPlugin implements IGamePluginService {
         gameData.addAssets(assets);
         player = createPlayer(gameData);
         world.addEntity(player);
-        System.out.println("Started player");
     }
 
     private void initializeAssets() {
@@ -67,6 +66,5 @@ public class PlayerPlugin implements IGamePluginService {
     public void stop(GameData gameData, World world) {
         world.removeEntity(player);
         gameData.removeAssets(assets);
-        System.out.println("Removed player");
     }
 }

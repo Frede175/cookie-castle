@@ -32,8 +32,6 @@ public class EnemyProcessing implements IEntityProcessingService {
                         break;
                     case PLAYER_BULLET:
                         DamagePart damagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
-                        System.out.println("Damage: " + damagePart.getDamage());
-                        System.out.println("Health: " + lifePart.getHealth());
                         lifePart.setHealth(lifePart.getHealth() - damagePart.getDamage());
                         break;
                 }

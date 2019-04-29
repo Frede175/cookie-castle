@@ -38,9 +38,7 @@ public class AIProcessing implements IEntityProcessingService {
 
                 if (AIMovingPart.needUpdate()) {
                     PositionPart positionPart = enemy.getPart(PositionPart.class);
-                    long start = System.currentTimeMillis();
                     LinkedList<Point> route = aStar.calculateRoute(new Point(positionPart.getX(), positionPart.getY()), new Point(playerPos.getX(), playerPos.getY()));
-                    System.out.println("A* tooK: " + (System.currentTimeMillis() - start) + " ms");
                     AIMovingPart.setRoute(route);
                 }
             }
