@@ -3,6 +3,7 @@ package dk.sdu.cookie.castle.common.data.Entityparts;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
+
 public class PositionPart implements EntityPart {
 
     private float x;

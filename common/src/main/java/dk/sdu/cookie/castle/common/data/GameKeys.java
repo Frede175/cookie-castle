@@ -1,5 +1,9 @@
 package dk.sdu.cookie.castle.common.data;
 
+/**
+ * Definition of the keys used to play the game
+ * also registers key-presses
+ */
 public class GameKeys {
 
     private static boolean[] keys;

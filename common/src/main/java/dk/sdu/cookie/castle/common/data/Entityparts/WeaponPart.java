@@ -33,7 +33,8 @@ public class WeaponPart implements EntityPart {
     }
 
     /**
-     * Constructor for weapon part
+     * Weaponpart is used for items of the type "weapon"
+     * This item will alter the dmg and range of an entity     
      * @param range The range the bullet flies before dying. (pixels)
      * @param damage The damage done to the entity
      * @param attackSpeed The speed at which the weapon can be shot. (rounds per second)
