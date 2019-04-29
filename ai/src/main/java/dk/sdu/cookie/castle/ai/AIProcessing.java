@@ -32,6 +32,9 @@ public class AIProcessing implements IEntityProcessingService {
                 break;
             }
         }
+        
+        if (player == null) return;
+
         // Finds all enemies, and get a hold of their movingpart
         for (Entity enemy : world.getEntities()) {
             if (enemy.getEntityType() == EntityType.ENEMY) {
@@ -41,7 +44,6 @@ public class AIProcessing implements IEntityProcessingService {
                 // Updates the list of points to walk to get to the player
                 if (AIMovingPart.needUpdate()) {
                     PositionPart positionPart = enemy.getPart(PositionPart.class);
-
                     LinkedList<Point> route = aStar.calculateRoute(new Point(positionPart.getX(), positionPart.getY()), new Point(playerPos.getX(), playerPos.getY()));
                     AIMovingPart.setRoute(route);
                 }

@@ -6,17 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ai" />
+        <module name="enemy" />
         <module name="bullet" />
-        <module name="collision" />
         <module name="common" />
+        <module name="raycasting" />
+        <module name="collision" />
         <module name="core" />
-        <module name="item" />
         <module name="libgdx" />
         <module name="map" />
+        <module name="item" />
+        <module name="ai" />
         <module name="player" />
-        <module name="raycasting" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="map" target="10" />
+    </bytecodeTargetLevel>
   </component>
 </project>

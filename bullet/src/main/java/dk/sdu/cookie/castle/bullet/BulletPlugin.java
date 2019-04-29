@@ -6,12 +6,17 @@ import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
 public class BulletPlugin implements IGamePluginService {
+
     @Override
     public void start(GameData gameData, World world) {
-
     }
 
-    // keeps track of removing bullets when timer is up
+    /**
+     * Removes the Entity from the world, if it is of the Bullet Class
+     *
+     * @param gameData The GameData
+     * @param world The World
+     */
     @Override
     public void stop(GameData gameData, World world) {
         for (Entity e : world.getEntities()) {

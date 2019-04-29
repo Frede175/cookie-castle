@@ -7,6 +7,7 @@
     <file type="Osmorc" url="file://$PROJECT_DIR$/collision" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/common" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/enemy" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/item" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/libgdx" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/map" />
@@ -20,6 +21,10 @@
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
+  </component>
+  <component name="Osmorc">
+    <option name="bundlesOutputPath" value="$PROJECT_DIR$/out/bundles" />
+    <option name="frameworkInstanceName" value="Felix (6.0.2)" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_10" project-jdk-name="10" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

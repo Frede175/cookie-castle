@@ -10,6 +10,15 @@ import dk.sdu.cookie.castle.common.util.Vector2f;
 
 public class BulletProcessing implements IEntityProcessingService {
 
+    /**
+     * This method checks if any entities in the world, which has a ShootingPart is trying to shoot and if it can, then
+     * it then creates a Bullet if true. Furthermore it checks for collision on the CollisionPart, and then process'
+     * the rest of the Parts.
+     *
+     * @param gameData The GameData
+     * @param world The World
+     */
+
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
@@ -38,7 +47,7 @@ public class BulletProcessing implements IEntityProcessingService {
             BulletMovingPart bulletMovingPart = bullet.getPart(BulletMovingPart.class);
             CollisionPart collisionPart = bullet.getPart(CollisionPart.class);
             DamagePart damagePart = bullet.getPart(DamagePart.class);
-            //If duration is exceeded, remove the bullet.
+            // If duration is exceeded, remove the bullet.
             if (timerPart.getExpiration() < 0) {
                 world.removeEntity(bullet);
             }
@@ -73,10 +82,15 @@ public class BulletProcessing implements IEntityProcessingService {
     }
 
 
-    // Creates a bullet based on the players location
-    //gives the bullet the needed parts for the movement and collision to work,
-    // sets the damagepart and bulletMovingPart for the bullet to contain the info for dmg and the movement for a bullet
-    // Sets the bullet-type to either enemy or player, depending on who shot the bullet
+    /**
+     * Creates a Bullet with all the needed parts and parameters, and also determines, which Entity shot it
+     *
+     * @param x The starting x position of the Bullet
+     * @param y The starting y position of the Bullet
+     * @param radians The starting radians of the Bullet
+     * @param entity The Entity that shoots the Bullet
+     * @return
+     */
     private Entity createBullet(float x, float y, float radians, Entity entity) {
         Entity b = new Bullet();
 
@@ -99,8 +113,12 @@ public class BulletProcessing implements IEntityProcessingService {
         return b;
     }
 
-
-
+    /**
+     * This method calculates the position and shape of the entity, based on the entitys x, y and radius.
+     * Then updates the ShapeX and ShapeY
+     *
+     * @param entity The entity, which shape is about to be updated
+     */
     private void updateShape(Entity entity) {
         float[] shapeX = entity.getShapeX();
         float[] shapeY = entity.getShapeY();
