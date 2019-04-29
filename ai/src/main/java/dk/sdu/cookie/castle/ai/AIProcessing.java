@@ -28,6 +28,9 @@ public class AIProcessing implements IEntityProcessingService {
                 break;
             }
         }
+
+        if (player == null) return;
+
         // Change to find direct enemy class
         for (Entity enemy : world.getEntities()) {
             if (enemy.getEntityType() == EntityType.ENEMY) {
@@ -35,7 +38,6 @@ public class AIProcessing implements IEntityProcessingService {
 
                 if (AIMovingPart.needUpdate()) {
                     PositionPart positionPart = enemy.getPart(PositionPart.class);
-
                     LinkedList<Point> route = aStar.calculateRoute(new Point(positionPart.getX(), positionPart.getY()), new Point(playerPos.getX(), playerPos.getY()));
                     AIMovingPart.setRoute(route);
                 }

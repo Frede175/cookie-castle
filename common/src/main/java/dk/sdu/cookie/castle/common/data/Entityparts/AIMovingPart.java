@@ -12,7 +12,7 @@ public class AIMovingPart implements EntityPart {
     private final float UPDATE_TIME = 0.5f;
 
     private float speed;
-    private LinkedList<Point> route;
+    private LinkedList<Point> route = new LinkedList<>();
     private boolean update = true;
 
     private float nextUpdate = UPDATE_TIME;
@@ -45,22 +45,28 @@ public class AIMovingPart implements EntityPart {
             return;
         }
 
+        float deltaSpeed = speed * gameData.getDelta();
+
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
 
         Vector2f to = new Vector2f(route.getFirst().getX(), route.getFirst().getY());
 
+        while (Math.abs(x - to.getX()) <= deltaSpeed && Math.abs(y - to.getY()) <= deltaSpeed) {
+            route.removeFirst();
+            if (route.isEmpty()) return;
+            to = new Vector2f(route.getFirst().getX(), route.getFirst().getY());
+        }
+
         Vector2f pos = new Vector2f(x, y);
 
-        Vector2f delta = to.subtract(pos).normalize().mult(speed * gameData.getDelta());
+        Vector2f delta = to.subtract(pos).normalize().mult(deltaSpeed);
 
         x += delta.getX();
         y += delta.getY();
 
-        if (Math.abs(x - to.getX()) <= speed && Math.abs(y - to.getY()) <= speed) {
-            route.removeFirst();
-        }
+        positionPart.setRadians((float)Math.atan2(delta.getY(), delta.getX()));
 
         positionPart.setPosition(x, y);
     }
