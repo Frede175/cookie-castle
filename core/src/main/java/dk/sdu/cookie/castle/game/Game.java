@@ -25,6 +25,8 @@ public class Game implements ApplicationListener {
     private static final List<IGamePluginService> plugins = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postProcessingServices = new CopyOnWriteArrayList<>();
     private static final List<IEntityProcessingService> processingServices = new CopyOnWriteArrayList<>();
+    private static final int displayWidth = 1280;
+    private static final int displayHeight = 720;
     private static OrthographicCamera cam;
     private static final GameData gameData = new GameData();
     private static ShapeRenderer sr;
@@ -33,6 +35,8 @@ public class Game implements ApplicationListener {
     private MyAssetManager assetManager;
 
     public Game() {
+        gameData.setDisplayWidth(displayWidth);
+        gameData.setDisplayHeight(displayHeight);
     }
 
     @Override
@@ -42,11 +46,8 @@ public class Game implements ApplicationListener {
         sr = new ShapeRenderer();
         assetManager = new MyAssetManager();
 
-        gameData.setDisplayWidth(Gdx.graphics.getWidth());
-        gameData.setDisplayHeight(Gdx.graphics.getHeight());
-
-        cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
+        cam = new OrthographicCamera(displayWidth, displayHeight);
+        cam.translate(displayWidth / 2, displayHeight / 2);
         cam.update();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
@@ -122,6 +123,14 @@ public class Game implements ApplicationListener {
 
             sr.end();
         }
+    }
+
+    int getDisplayWidth() {
+        return displayWidth;
+    }
+
+    int getDisplayHeight() {
+        return displayHeight;
     }
 
     @Override

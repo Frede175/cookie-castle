@@ -10,6 +10,8 @@
     <file type="Osmorc" url="file://$PROJECT_DIR$/enemy" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/item" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/libgdx" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/map" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/pathfinder" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/player" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/raycasting" />
   </component>

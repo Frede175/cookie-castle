@@ -13,6 +13,7 @@
         <module name="collision" />
         <module name="core" />
         <module name="libgdx" />
+        <module name="map" />
         <module name="item" />
         <module name="ai" />
         <module name="player" />

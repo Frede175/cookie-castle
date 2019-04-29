@@ -38,6 +38,9 @@ public class BulletProcessing implements IEntityProcessingService {
                 }
             }
         }
+
+        // loop to keep track of all the bullets in the world
+        // Keeping track of collision, dmg, and if it should be removed from the game
         for (Entity bullet : world.getEntities(Bullet.class)) {
             PositionPart positionPart = bullet.getPart(PositionPart.class);
             TimerPart timerPart = bullet.getPart(TimerPart.class);
@@ -49,6 +52,7 @@ public class BulletProcessing implements IEntityProcessingService {
                 world.removeEntity(bullet);
             }
 
+            // Checks what the bullet hits
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
@@ -61,24 +65,22 @@ public class BulletProcessing implements IEntityProcessingService {
                             world.removeEntity(bullet);
                         }
                         break;
-                    case PLAYER_BULLET:
-                        System.out.println("Hitting another player bullet");
-                        break;
                     default:
                         break;
                 }
                 collisionPart.setIsHit(false);
             }
 
+            // Keep refreshing all the data concerning bullets
             positionPart.process(gameData, bullet);
             timerPart.process(gameData, bullet);
             bulletMovingPart.process(gameData, bullet);
             collisionPart.process(gameData, bullet);
             damagePart.process(gameData, bullet);
-
             updateShape(bullet);
         }
     }
+
 
     /**
      * Creates a Bullet with all the needed parts and parameters, and also determines, which Entity shot it
@@ -89,7 +91,6 @@ public class BulletProcessing implements IEntityProcessingService {
      * @param entity The Entity that shoots the Bullet
      * @return
      */
-
     private Entity createBullet(float x, float y, float radians, Entity entity) {
         Entity b = new Bullet();
 
