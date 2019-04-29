@@ -36,7 +36,7 @@ public class Vector2f {
 
     /**
      *
-     * @return en vektor der ligger vinkelret på den givne vektor
+     * @return the perpendicular vektor
      */
     public Vector2f perp() {
         return new Vector2f(-y , x);
@@ -44,7 +44,7 @@ public class Vector2f {
 
     /**
      *
-     * @return en vektor i samme retning med længden 1
+     * @return a vektor with the same direction, only with length "1"
      */
     public Vector2f normalize() {
         float len = (float) Math.sqrt(x*x + y*y);
