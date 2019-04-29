@@ -44,7 +44,7 @@ public class Vector2f {
 
     /**
      *
-     * @return a vektor with the same direction, only with length "1"
+     * @return a vector with the same direction, only with length "1"
      */
     public Vector2f normalize() {
         float len = (float) Math.sqrt(x*x + y*y);
