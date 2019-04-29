@@ -62,7 +62,6 @@ public class Map {
     public void generateMap(int numberOfRooms) {
 
 
-        System.out.println("I am run");
         // Creates the ArrayList that contains all the free rooms.
         ArrayList<Room> freeRooms = createRooms(numberOfRooms);
 

@@ -62,8 +62,6 @@ public class Room {
         door.add(position.getPositionPart());
         door.add(new CollisionPart());
         door.setEntityType(EntityType.DOOR);
-        System.out.println(position.getPositionPart().getX()+ " is x, " + position.getPositionPart().getY() + " is y");
-        System.out.println("Point = " + getPoint().getX() + ", " + getPoint().getY());
         entityList.add(door);
     }
 
