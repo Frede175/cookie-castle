@@ -7,6 +7,7 @@ import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
 public class ItemProcessing implements IEntityProcessingService {

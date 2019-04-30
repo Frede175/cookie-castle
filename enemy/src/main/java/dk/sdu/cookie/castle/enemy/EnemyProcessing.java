@@ -4,6 +4,7 @@ import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.enemy.Enemy;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
 public class EnemyProcessing implements IEntityProcessingService {

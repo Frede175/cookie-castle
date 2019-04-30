@@ -50,10 +50,7 @@ public class Room {
     }
 
     public boolean checkIfFree(DoorPosition position) {
-        if(!exits.contains(position)) {
-            return true;
-        }
-        return false;
+        return !exits.contains(position);
     }
 
     public void setDoor(DoorPosition position, Room room) {

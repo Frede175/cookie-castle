@@ -1,4 +1,4 @@
-package dk.sdu.cookie.castle.enemy;
+package dk.sdu.cookie.castle.common.enemy;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 

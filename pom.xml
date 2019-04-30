@@ -20,6 +20,8 @@
         <module>player</module>
         <module>bullet</module>
         <module>raycasting</module>
+        <module>commonEnemy</module>
+        <module>commonItem</module>
     </modules>
 
     <properties>
