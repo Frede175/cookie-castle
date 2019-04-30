@@ -31,9 +31,7 @@ public class PlayerProcessing implements IEntityProcessingService {
                         break;
                     case ENEMY_BULLET:
                         DamagePart damagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
-                        System.out.println("Got hit for " + damagePart.getDamage() + " damage");
                         lifePart.setHealth(lifePart.getHealth() - damagePart.getDamage());
-                        System.out.println("Life is now " + lifePart.getHealth());
                         break;
                     case DOOR:
                         break;
@@ -44,12 +42,13 @@ public class PlayerProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
+            lifePart.process(gameData, player);
             if (lifePart.isDead()) {
                 world.removeEntity(player);
             }
+
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
-            lifePart.process(gameData, player);
             inventoryPart.process(gameData, player);
             shootingPart.process(gameData, player);
 
