@@ -12,8 +12,6 @@ import dk.sdu.cookie.castle.common.util.Vector2f;
 public class EnemyProcessing implements IEntityProcessingService {
 
     private static ILineOfSightService lineOfSightService;
-    private PositionPart playerPositionPart;
-
 
     /**
      * Process method for the Enemy. This method checks for collisionpart, and then afterwards updates all the
@@ -57,14 +55,16 @@ public class EnemyProcessing implements IEntityProcessingService {
                 Vector2f playerPosition = new Vector2f(playerPositionPart.getX(), playerPositionPart.getY());
                 Vector2f enemyPosition = new Vector2f(positionPart.getX(), positionPart.getY());
                 if (lineOfSightService.isInlineOfSight(world, enemyPosition, playerPosition)) {
-                    shootingPart.setShooting(true);
-
-                    /* if (weaponPart.getRange() == enemyPosition.distance(playerPosition) + 10) {
+                    if (weaponPart.getRange() >= enemyPosition.distance(playerPosition) + 10) {
                         aiMovingPart.setShouldMove(false);
-                    } */
+                        Vector2f delta = playerPosition.subtract(enemyPosition);
+                        positionPart.setRadians((float) Math.atan2(delta.getY(), delta.getX()));
+                    } else {
+                        aiMovingPart.setShouldMove(true);
+                    }
+                    shootingPart.setShooting(true);
                 }
             }
-
 
 
             aiMovingPart.process(gameData, enemy);

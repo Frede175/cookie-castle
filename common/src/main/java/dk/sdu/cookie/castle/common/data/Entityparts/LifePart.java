@@ -97,7 +97,7 @@ public class LifePart implements EntityPart {
         }
 
         // Regens health
-        health += buffedHealthRegen;
+        health += buffedHealthRegen * gameData.getDelta();
         if (health > maxHealth) health = maxHealth;
 
         if (health <= 0) {
