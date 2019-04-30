@@ -39,6 +39,7 @@ public class EnemyProcessing implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
             CollisionPart collisionPart = enemy.getPart(CollisionPart.class);
             ShootingPart shootingPart = enemy.getPart(ShootingPart.class);
+            WeaponPart weaponPart = enemy.getPart(WeaponPart.class);
 
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
@@ -57,8 +58,14 @@ public class EnemyProcessing implements IEntityProcessingService {
                 Vector2f enemyPosition = new Vector2f(positionPart.getX(), positionPart.getY());
                 if (lineOfSightService.isInlineOfSight(world, enemyPosition, playerPosition)) {
                     shootingPart.setShooting(true);
+
+                    /* if (weaponPart.getRange() == enemyPosition.distance(playerPosition) + 10) {
+                        aiMovingPart.setShouldMove(false);
+                    } */
                 }
             }
+
+
 
             aiMovingPart.process(gameData, enemy);
             positionPart.process(gameData, enemy);
