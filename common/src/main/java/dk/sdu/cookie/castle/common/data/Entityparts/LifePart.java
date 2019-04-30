@@ -1,7 +1,6 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
 
-
 import dk.sdu.cookie.castle.common.data.Buff;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -49,7 +48,6 @@ public class LifePart implements EntityPart {
     }
 
 
-
     @Override
     public void process(GameData gameData, Entity entity) {
         InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
@@ -58,15 +56,15 @@ public class LifePart implements EntityPart {
         float buffedHealthRegen = healthRegen;
         float buffedDamageReduction = damageReduction;
 
-        if(inventoryPart != null) {
+        if (inventoryPart != null) {
             for (ItemPart itemPart : inventoryPart.getItemParts()) {
 
                 // Checks if the buff is permanent, if it is add the health and remove the item from the inventory
-                if(itemPart.isPermanentBuff()) {
+                if (itemPart.isPermanentBuff()) {
 
                     // Checks if the healing over heals the maximum health limit
                     float healing = itemPart.getBuff().getSpecificBuff(Buff.HEALTH);
-                    if(health + healing <= maxHealth) {
+                    if (health + healing <= maxHealth) {
                         health += healing;
                     } else {
                         health = maxHealth;
@@ -80,16 +78,16 @@ public class LifePart implements EntityPart {
                 }
 
                 // Checks if the item is a buff
-                if(!itemPart.isWeapon()) {
+                if (!itemPart.isWeapon()) {
 
                     // Gets all buffs
                     Map<Buff, Float> buffs = itemPart.getBuff().getBuffs();
 
                     // Checks if the buff contains health regen and damage reduction, and adds that to the base
-                    if(buffs.containsKey(Buff.HEALTH_REGEN)) {
+                    if (buffs.containsKey(Buff.HEALTH_REGEN)) {
                         buffedHealthRegen += buffs.get(Buff.HEALTH_REGEN);
                     }
-                    if(buffs.containsKey(Buff.DAMAGE_REDUCTION)) {
+                    if (buffs.containsKey(Buff.DAMAGE_REDUCTION)) {
                         buffedDamageReduction += buffs.get(Buff.DAMAGE_REDUCTION);
                     }
                 }

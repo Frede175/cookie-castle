@@ -28,6 +28,7 @@ public class EnemyProcessing implements IEntityProcessingService {
         for (Entity player : world.getEntities()) {
             if (player.getEntityType() == EntityType.PLAYER) {
                 playerPositionPart = player.getPart(PositionPart.class);
+                break;
             }
         }
 
