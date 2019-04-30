@@ -7,6 +7,7 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.map.entities.door.Door;
+import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 public class MapProcessing implements IEntityProcessingService {
 
@@ -26,7 +27,20 @@ public class MapProcessing implements IEntityProcessingService {
                         unloadRoom(world);
                         loadRoom(room, world);
                         PositionPart doorPos = door.getPart(PositionPart.class);
-
+                        PositionPart playerPos = collisionPart.getCollidingEntity().getPart(PositionPart.class);
+                        if (DoorPosition.TOP.getPositionPart() == doorPos) {
+                            PositionPart bottom = DoorPosition.BOTTOM.getPositionPart();
+                            playerPos.setPosition(bottom.getX(), bottom.getY() + 35);
+                        } else if (DoorPosition.BOTTOM.getPositionPart() == doorPos) {
+                            PositionPart top = DoorPosition.TOP.getPositionPart();
+                            playerPos.setPosition(top.getX(), top.getY() - 35);
+                        } else if (DoorPosition.LEFT.getPositionPart() == doorPos) {
+                            PositionPart right = DoorPosition.RIGHT.getPositionPart();
+                            playerPos.setPosition(right.getX() - 35, right.getY());
+                        } else {
+                            PositionPart left = DoorPosition.LEFT.getPositionPart();
+                            playerPos.setPosition(left.getX() + 35, left.getY());
+                        }
                         System.out.println("Go to " + room.toString());
                         break;
                 }

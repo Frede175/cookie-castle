@@ -59,6 +59,7 @@ public class Room {
     public void setDoor(DoorPosition position, Room room) {
         exits.add(position);
         Door door = new Door(room);
+        door.setRadius(26);
         door.add(position.getPositionPart());
         door.add(new CollisionPart());
         door.setEntityType(EntityType.DOOR);
