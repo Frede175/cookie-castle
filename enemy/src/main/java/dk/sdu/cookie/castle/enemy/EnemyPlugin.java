@@ -40,7 +40,7 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.add(new CollisionPart());
         enemyShip.setEntityType(EntityType.ENEMY);
 
-        WeaponPart weaponPart = new WeaponPart(400f,2f,2f);
+        WeaponPart weaponPart = new WeaponPart(500f,2f,3f);
         enemyShip.add(weaponPart);
 
         enemyShip.setShapeY(shapeY);

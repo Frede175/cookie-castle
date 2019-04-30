@@ -59,10 +59,10 @@ public class EnemyProcessing implements IEntityProcessingService {
                         aiMovingPart.setShouldMove(false);
                         Vector2f delta = playerPosition.subtract(enemyPosition);
                         positionPart.setRadians((float) Math.atan2(delta.getY(), delta.getX()));
+                        shootingPart.setShooting(true);
                     } else {
                         aiMovingPart.setShouldMove(true);
                     }
-                    shootingPart.setShooting(true);
                 }
             }
 

@@ -43,7 +43,7 @@ public class PlayerProcessing implements IEntityProcessingService {
                 }
                 collisionPart.setIsHit(false);
             }
-            System.out.println(lifePart.getHealth());
+
             if (lifePart.isDead()) {
                 world.removeEntity(player);
             }
