@@ -9,18 +9,17 @@
         <module name="enemy" />
         <module name="bullet" />
         <module name="common" />
+        <module name="commonItem" />
         <module name="raycasting" />
+        <module name="commonEnemy" />
         <module name="collision" />
         <module name="core" />
         <module name="libgdx" />
-        <module name="map" />
         <module name="item" />
+        <module name="map" />
         <module name="ai" />
         <module name="player" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="map" target="10" />
-    </bytecodeTargetLevel>
   </component>
 </project>

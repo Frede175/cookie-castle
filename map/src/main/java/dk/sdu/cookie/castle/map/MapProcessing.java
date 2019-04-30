@@ -9,6 +9,8 @@ import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
+import java.util.Iterator;
+
 public class MapProcessing implements IEntityProcessingService {
 
     private float angle = 0;
@@ -51,34 +53,36 @@ public class MapProcessing implements IEntityProcessingService {
     }
 
     private void updateShape(Entity entity) {
-        float[] shapex = entity.getShapeX();
-        float[] shapey = entity.getShapeY();
+        float[] shapeX = entity.getShapeX();
+        float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
 
         for (int i = 0; i < numPoints; i++) {
-            shapex[i] = x + (float) Math.cos(angle + radians) * 26;
-            shapey[i] = y + (float) Math.sin(angle + radians) * 26;
+            shapeX[i] = x + (float) Math.cos(angle + radians) * 26;
+            shapeY[i] = y + (float) Math.sin(angle + radians) * 26;
             angle += 2 * 3.1415f / numPoints;
         }
 
-        entity.setShapeX(shapex);
-        entity.setShapeY(shapey);
+        entity.setShapeX(shapeX);
+        entity.setShapeY(shapeY);
     }
 
     /**
      * Unloads the room
      * Clears all the entities in the current room from the world
+     *
      * @param world
      */
     private void unloadRoom(World world) {
-        for (Entity entity : Map.getInstance().getCurrentRoom().getEntityList()) {
-            if(world.getEntities().contains(entity)){
-                world.getEntities().remove(entity);
-                continue;
+        for (Iterator<Entity> it = Map.getInstance().getCurrentRoom().getEntityList().iterator(); it.hasNext(); ) {
+            Entity entity = it.next();
+
+            if (world.getEntities().contains(entity)) {
+                world.removeEntity(entity);
             } else {
-                Map.getInstance().getCurrentRoom().removeEntity(entity);
+                it.remove();
             }
         }
     }
@@ -86,6 +90,7 @@ public class MapProcessing implements IEntityProcessingService {
     /**
      * loads the new room
      * Inserting all entities from the room being loaded into the "world"
+     *
      * @param nextRoom
      * @param world
      */
