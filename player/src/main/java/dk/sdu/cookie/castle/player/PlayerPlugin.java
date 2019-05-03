@@ -40,7 +40,7 @@ public class PlayerPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Entity player = new Player();
-        player.initializeAssets(assets);
+        player.initializeAssets(this.getClass(), assets);
 
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));

@@ -23,6 +23,7 @@ public class EnemyPlugin implements IGamePluginService {
         initializeAssets();
         gameData.addAssets(assets);
         enemy = createEnemy(gameData);
+        enemy.setIsActive(true);
         world.addEntity(enemy);
 
     }
@@ -43,7 +44,7 @@ public class EnemyPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Entity enemyShip = new Enemy();
-        enemyShip.initializeAssets(assets);
+        enemyShip.initializeAssets(this.getClass(), assets);
         enemyShip.setRadius(8);
         enemyShip.add(new AIMovingPart(maxSpeed));
         enemyShip.add(new PositionPart(x, y, radians));
@@ -58,14 +59,14 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.setShapeX(shapeX);
         enemyShip.add(new ShootingPart(weaponPart.getAttackSpeed()));
 
-        enemyShip.setCurrentTexture("Cookie");
+        enemyShip.setCurrentTexture("cookie");
 
 
         return enemyShip;
     }
 
     private void initializeAssets() {
-        Asset enemyImage = new Asset("Cookie", AssetType.TEXTURE, FileType.PNG);
+        Asset enemyImage = new Asset("cookie", AssetType.TEXTURE, FileType.PNG);
         assets.put(enemyImage.getId(), enemyImage);
     }
 
