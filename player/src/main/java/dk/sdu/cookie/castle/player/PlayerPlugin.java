@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.player;
 
 import dk.sdu.cookie.castle.common.assets.Asset;
+import dk.sdu.cookie.castle.common.assets.AssetLoader;
 import dk.sdu.cookie.castle.common.assets.AssetType;
 import dk.sdu.cookie.castle.common.assets.FileType;
 import dk.sdu.cookie.castle.common.data.Entity;
@@ -10,37 +11,39 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
-    private Map<String, Asset> assets = new ConcurrentHashMap<>();
+    private Map<String, String> assets;
 
     @Override
     public void start(GameData gameData, World world) {
-        initializeAssets();
-        gameData.addAssets(assets);
+        initializeAssets(gameData);
         player = createPlayer(gameData);
         player.setIsActive(true);
         world.addEntity(player);
     }
 
-    private void initializeAssets() {
-        Asset sumo = new Asset("sumo", AssetType.TEXTURE, FileType.PNG);
-        assets.put(sumo.getId(), sumo);
+    private void initializeAssets(GameData gameData) {
+        Collection<Asset> loadingAssets = new ArrayList<>();
+        loadingAssets.add(new Asset("sumo", AssetType.TEXTURE, FileType.PNG));
+        assets = AssetLoader.loadAssets(this.getClass(), loadingAssets);
+        gameData.addAssets(loadingAssets);
     }
 
     private Entity createPlayer(GameData gameData) {
         float[] shapeX = new float[3];
         float[] shapeY = new float[3];
         float maxSpeed = 200;
-        float x = gameData.getDisplayWidth() / 2;
-        float y = gameData.getDisplayHeight() / 2;
+        float x = gameData.getDisplayWidth() / 2f;
+        float y = gameData.getDisplayHeight() / 2f;
         float radians = 3.1415f / 2;
 
         Entity player = new Player();
-        player.initializeAssets(assets);
 
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
@@ -58,7 +61,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new ShootingPart(weaponPart.getAttackSpeed()));
         player.setEntityType(EntityType.PLAYER);
 
-        player.setCurrentTexture("sumo");
+        player.setCurrentTexture(assets.get("sumo"));
 
         return player;
     }
@@ -66,6 +69,6 @@ public class PlayerPlugin implements IGamePluginService {
     @Override
     public void stop(GameData gameData, World world) {
         world.removeEntity(player);
-        gameData.removeAssets(assets);
+        gameData.removeAssets(assets.keySet());
     }
 }
