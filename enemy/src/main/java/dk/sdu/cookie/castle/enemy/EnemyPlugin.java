@@ -10,8 +10,6 @@ import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
 public class EnemyPlugin implements IGamePluginService {
 
-    private Entity enemy;
-
     @Override
     public void start(GameData gameData, World world) {
 
