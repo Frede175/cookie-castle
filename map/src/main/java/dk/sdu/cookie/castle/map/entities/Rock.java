@@ -6,7 +6,7 @@ import static dk.sdu.cookie.castle.common.data.EntityType.STATIC_OBSTACLE;
 //Rock class, static obstacle
 public class Rock extends Entity {
 
-    public Rock(){
+    public Rock() {
         setEntityType(STATIC_OBSTACLE);
     }
 
