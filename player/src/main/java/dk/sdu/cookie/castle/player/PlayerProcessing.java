@@ -42,9 +42,13 @@ public class PlayerProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
+            lifePart.process(gameData, player);
+            if (lifePart.isDead()) {
+                world.removeEntity(player);
+            }
+
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
-            lifePart.process(gameData, player);
             inventoryPart.process(gameData, player);
             shootingPart.process(gameData, player);
 

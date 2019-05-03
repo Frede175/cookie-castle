@@ -27,8 +27,9 @@ public class ItemPart implements EntityPart {
 
     /**
      * Constructs a timed buff
+     *
      * @param timer How long the buff should run
-     * @param buff The buff amount
+     * @param buff  The buff amount
      */
     public ItemPart(TimerPart timer, BuffPart buff) {
         this.timer = timer;
@@ -39,6 +40,7 @@ public class ItemPart implements EntityPart {
 
     /**
      * Constructs a permanent buff
+     *
      * @param buff The buff amount
      */
     public ItemPart(BuffPart buff) {
@@ -49,6 +51,7 @@ public class ItemPart implements EntityPart {
 
     /**
      * Constructs a weapon
+     *
      * @param weapon The weapon part to use
      */
     public ItemPart(WeaponPart weapon) {

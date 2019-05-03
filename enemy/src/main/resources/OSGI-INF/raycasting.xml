@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component name="enemy.raycasting" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
+    <implementation class="dk.sdu.cookie.castle.enemy.EnemyProcessing"/>
+
+    <reference
+            name="ILineOfSightService"
+            interface="dk.sdu.cookie.castle.common.services.ILineOfSightService"
+            policy="dynamic"
+            cardinality="0..1"
+            bind="installLineOfSight"
+            unbind="uninstallLineOfSight"
+    />
+</scr:component>

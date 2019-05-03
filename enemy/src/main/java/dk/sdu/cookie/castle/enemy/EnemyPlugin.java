@@ -27,7 +27,7 @@ public class EnemyPlugin implements IGamePluginService {
         float[] shapeX = new float[3];
         float[] shapeY = new float[3];
 
-        float maxSpeed = 150;
+        float maxSpeed = 100;
         float x = gameData.getDisplayWidth() / 4;
         float y = gameData.getDisplayHeight() / 4;
         float radians = 3.1415f / 2;
@@ -36,11 +36,11 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.setRadius(8);
         enemyShip.add(new AIMovingPart(maxSpeed));
         enemyShip.add(new PositionPart(x, y, radians));
-        enemyShip.add(new LifePart(1,1,1,1));
+        enemyShip.add(new LifePart(1, 1, 1, 1));
         enemyShip.add(new CollisionPart());
         enemyShip.setEntityType(EntityType.ENEMY);
 
-        WeaponPart weaponPart = new WeaponPart(400f,10f,5f);
+        WeaponPart weaponPart = new WeaponPart(500f, 2f, 3f);
         enemyShip.add(weaponPart);
 
         enemyShip.setShapeY(shapeY);
