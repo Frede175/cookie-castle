@@ -1,14 +1,11 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
-import dk.sdu.cookie.castle.common.enemy.Enemy;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
-import dk.sdu.cookie.castle.common.item.ItemType;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
@@ -25,6 +22,8 @@ public class Map {
 
     private static IEnemyCreate enemyCreate;
 
+    private RoomPresetGenerator roomPresetGenerator;
+
     private List<Room> listOfRooms;
     private Room currentRoom;
 
@@ -38,6 +37,7 @@ public class Map {
 
     public Map() {
         listOfRooms = new ArrayList<>();
+        roomPresetGenerator = new RoomPresetGenerator();
     }
 
     public void setCurrentRoom(Room room) {
@@ -60,6 +60,7 @@ public class Map {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
             List<String> entityList = new ArrayList<>();
+            //roomPresetGenerator.getRandomRoomPreset();
             if (enemyCreate != null) {
                 entityList.add(enemyCreate.createEnemy(300, 200, EnemyType.RANGED, world));
             }
@@ -145,6 +146,7 @@ public class Map {
         }
 
     }
+
     private Point getPointDirection(DoorPosition d) {
         switch (d) {
             case BOTTOM:

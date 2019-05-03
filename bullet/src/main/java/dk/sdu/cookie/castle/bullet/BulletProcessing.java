@@ -70,6 +70,7 @@ public class BulletProcessing implements IEntityProcessingService {
                             world.removeEntity(bullet);
                         }
                         break;
+
                     default:
                         break;
                 }
