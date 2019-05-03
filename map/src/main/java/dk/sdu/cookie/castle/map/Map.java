@@ -2,8 +2,6 @@ package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Point;
-import dk.sdu.cookie.castle.common.item.ItemType;
-import dk.sdu.cookie.castle.map.entities.EntityGenerator;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
@@ -51,7 +49,7 @@ public class Map {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
             List<Entity> entityList = new ArrayList<>();
-            entityList.add(EntityGenerator.generateItem(200, 200, ItemType.COOKIE));
+            // entityList.add(EntityGenerator.generateItem(200, 200, ItemType.COOKIE));
             Room room = new Room(entityList);
             rooms.add(room);
         }
