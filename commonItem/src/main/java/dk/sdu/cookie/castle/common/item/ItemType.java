@@ -1,28 +1,25 @@
 package dk.sdu.cookie.castle.common.item;
 
 import dk.sdu.cookie.castle.common.data.BuffType;
-import dk.sdu.cookie.castle.common.data.Entityparts.BuffPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.ItemPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.TimerPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.WeaponPart;
 
 public enum ItemType {
-    COOKIE(
-            new BuffPart(BuffType.MOVEMENT_SPEED, 1.8f),
-            new TimerPart(5f)
+
+    COOKIE(BuffType.MOVEMENT_SPEED,5
     );
 
-    ItemPart itemPart;
+    float timer;
+    BuffType buffType;
 
-    ItemType(BuffPart buffPart, TimerPart timerPart, WeaponPart weaponPart) {
-
+    ItemType(BuffType buffType, float timer) {
+        this.timer = timer;
+        this.buffType = buffType;
     }
 
-    ItemType(BuffPart buffPart, TimerPart timerPart) {
-        itemPart = new ItemPart(timerPart, buffPart);
+    public float getTimer() {
+        return timer;
     }
 
-    public ItemPart getItemPart() {
-        return itemPart;
+    public BuffType getBuffType() {
+        return buffType;
     }
 }

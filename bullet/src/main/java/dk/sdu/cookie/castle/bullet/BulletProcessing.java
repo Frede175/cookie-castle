@@ -107,8 +107,9 @@ public class BulletProcessing implements IEntityProcessingService {
         b.setRadius(2);
         WeaponPart entityWeaponPart = entity.getPart(WeaponPart.class);
         b.add(new DamagePart(entityWeaponPart.getDamage()));
-        b.add(new TimerPart(entityWeaponPart.getRange()));
-
+        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange());
+        b.add(timerPart);
+        timerPart.setHasStarted(true);
 
         if (entity.getEntityType() == EntityType.PLAYER) {
             b.setEntityType(EntityType.PLAYER_BULLET);
