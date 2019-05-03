@@ -66,6 +66,9 @@ public class InventoryPart implements EntityPart {
             itemParts.remove(currentWeapon);
             currentWeapon = itemPart;
         }
+        if (itemPart.hasTimer()) {
+            itemPart.getTimer().setHasStarted(true);
+        }
     }
 
     @Override

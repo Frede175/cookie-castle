@@ -12,6 +12,7 @@ public class TimerPart implements EntityPart {
      * Duration in seconds
      */
     private float duration;
+    private boolean hasStarted = false;
 
     public TimerPart(float duration) {
         this.duration = duration;
@@ -25,13 +26,19 @@ public class TimerPart implements EntityPart {
         return isExpired;
     }
 
+    public void setHasStarted(boolean hasStarted) {
+        this.hasStarted = hasStarted;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
-        if (duration > 0) {
-            duration -= gameData.getDelta();
-            System.out.println("Duration: " + duration);
-        } else {
-            isExpired = true;
+        if (hasStarted) {
+            if (duration > 0) {
+                duration -= gameData.getDelta();
+                System.out.println("Duration: " + duration);
+            } else {
+                isExpired = true;
+            }
         }
     }
 }

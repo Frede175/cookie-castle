@@ -63,7 +63,7 @@ public class LifePart implements EntityPart {
                 if (itemPart.isPermanentBuff()) {
 
                     // Checks if the healing over heals the maximum health limit
-                    float healing = itemPart.getBuff().getBuff(BuffType.HEALTH);
+                    float healing = itemPart.getBuff().getMultiplier();
                     if (health + healing <= maxHealth) {
                         health += healing;
                     } else {
@@ -81,15 +81,18 @@ public class LifePart implements EntityPart {
                 if (!itemPart.isWeapon()) {
 
                     // Gets all buffs
-                    Map<BuffType, Float> buffs = itemPart.getBuff().getBuffs();
+                    for (ItemPart itemPart1 : inventoryPart.getItemParts()) {
+                        switch (itemPart1.getBuff().getBuffType()) {
 
-                    // Checks if the buff contains health regen and damage reduction, and adds that to the base
-                    if (buffs.containsKey(BuffType.HEALTH_REGEN)) {
-                        buffedHealthRegen += buffs.get(BuffType.HEALTH_REGEN);
+                            case DAMAGE_REDUCTION:
+                                buffedDamageReduction += itemPart1.getBuff().getMultiplier();
+                            case HEALTH_REGEN:
+                                buffedHealthRegen += itemPart1.getBuff().getMultiplier();
+                            default:
+                                break;
+                        }
                     }
-                    if (buffs.containsKey(BuffType.DAMAGE_REDUCTION)) {
-                        buffedDamageReduction += buffs.get(BuffType.DAMAGE_REDUCTION);
-                    }
+
                 }
             }
         }
