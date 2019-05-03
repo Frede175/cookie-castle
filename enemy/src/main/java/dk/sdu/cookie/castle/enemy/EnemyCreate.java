@@ -26,7 +26,7 @@ public class EnemyCreate implements IEnemyCreate {
         enemy.add(new CollisionPart());
         enemy.setEntityType(EntityType.ENEMY);
 
-        if(enemyType == EnemyType.RANGED) {
+        if (enemyType == EnemyType.RANGED) {
             WeaponPart weaponPart = new WeaponPart(500f, 2f, 3f);
             enemy.add(weaponPart);
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));

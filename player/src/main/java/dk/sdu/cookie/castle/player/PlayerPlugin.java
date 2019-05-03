@@ -22,6 +22,7 @@ public class PlayerPlugin implements IGamePluginService {
         initializeAssets();
         gameData.addAssets(assets);
         player = createPlayer(gameData);
+        player.setIsActive(true);
         world.addEntity(player);
     }
 
