@@ -7,7 +7,7 @@ import dk.sdu.cookie.castle.common.data.GameData;
     You can only have items that is permanent or not. So you can't have a buff that increases
     static health, and then for 30 seconds increases health regen
 
-    It's a permanent buff it is a buff and dont have a timer
+    It's a permanent buff it is a buff and doesn't have a timer
 */
 public class ItemPart implements EntityPart {
 
@@ -27,8 +27,9 @@ public class ItemPart implements EntityPart {
 
     /**
      * Constructs a timed buff
+     *
      * @param timer How long the buff should run
-     * @param buff The buff amount
+     * @param buff  The buff amount
      */
     public ItemPart(TimerPart timer, BuffPart buff) {
         this.timer = timer;
@@ -39,6 +40,7 @@ public class ItemPart implements EntityPart {
 
     /**
      * Constructs a permanent buff
+     *
      * @param buff The buff amount
      */
     public ItemPart(BuffPart buff) {
@@ -49,6 +51,7 @@ public class ItemPart implements EntityPart {
 
     /**
      * Constructs a weapon
+     *
      * @param weapon The weapon part to use
      */
     public ItemPart(WeaponPart weapon) {
@@ -83,6 +86,6 @@ public class ItemPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
-
+        
     }
 }

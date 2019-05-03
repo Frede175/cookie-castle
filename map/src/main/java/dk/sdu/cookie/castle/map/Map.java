@@ -2,6 +2,9 @@ package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.item.ItemType;
+import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
@@ -12,7 +15,6 @@ import java.util.*;
  * Also keeps track of the current room the player is in
  */
 public class Map {
-
     private static Map map = null;
 
     private List<Room> listOfRooms;
@@ -29,9 +31,6 @@ public class Map {
     private Map() {
         listOfRooms = new ArrayList<>();
     }
-
-
-
 
     public void setCurrentRoom(Room room) {
         currentRoom = room;
@@ -52,16 +51,15 @@ public class Map {
     private ArrayList<Room> createRooms(int roomCount) {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
-            List<Entity> entityList = new ArrayList<>();
+            List<String> entityList = new ArrayList<>();
+            // Generate items and enemys and add them to entityList
             Room room = new Room(entityList);
             rooms.add(room);
         }
         return rooms;
     }
 
-    public void generateMap(int numberOfRooms) {
-
-
+    public void generateMap(int numberOfRooms, World world) {
         // Creates the ArrayList that contains all the free rooms.
         ArrayList<Room> freeRooms = createRooms(numberOfRooms);
 
@@ -98,12 +96,14 @@ public class Map {
                 // If the room dosent have an exit at that direction
                 Point p = Point.add(currentRoom.getPoint(), getPointDirection(direction));
                 if (currentRoom.checkIfFree(direction) && !usedPoints.contains(p)) {
-                    currentRoom.setDoor(direction, freeRooms.get(neighbor));
+                    Door currentRoomDoor = currentRoom.setDoor(direction, freeRooms.get(neighbor));
+                    world.addEntity(currentRoomDoor);
                     // sets coordinates to every freeroom.
                     freeRooms.get(neighbor).setPoint(p);
                     usedPoints.add(p);
                     // Sets the neighbor rooms exit to be the current room.
-                    freeRooms.get(neighbor).setDoor(oppoDirection, currentRoom);
+                    Door neighborRoomDoor = freeRooms.get(neighbor).setDoor(oppoDirection, currentRoom);
+                    world.addEntity(neighborRoomDoor);
                     // Adds the neighbor room to the queue.
                     roomsToProcess.add(freeRooms.get(neighbor));
                     // Remove the neighbor room from the free rooms ArrayList.

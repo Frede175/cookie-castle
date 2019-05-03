@@ -20,10 +20,16 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        AABB[] aabbArray = new AABB[world.getEntities().size()];
+        int size = 0;
+        for (Entity e : world.getEntities()) {
+            if (e.isActive()) size++;
+        }
+        AABB[] aabbArray = new AABB[size];
         {
             int i = 0;
             for (Entity entity : world.getEntities()) {
+                if (!entity.isActive()) continue;
+
                 aabbArray[i++] = new AABB(entity);
             }
         }

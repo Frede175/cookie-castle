@@ -7,6 +7,7 @@ import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
 public class ItemProcessing implements IEntityProcessingService {
@@ -18,8 +19,10 @@ public class ItemProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity item : world.getEntities(Item.class)) {
+            if (!item.isActive()) continue;
+
             PositionPart positionPart = item.getPart(PositionPart.class);
-            LifePart lifePart = item.getPart(LifePart.class);
+//            LifePart lifePart = item.getPart(LifePart.class);
             CollisionPart collisionPart = item.getPart(CollisionPart.class);
 
             if (collisionPart.getHit() && collisionPart.getCollidingEntity().getEntityType() == EntityType.PLAYER) {
@@ -27,7 +30,10 @@ public class ItemProcessing implements IEntityProcessingService {
             }
 
             positionPart.process(gameData, item);
-            lifePart.process(gameData, item);
+
+//            if (lifePart != null) {
+//                lifePart.process(gameData, item);
+//            }
 
             updateShape(item);
         }

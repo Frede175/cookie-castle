@@ -16,12 +16,14 @@ public class BulletProcessing implements IEntityProcessingService {
      * the rest of the Parts.
      *
      * @param gameData The GameData
-     * @param world The World
+     * @param world    The World
      */
 
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
+            if (!entity.isActive()) continue;
+
             if (entity.getPart(ShootingPart.class) != null && entity.getPart(WeaponPart.class) != null) {
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
 
@@ -34,6 +36,7 @@ public class BulletProcessing implements IEntityProcessingService {
                     Entity bullet = createBullet(positionPart.getX() + positionVector.getX(), positionPart.getY() + positionVector.getY(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
                     shootingPart.setCanShoot(false);
+                    bullet.setIsActive(true);
                     world.addEntity(bullet);
                 }
             }
@@ -42,13 +45,15 @@ public class BulletProcessing implements IEntityProcessingService {
         // loop to keep track of all the bullets in the world
         // Keeping track of collision, dmg, and if it should be removed from the game
         for (Entity bullet : world.getEntities(Bullet.class)) {
+            if (!bullet.isActive()) continue;
+
             PositionPart positionPart = bullet.getPart(PositionPart.class);
             TimerPart timerPart = bullet.getPart(TimerPart.class);
             BulletMovingPart bulletMovingPart = bullet.getPart(BulletMovingPart.class);
             CollisionPart collisionPart = bullet.getPart(CollisionPart.class);
             DamagePart damagePart = bullet.getPart(DamagePart.class);
             // If duration is exceeded, remove the bullet.
-            if (timerPart.getExpiration() < 0) {
+            if (timerPart.getDuration() < 0) {
                 world.removeEntity(bullet);
             }
 
@@ -85,10 +90,10 @@ public class BulletProcessing implements IEntityProcessingService {
     /**
      * Creates a Bullet with all the needed parts and parameters, and also determines, which Entity shot it
      *
-     * @param x The starting x position of the Bullet
-     * @param y The starting y position of the Bullet
+     * @param x       The starting x position of the Bullet
+     * @param y       The starting y position of the Bullet
      * @param radians The starting radians of the Bullet
-     * @param entity The Entity that shoots the Bullet
+     * @param entity  The Entity that shoots the Bullet
      * @return
      */
     private Entity createBullet(float x, float y, float radians, Entity entity) {

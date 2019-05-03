@@ -12,6 +12,8 @@ public class PlayerProcessing implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
 
         for (Entity player : world.getEntities(Player.class)) {
+            if (!player.isActive()) continue;
+
             PositionPart positionPart = player.getPart(PositionPart.class);
             MovingPart movingPart = player.getPart(MovingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
@@ -42,9 +44,13 @@ public class PlayerProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
+            lifePart.process(gameData, player);
+            if (lifePart.isDead()) {
+                world.removeEntity(player);
+            }
+
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
-            lifePart.process(gameData, player);
             inventoryPart.process(gameData, player);
             shootingPart.process(gameData, player);
 

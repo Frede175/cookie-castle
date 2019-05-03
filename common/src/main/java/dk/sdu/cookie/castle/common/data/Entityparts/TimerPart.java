@@ -8,14 +8,14 @@ import dk.sdu.cookie.castle.common.data.GameData;
 public class TimerPart implements EntityPart {
 
     private boolean isExpired = false;
-    private float expiration;
+    private float duration;
 
     public TimerPart(float weaponRange) {
-        expiration = weaponRange / Constants.BULLET_SPEED;
+        duration = weaponRange / Constants.BULLET_SPEED;
     }
 
-    public float getExpiration() {
-        return expiration;
+    public float getDuration() {
+        return duration;
     }
 
     public boolean isExpired() {
@@ -24,8 +24,8 @@ public class TimerPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
-        if (expiration > 0) {
-            expiration -= gameData.getDelta();
+        if (duration > 0) {
+            duration -= gameData.getDelta();
         } else {
             isExpired = true;
         }
