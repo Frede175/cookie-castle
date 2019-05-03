@@ -1,5 +1,8 @@
 package dk.sdu.cookie.castle.enemy;
 
+import dk.sdu.cookie.castle.common.assets.Asset;
+import dk.sdu.cookie.castle.common.assets.AssetType;
+import dk.sdu.cookie.castle.common.assets.FileType;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
@@ -7,12 +10,19 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class EnemyPlugin implements IGamePluginService {
 
     private Entity enemy;
+    private Map<String, Asset> assets = new ConcurrentHashMap<>();
+
 
     @Override
     public void start(GameData gameData, World world) {
+        initializeAssets();
+        gameData.addAssets(assets);
         enemy = createEnemy(gameData);
         world.addEntity(enemy);
     }
@@ -33,6 +43,7 @@ public class EnemyPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Entity enemyShip = new Enemy();
+        enemyShip.initializeAssets(assets);
         enemyShip.setRadius(8);
         enemyShip.add(new AIMovingPart(maxSpeed));
         enemyShip.add(new PositionPart(x, y, radians));
@@ -47,7 +58,15 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.setShapeX(shapeX);
         enemyShip.add(new ShootingPart(weaponPart.getAttackSpeed()));
 
+        enemyShip.setCurrentTexture("Cookie");
+
+
         return enemyShip;
+    }
+
+    private void initializeAssets() {
+        Asset enemyImage = new Asset("Cookie", AssetType.TEXTURE, FileType.PNG);
+        assets.put(enemyImage.getId(), enemyImage);
     }
 
     @Override
