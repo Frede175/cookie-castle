@@ -1,5 +1,8 @@
 package dk.sdu.cookie.castle.common.data;
 
+/**
+ * Entitytype enum, for easier access to class-names and paths
+ */
 public enum EntityType {
     PLAYER,
     ENEMY,

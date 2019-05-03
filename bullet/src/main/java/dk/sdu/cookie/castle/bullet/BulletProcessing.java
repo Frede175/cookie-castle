@@ -16,7 +16,7 @@ public class BulletProcessing implements IEntityProcessingService {
      * the rest of the Parts.
      *
      * @param gameData The GameData
-     * @param world The World
+     * @param world    The World
      */
 
     @Override
@@ -85,10 +85,10 @@ public class BulletProcessing implements IEntityProcessingService {
     /**
      * Creates a Bullet with all the needed parts and parameters, and also determines, which Entity shot it
      *
-     * @param x The starting x position of the Bullet
-     * @param y The starting y position of the Bullet
+     * @param x       The starting x position of the Bullet
+     * @param y       The starting y position of the Bullet
      * @param radians The starting radians of the Bullet
-     * @param entity The Entity that shoots the Bullet
+     * @param entity  The Entity that shoots the Bullet
      * @return
      */
     private Entity createBullet(float x, float y, float radians, Entity entity) {

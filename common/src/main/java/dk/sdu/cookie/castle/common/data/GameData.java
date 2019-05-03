@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The GameData class keeps track of the keys used for the game,
+ * and it is also an overall event-handler for the game
+ */
 public class GameData {
 
     private float delta;

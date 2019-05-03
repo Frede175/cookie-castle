@@ -33,7 +33,7 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayer(GameData gameData) {
         float[] shapeX = new float[3];
         float[] shapeY = new float[3];
-        float maxSpeed = 150;
+        float maxSpeed = 200;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
@@ -44,12 +44,12 @@ public class PlayerPlugin implements IGamePluginService {
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
         player.add(new PositionPart(x, y, radians));
-        player.add(new LifePart(1,1,1,1));
+        player.add(new LifePart(10, 1, 10, 1));
         player.add(new CollisionPart());
         player.add(new InventoryPart());
 
         // Starting weapon for the player
-        WeaponPart weaponPart = new WeaponPart(400f,10f,5f);
+        WeaponPart weaponPart = new WeaponPart(300f, 10f, 5f);
         player.add(weaponPart);
 
         player.setShapeY(shapeY);

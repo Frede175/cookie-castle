@@ -1,24 +1,37 @@
 package dk.sdu.cookie.castle.enemy;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.Enemy;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
+import dk.sdu.cookie.castle.common.services.ILineOfSightService;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 public class EnemyProcessing implements IEntityProcessingService {
+
+    private static ILineOfSightService lineOfSightService;
 
     /**
      * Process method for the Enemy. This method checks for collisionpart, and then afterwards updates all the
      * other parts the Enemy has. Lastly it updates its shape, with its new position
      *
      * @param gameData The Gamedata
-     * @param world The World
+     * @param world    The World
      */
-
     @Override
     public void process(GameData gameData, World world) {
+
+        PositionPart playerPositionPart = null;
+
+        for (Entity player : world.getEntities()) {
+            if (player.getEntityType() == EntityType.PLAYER) {
+                playerPositionPart = player.getPart(PositionPart.class);
+                break;
+            }
+        }
 
         for (Entity enemy : world.getEntities(Enemy.class)) {
             PositionPart positionPart = enemy.getPart(PositionPart.class);
@@ -26,6 +39,7 @@ public class EnemyProcessing implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
             CollisionPart collisionPart = enemy.getPart(CollisionPart.class);
             ShootingPart shootingPart = enemy.getPart(ShootingPart.class);
+            WeaponPart weaponPart = enemy.getPart(WeaponPart.class);
 
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
@@ -39,6 +53,22 @@ public class EnemyProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
+            if (lineOfSightService != null && playerPositionPart != null) {
+                Vector2f playerPosition = new Vector2f(playerPositionPart.getX(), playerPositionPart.getY());
+                Vector2f enemyPosition = new Vector2f(positionPart.getX(), positionPart.getY());
+                if (lineOfSightService.isInlineOfSight(world, enemyPosition, playerPosition)) {
+                    if (weaponPart.getRange() >= enemyPosition.distance(playerPosition) + 10) {
+                        aiMovingPart.setShouldMove(false);
+                        Vector2f delta = playerPosition.subtract(enemyPosition);
+                        positionPart.setRadians((float) Math.atan2(delta.getY(), delta.getX()));
+                        shootingPart.setShooting(true);
+                    } else {
+                        aiMovingPart.setShouldMove(true);
+                    }
+                }
+            }
+
+
             aiMovingPart.process(gameData, enemy);
             positionPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);
@@ -50,6 +80,14 @@ public class EnemyProcessing implements IEntityProcessingService {
 
             updateShape(enemy);
         }
+    }
+
+    public void installLineOfSight(ILineOfSightService iLineOfSightService) {
+        lineOfSightService = iLineOfSightService;
+    }
+
+    public void uninstallLineOfSight(ILineOfSightService lineOfSightService) {
+        this.lineOfSightService = null;
     }
 
     /**
