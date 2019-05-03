@@ -111,6 +111,7 @@ public class Map {
         }
 
     }
+
     private Point getPointDirection(DoorPosition d) {
         switch (d) {
             case BOTTOM:
