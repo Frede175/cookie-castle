@@ -47,6 +47,10 @@ public class World {
         return r;
     }
 
+    public boolean containsEntity(String ID) {
+        return entityMap.containsKey(ID);
+    }
+
     public Entity getEntity(String ID) {
         return entityMap.get(ID);
     }

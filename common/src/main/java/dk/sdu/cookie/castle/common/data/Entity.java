@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Entity implements Serializable {
     private final UUID ID = UUID.randomUUID();
+    private boolean isActive = false;
 
     private float[] shapeX = new float[4];
     private float[] shapeY = new float[4];
@@ -103,5 +104,13 @@ public class Entity implements Serializable {
 
     public String getCurrentTextureId() {
         return currentTextureId;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
     }
 }

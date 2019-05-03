@@ -27,6 +27,8 @@ public class EnemyProcessing implements IEntityProcessingService {
         PositionPart playerPositionPart = null;
 
         for (Entity player : world.getEntities()) {
+            if (!player.isActive()) continue;
+
             if (player.getEntityType() == EntityType.PLAYER) {
                 playerPositionPart = player.getPart(PositionPart.class);
                 break;
@@ -34,6 +36,8 @@ public class EnemyProcessing implements IEntityProcessingService {
         }
 
         for (Entity enemy : world.getEntities(Enemy.class)) {
+            if (!enemy.isActive()) continue;
+
             PositionPart positionPart = enemy.getPart(PositionPart.class);
             AIMovingPart aiMovingPart = enemy.getPart(AIMovingPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);

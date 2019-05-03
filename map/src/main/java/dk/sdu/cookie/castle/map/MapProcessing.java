@@ -76,11 +76,11 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void unloadRoom(World world) {
-        for (Iterator<Entity> it = Map.getInstance().getCurrentRoom().getEntityList().iterator(); it.hasNext(); ) {
-            Entity entity = it.next();
+        for (Iterator<String> it = Map.getInstance().getCurrentRoom().getEntityList().iterator(); it.hasNext(); ) {
+            String ID = it.next();
 
-            if (world.getEntities().contains(entity)) {
-                world.removeEntity(entity);
+            if (world.containsEntity(ID)) {
+                world.getEntity(ID).setIsActive(false);
             } else {
                 it.remove();
             }
@@ -95,8 +95,8 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void loadRoom(Room nextRoom, World world) {
-        for (Entity e : nextRoom.getEntityList()) {
-            world.addEntity(e);
+        for (String s : nextRoom.getEntityList()) {
+            world.getEntity(s).setIsActive(true);
         }
         Map.getInstance().setCurrentRoom(nextRoom);
     }
