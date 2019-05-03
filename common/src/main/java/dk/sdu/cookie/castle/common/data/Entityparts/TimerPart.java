@@ -9,6 +9,7 @@ public class TimerPart implements EntityPart {
 
     private boolean isExpired = false;
     private float duration;
+    private boolean hasStarted = false;
 
     public TimerPart(float weaponRange) {
         duration = weaponRange / Constants.BULLET_SPEED;
@@ -22,13 +23,19 @@ public class TimerPart implements EntityPart {
         return isExpired;
     }
 
-    @Override
-    public void process(GameData gameData, Entity entity) {
-        if (duration > 0) {
-            duration -= gameData.getDelta();
-        } else {
-            isExpired = true;
-        }
+    public void setHasStarted(boolean hasStarted) {
+        this.hasStarted = hasStarted;
     }
 
+    @Override
+    public void process(GameData gameData, Entity entity) {
+        if (hasStarted) {
+            if (duration > 0) {
+                duration -= gameData.getDelta();
+                System.out.println("Duration: " + duration);
+            } else {
+                isExpired = true;
+            }
+        }
+    }
 }
