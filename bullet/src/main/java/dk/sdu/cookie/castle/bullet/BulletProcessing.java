@@ -36,6 +36,7 @@ public class BulletProcessing implements IEntityProcessingService {
                     Entity bullet = createBullet(positionPart.getX() + positionVector.getX(), positionPart.getY() + positionVector.getY(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
                     shootingPart.setCanShoot(false);
+                    bullet.setIsActive(true);
                     world.addEntity(bullet);
                 }
             }
