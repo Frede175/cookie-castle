@@ -19,10 +19,8 @@ public class CreateItem implements IItemCreate {
 
         item.add(new ItemPart(new TimerPart(itemType.getTimer()), new BuffPart(itemType.getBuffType(), 1.8f)));
         item.add(new PositionPart(x, y, 0));
-        item.add(new LifePart(1, 1, 1, 30));
         item.setRadius(30);
         item.add(new CollisionPart());
-        item.add(new ItemPart(new WeaponPart(10, 15, 20)));
         item.setShapeX(shapeX);
         item.setShapeY(shapeY);
         item.setEntityType(EntityType.ITEM);
