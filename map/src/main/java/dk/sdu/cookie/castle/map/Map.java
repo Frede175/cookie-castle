@@ -60,20 +60,26 @@ public class Map {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
             List<String> entityList = new ArrayList<>();
-            //roomPresetGenerator.getRandomRoomPreset();
+            RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
             if (enemyCreate != null) {
-                entityList.add(enemyCreate.createEnemy(300, 200, EnemyType.RANGED, world));
+                for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
+                    // TODO add random enemy type
+                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.RANGED, world));
+                }
             }
-            Rock rock = createRock(200, 200);
-            world.addEntity(rock);
-            entityList.add(rock.getID());
+            // TODO do the same as enemyCreate with itemCreate
+            for (PositionPart positionPart : roomPreset.getRockPositions()) {
+                Rock rock = createRock(positionPart.getX(), positionPart.getY());
+                world.addEntity(rock);
+                entityList.add(rock.getID());
+            }
             Room room = new Room(entityList);
             rooms.add(room);
         }
         return rooms;
     }
 
-    private Rock createRock(int x, int y) {
+    private Rock createRock(float x, float y) {
         float[] shapeX = new float[6];
         float[] shapeY = new float[6];
         float radians = 3.1415f / 2;
