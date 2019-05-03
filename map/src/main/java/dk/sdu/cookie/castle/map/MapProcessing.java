@@ -20,6 +20,8 @@ public class MapProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity door : world.getEntities(Door.class)) {
+            if (!door.isActive()) continue;
+
             CollisionPart collisionPart = door.getPart(CollisionPart.class);
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {

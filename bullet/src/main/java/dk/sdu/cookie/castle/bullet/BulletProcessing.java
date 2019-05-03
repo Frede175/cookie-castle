@@ -22,6 +22,8 @@ public class BulletProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
+            if (!entity.isActive()) continue;
+
             if (entity.getPart(ShootingPart.class) != null && entity.getPart(WeaponPart.class) != null) {
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
 
@@ -42,6 +44,8 @@ public class BulletProcessing implements IEntityProcessingService {
         // loop to keep track of all the bullets in the world
         // Keeping track of collision, dmg, and if it should be removed from the game
         for (Entity bullet : world.getEntities(Bullet.class)) {
+            if (!bullet.isActive()) continue;
+
             PositionPart positionPart = bullet.getPart(PositionPart.class);
             TimerPart timerPart = bullet.getPart(TimerPart.class);
             BulletMovingPart bulletMovingPart = bullet.getPart(BulletMovingPart.class);

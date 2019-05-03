@@ -19,6 +19,8 @@ public class ItemProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity item : world.getEntities(Item.class)) {
+            if (!item.isActive()) continue;
+
             PositionPart positionPart = item.getPart(PositionPart.class);
 //            LifePart lifePart = item.getPart(LifePart.class);
             CollisionPart collisionPart = item.getPart(CollisionPart.class);
