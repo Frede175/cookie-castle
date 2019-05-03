@@ -32,22 +32,4 @@ public class MapPlugin implements IGamePluginService {
     public void stop(GameData gameData, World world) {
 
     }
-
-    private Entity createDoor(GameData gameData) {
-        float x = gameData.getDisplayWidth() / 2 + 300;
-        float y = gameData.getDisplayHeight() / 2 + 150;
-
-        float[] shapeX = new float[6];
-        float[] shapeY = new float[6];
-
-        Entity item = new Door(new Room(new ArrayList<>()));
-        item.add(new PositionPart(x, y, 0));
-        item.setRadius(30);
-        item.add(new CollisionPart());
-        item.setShapeX(shapeX);
-        item.setShapeY(shapeY);
-        item.setEntityType(EntityType.DOOR);
-
-        return item;
-    }
 }

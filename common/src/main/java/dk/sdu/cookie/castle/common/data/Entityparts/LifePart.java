@@ -1,7 +1,7 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
 
-import dk.sdu.cookie.castle.common.data.Buff;
+import dk.sdu.cookie.castle.common.data.BuffType;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
@@ -63,7 +63,7 @@ public class LifePart implements EntityPart {
                 if (itemPart.isPermanentBuff()) {
 
                     // Checks if the healing over heals the maximum health limit
-                    float healing = itemPart.getBuff().getSpecificBuff(Buff.HEALTH);
+                    float healing = itemPart.getBuff().getBuff(BuffType.HEALTH);
                     if (health + healing <= maxHealth) {
                         health += healing;
                     } else {
@@ -81,14 +81,14 @@ public class LifePart implements EntityPart {
                 if (!itemPart.isWeapon()) {
 
                     // Gets all buffs
-                    Map<Buff, Float> buffs = itemPart.getBuff().getBuffs();
+                    Map<BuffType, Float> buffs = itemPart.getBuff().getBuffs();
 
                     // Checks if the buff contains health regen and damage reduction, and adds that to the base
-                    if (buffs.containsKey(Buff.HEALTH_REGEN)) {
-                        buffedHealthRegen += buffs.get(Buff.HEALTH_REGEN);
+                    if (buffs.containsKey(BuffType.HEALTH_REGEN)) {
+                        buffedHealthRegen += buffs.get(BuffType.HEALTH_REGEN);
                     }
-                    if (buffs.containsKey(Buff.DAMAGE_REDUCTION)) {
-                        buffedDamageReduction += buffs.get(Buff.DAMAGE_REDUCTION);
+                    if (buffs.containsKey(BuffType.DAMAGE_REDUCTION)) {
+                        buffedDamageReduction += buffs.get(BuffType.DAMAGE_REDUCTION);
                     }
                 }
             }
@@ -101,6 +101,5 @@ public class LifePart implements EntityPart {
         if (health <= 0) {
             dead = true;
         }
-
     }
 }

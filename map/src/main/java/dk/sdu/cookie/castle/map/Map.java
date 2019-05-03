@@ -2,6 +2,8 @@ package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.common.item.ItemType;
+import dk.sdu.cookie.castle.map.entities.EntityGenerator;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
@@ -12,7 +14,6 @@ import java.util.*;
  * Also keeps track of the current room the player is in
  */
 public class Map {
-
     private static Map map = null;
 
     private List<Room> listOfRooms;
@@ -29,9 +30,6 @@ public class Map {
     private Map() {
         listOfRooms = new ArrayList<>();
     }
-
-
-
 
     public void setCurrentRoom(Room room) {
         currentRoom = room;
@@ -53,6 +51,7 @@ public class Map {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
             List<Entity> entityList = new ArrayList<>();
+            entityList.add(EntityGenerator.generateItem(200, 200, ItemType.COOKIE));
             Room room = new Room(entityList);
             rooms.add(room);
         }
@@ -60,8 +59,6 @@ public class Map {
     }
 
     public void generateMap(int numberOfRooms) {
-
-
         // Creates the ArrayList that contains all the free rooms.
         ArrayList<Room> freeRooms = createRooms(numberOfRooms);
 

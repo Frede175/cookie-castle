@@ -5,6 +5,7 @@ import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.enemy.Enemy;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.services.ILineOfSightService;
 import dk.sdu.cookie.castle.common.util.Vector2f;

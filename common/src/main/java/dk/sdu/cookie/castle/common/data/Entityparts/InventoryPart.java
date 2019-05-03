@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class InventoryPart implements EntityPart {
 
     /**
-     * Current equiped weapon
+     * Currently equipped weapon
      */
     private ItemPart currentWeapon;
 
@@ -19,6 +19,7 @@ public class InventoryPart implements EntityPart {
 
     /**
      * Constructs an Inventory only with starting items
+     *
      * @param itemParts List of items to construct with
      */
     public InventoryPart(ArrayList<ItemPart> itemParts) {
@@ -31,8 +32,9 @@ public class InventoryPart implements EntityPart {
 
     /**
      * Constructs an Inventory with starting items and current weapon
+     *
      * @param currentWeapon The current weapon at the start
-     * @param itemParts List of items to construct with
+     * @param itemParts     List of items to construct with
      */
     public InventoryPart(ItemPart currentWeapon, ArrayList<ItemPart> itemParts) {
         this.currentWeapon = currentWeapon;
@@ -41,6 +43,7 @@ public class InventoryPart implements EntityPart {
 
     /**
      * Returns all items in the inventory
+     *
      * @return All items in the inventory
      */
     public ArrayList<ItemPart> getItemParts() {
@@ -49,6 +52,7 @@ public class InventoryPart implements EntityPart {
 
     /**
      * Uses a permanent buff, and removes it from the inventory
+     *
      * @param itemPart The permanent item to use
      */
     public void usePermanentBuff(ItemPart itemPart) {
@@ -58,7 +62,7 @@ public class InventoryPart implements EntityPart {
     public void addItem(ItemPart itemPart) {
         itemParts.add(itemPart);
         // Checks if the item picked up is a weapon, then replaces it with the old one
-        if(itemPart.isWeapon()) {
+        if (itemPart.isWeapon()) {
             itemParts.remove(currentWeapon);
             currentWeapon = itemPart;
         }

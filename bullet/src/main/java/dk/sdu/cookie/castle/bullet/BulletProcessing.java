@@ -48,7 +48,7 @@ public class BulletProcessing implements IEntityProcessingService {
             CollisionPart collisionPart = bullet.getPart(CollisionPart.class);
             DamagePart damagePart = bullet.getPart(DamagePart.class);
             // If duration is exceeded, remove the bullet.
-            if (timerPart.getExpiration() < 0) {
+            if (timerPart.getDuration() < 0) {
                 world.removeEntity(bullet);
             }
 
