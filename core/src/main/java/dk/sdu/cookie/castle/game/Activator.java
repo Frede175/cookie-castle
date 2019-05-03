@@ -14,7 +14,7 @@ public class Activator {
         Game game = new Game();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Asteroids";
+        cfg.title = "Operation Cookie Castle";
         cfg.width = game.getDisplayWidth();
         cfg.height = game.getDisplayHeight();
         cfg.useGL30 = false;

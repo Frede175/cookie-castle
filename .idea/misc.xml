@@ -6,6 +6,8 @@
     <file type="Osmorc" url="file://$PROJECT_DIR$/bullet" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/collision" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/common" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/commonEnemy" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/commonItem" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/enemy" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/item" />

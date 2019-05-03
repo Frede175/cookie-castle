@@ -27,8 +27,8 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     private void initializeAssets() {
-        Asset sumo = new Asset("sumo", AssetType.TEXTURE, FileType.PNG);
-        assets.put(sumo.getId(), sumo);
+        Asset playerImage = new Asset("player", AssetType.TEXTURE, FileType.PNG);
+        assets.put(playerImage.getId(), playerImage);
     }
 
     private Entity createPlayer(GameData gameData) {
@@ -40,7 +40,7 @@ public class PlayerPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Entity player = new Player();
-        player.initializeAssets(assets);
+        player.initializeAssets(this.getClass(), assets);
 
         player.setRadius(8);
         player.add(new MovingPart(maxSpeed));
@@ -58,7 +58,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new ShootingPart(weaponPart.getAttackSpeed()));
         player.setEntityType(EntityType.PLAYER);
 
-        player.setCurrentTexture("sumo");
+        player.setCurrentTexture("player");
 
         return player;
     }
