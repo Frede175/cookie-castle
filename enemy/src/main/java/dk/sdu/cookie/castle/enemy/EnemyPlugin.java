@@ -58,14 +58,14 @@ public class EnemyPlugin implements IGamePluginService {
         enemyShip.setShapeX(shapeX);
         enemyShip.add(new ShootingPart(weaponPart.getAttackSpeed()));
 
-        enemyShip.setCurrentTexture("Cookie");
+        enemyShip.setCurrentTexture("cookie");
 
 
         return enemyShip;
     }
 
     private void initializeAssets() {
-        Asset enemyImage = new Asset("Cookie", AssetType.TEXTURE, FileType.PNG);
+        Asset enemyImage = new Asset("cookie", AssetType.TEXTURE, FileType.PNG);
         assets.put(enemyImage.getId(), enemyImage);
     }
 
