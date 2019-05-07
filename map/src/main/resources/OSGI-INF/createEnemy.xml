@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component name="map.enemyCreate" xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0">
+    <implementation class="dk.sdu.cookie.castle.map.Map"/>
+
+    <reference
+            name="IEnemyCreate"
+            interface="dk.sdu.cookie.castle.common.enemy.IEnemyCreate"
+            policy="dynamic"
+            cardinality="0..1"
+            bind="installEnemyCreate"
+            unbind="uninstallEnemyCreate"
+    />
+</scr:component>

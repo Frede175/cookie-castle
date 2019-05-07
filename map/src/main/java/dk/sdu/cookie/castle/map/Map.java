@@ -1,9 +1,14 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
+import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.enemy.EnemyType;
+import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
+import dk.sdu.cookie.castle.common.item.IItemCreate;
 import dk.sdu.cookie.castle.common.item.ItemType;
+import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
@@ -17,6 +22,11 @@ import java.util.*;
 public class Map {
     private static Map map = null;
 
+    private static IEnemyCreate enemyCreate;
+    private static IItemCreate itemCreate;
+
+    private RoomPresetGenerator roomPresetGenerator;
+
     private List<Room> listOfRooms;
     private Room currentRoom;
 
@@ -28,8 +38,9 @@ public class Map {
         return map;
     }
 
-    private Map() {
+    public Map() {
         listOfRooms = new ArrayList<>();
+        roomPresetGenerator = new RoomPresetGenerator();
     }
 
     public void setCurrentRoom(Room room) {
@@ -48,20 +59,56 @@ public class Map {
         this.listOfRooms = listOfRooms;
     }
 
-    private ArrayList<Room> createRooms(int roomCount) {
+    private ArrayList<Room> createRooms(int roomCount, World world) {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int i = 0; i < roomCount; i++) {
             List<String> entityList = new ArrayList<>();
-            // Generate items and enemys and add them to entityList
+            RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
+            if (enemyCreate != null) {
+                for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
+                    // TODO add random enemy type
+                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.MELEE, world));
+                }
+            }
+            // TODO do the same as enemyCreate with itemCreate
+            if (itemCreate != null) {
+                for (PositionPart positionPart : roomPreset.getItemPositions()) {
+                    // TODO add random enemy type
+                    System.out.println("Adding item");
+                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.COOKIE, world));
+                }
+            }
+            for (PositionPart positionPart : roomPreset.getRockPositions()) {
+                Rock rock = createRock(positionPart.getX(), positionPart.getY());
+                world.addEntity(rock);
+                entityList.add(rock.getID());
+            }
             Room room = new Room(entityList);
             rooms.add(room);
         }
         return rooms;
     }
 
+    private Rock createRock(float x, float y) {
+        float[] shapeX = new float[6];
+        float[] shapeY = new float[6];
+        float radians = 3.1415f / 2;
+
+        Rock rock = new Rock();
+        rock.setRadius(30);
+        rock.add(new PositionPart(x, y, radians));
+        rock.add(new CollisionPart());
+        rock.setEntityType(EntityType.STATIC_OBSTACLE);
+
+        rock.setShapeY(shapeY);
+        rock.setShapeX(shapeX);
+
+        return rock;
+    }
+
     public void generateMap(int numberOfRooms, World world) {
         // Creates the ArrayList that contains all the free rooms.
-        ArrayList<Room> freeRooms = createRooms(numberOfRooms);
+        ArrayList<Room> freeRooms = createRooms(numberOfRooms, world);
 
         listOfRooms.addAll(freeRooms);
 
@@ -115,6 +162,7 @@ public class Map {
         }
 
     }
+
     private Point getPointDirection(DoorPosition d) {
         switch (d) {
             case BOTTOM:
@@ -130,5 +178,21 @@ public class Map {
 
         }
 
+    }
+
+    public void installEnemyCreate(IEnemyCreate iEnemyCreate) {
+        enemyCreate = iEnemyCreate;
+    }
+
+    public void uninstallEnemyCreate() {
+        enemyCreate = null;
+    }
+
+    public void installItemCreate( IItemCreate iItemCreate) {
+        itemCreate = iItemCreate;
+    }
+
+    public void uninstallItemCreate() {
+        itemCreate = null;
     }
 }

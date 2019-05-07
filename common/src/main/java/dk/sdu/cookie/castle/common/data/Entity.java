@@ -32,10 +32,10 @@ public class Entity implements Serializable {
         parts = new ConcurrentHashMap<>();
     }
 
-    public void initializeAssets(Map<String, Asset> assets) {
+    public void initializeAssets(Class c, Map<String, Asset> assets) {
         System.out.println("Initializing assets for class: " + this.getClass());
         if (assets.size() > 0) {
-            assetReferences = AssetLoader.loadAssets(this.getClass(), assets);
+            assetReferences = AssetLoader.loadAssets(c, assets);
             this.assets = assets;
         }
     }

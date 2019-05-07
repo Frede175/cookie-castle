@@ -70,6 +70,7 @@ public class BulletProcessing implements IEntityProcessingService {
                             world.removeEntity(bullet);
                         }
                         break;
+
                     default:
                         break;
                 }
@@ -106,7 +107,7 @@ public class BulletProcessing implements IEntityProcessingService {
         b.setRadius(2);
         WeaponPart entityWeaponPart = entity.getPart(WeaponPart.class);
         b.add(new DamagePart(entityWeaponPart.getDamage()));
-        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange());
+        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange(), true);
         b.add(timerPart);
         timerPart.setHasStarted(true);
 

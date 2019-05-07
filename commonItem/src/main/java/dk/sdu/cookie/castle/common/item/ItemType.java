@@ -4,7 +4,7 @@ import dk.sdu.cookie.castle.common.data.BuffType;
 
 public enum ItemType {
 
-    COOKIE(BuffType.MOVEMENT_SPEED,5
+    COOKIE(BuffType.MOVEMENT_SPEED,10
     );
 
     float timer;
