@@ -17,7 +17,7 @@ public class EnemyProcessing implements IEntityProcessingService {
 
     /**
      * Process method for the Enemy. This method checks for collisionpart, and then afterwards updates all the
-     * other parts the Enemy has. Lastly it updates its shape, with its new position
+     * other parts the Enemy has depending on its EnemyType. Lastly it updates its shape, with its new position
      *
      * @param gameData The Gamedata
      * @param world    The World
