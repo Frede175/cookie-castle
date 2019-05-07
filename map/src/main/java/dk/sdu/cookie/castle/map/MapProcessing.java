@@ -102,6 +102,4 @@ public class MapProcessing implements IEntityProcessingService {
         }
         Map.getInstance().setCurrentRoom(nextRoom);
     }
-
-
 }

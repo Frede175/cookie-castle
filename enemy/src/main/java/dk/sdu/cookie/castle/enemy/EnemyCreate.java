@@ -18,11 +18,10 @@ public class EnemyCreate implements IEnemyCreate {
         float maxSpeed = 150;
         float radians = 3.1415f / 2;
 
-        Entity enemy = new Enemy();
-        enemy.setRadius(8);
+        Enemy enemy = new Enemy();
+
         enemy.add(new AIMovingPart(maxSpeed));
         enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(1, 1, 1, 1));
         enemy.add(new CollisionPart());
         enemy.setEntityType(EntityType.ENEMY);
 
@@ -30,6 +29,16 @@ public class EnemyCreate implements IEnemyCreate {
             WeaponPart weaponPart = new WeaponPart(500f, 2f, 3f);
             enemy.add(weaponPart);
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));
+            enemy.setEnemyType(EnemyType.RANGED);
+            enemy.add(new LifePart(3, 1, 1, 1));
+            enemy.setRadius(15);
+        }
+
+        if (enemyType == EnemyType.MELEE) {
+            enemy.add(new DamagePart(3f));
+            enemy.setEnemyType(EnemyType.MELEE);
+            enemy.add(new LifePart(1, 1, 1, 1));
+            enemy.setRadius(25);
         }
 
         enemy.setShapeY(shapeY);

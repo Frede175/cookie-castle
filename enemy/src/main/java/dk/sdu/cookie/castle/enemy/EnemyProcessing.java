@@ -6,6 +6,7 @@ import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.Enemy;
+import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.services.ILineOfSightService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
@@ -57,7 +58,7 @@ public class EnemyProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
-            if (lineOfSightService != null && playerPositionPart != null) {
+            if (lineOfSightService != null && playerPositionPart != null && weaponPart != null) {
                 Vector2f playerPosition = new Vector2f(playerPositionPart.getX(), playerPositionPart.getY());
                 Vector2f enemyPosition = new Vector2f(positionPart.getX(), positionPart.getY());
                 if (lineOfSightService.isInlineOfSight(world, enemyPosition, playerPosition)) {
@@ -69,18 +70,20 @@ public class EnemyProcessing implements IEntityProcessingService {
                     } else {
                         aiMovingPart.setShouldMove(true);
                     }
+
                 }
             }
-
 
             aiMovingPart.process(gameData, enemy);
             positionPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);
+
             if (lifePart.isDead()) {
                 world.removeEntity(enemy);
             }
-
-            shootingPart.process(gameData, enemy);
+            if (((Enemy) enemy).getEnemyType() == EnemyType.RANGED) {
+                shootingPart.process(gameData, enemy);
+            }
 
             updateShape(enemy);
         }

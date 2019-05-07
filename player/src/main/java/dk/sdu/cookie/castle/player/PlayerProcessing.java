@@ -30,6 +30,10 @@ public class PlayerProcessing implements IEntityProcessingService {
             if (collisionPart.getHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case ENEMY:
+                        if (collisionPart.getCollidingEntity().getPart(DamagePart.class) != null) {
+                            DamagePart enemyDamagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
+                            lifePart.setHealth(lifePart.getHealth() - enemyDamagePart.getDamage());
+                        }
                         break;
                     case ENEMY_BULLET:
                         DamagePart damagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
