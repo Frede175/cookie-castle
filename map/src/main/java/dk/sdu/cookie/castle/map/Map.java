@@ -75,7 +75,7 @@ public class Map {
                 for (PositionPart positionPart : roomPreset.getItemPositions()) {
                     // TODO add random enemy type
                     System.out.println("Adding item");
-                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.COOKIE, world));
+                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.PROTEINSHAKE, world));
                 }
             }
             for (PositionPart positionPart : roomPreset.getRockPositions()) {

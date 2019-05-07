@@ -20,6 +20,7 @@ public class PlayerProcessing implements IEntityProcessingService {
             CollisionPart collisionPart = player.getPart(CollisionPart.class);
             InventoryPart inventoryPart = player.getPart(InventoryPart.class);
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
+            WeaponPart weaponPart = player.getPart(WeaponPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
@@ -57,6 +58,7 @@ public class PlayerProcessing implements IEntityProcessingService {
             positionPart.process(gameData, player);
             inventoryPart.process(gameData, player);
             shootingPart.process(gameData, player);
+            weaponPart.process(gameData, player);
 
             updateShape(player);
         }

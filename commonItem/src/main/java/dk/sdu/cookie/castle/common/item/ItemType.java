@@ -5,7 +5,8 @@ import dk.sdu.cookie.castle.common.data.BuffType;
 public enum ItemType {
 
     COOKIE(BuffType.MOVEMENT_SPEED,10
-    );
+    ),
+    PROTEINSHAKE(BuffType.DAMAGE, 10);
 
     float timer;
     BuffType buffType;
