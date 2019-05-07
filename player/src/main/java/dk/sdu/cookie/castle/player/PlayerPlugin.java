@@ -30,7 +30,7 @@ public class PlayerPlugin implements IGamePluginService {
 
     private void initializeAssets(GameData gameData) {
         Collection<Asset> loadingAssets = new ArrayList<>();
-        loadingAssets.add(new Asset("sumo", AssetType.TEXTURE, FileType.PNG));
+        loadingAssets.add(new Asset("player", AssetType.TEXTURE, FileType.PNG));
         assets = AssetLoader.loadAssets(this.getClass(), loadingAssets);
         gameData.addAssets(loadingAssets);
     }
@@ -61,7 +61,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new ShootingPart(weaponPart.getAttackSpeed()));
         player.setEntityType(EntityType.PLAYER);
 
-        player.setCurrentTexture(assets.get("sumo"));
+        player.setCurrentTexture(assets.get("player"));
 
         return player;
     }
