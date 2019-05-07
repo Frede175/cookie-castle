@@ -24,7 +24,7 @@ public class EnemyPlugin implements IGamePluginService {
         gameData.addAssets(assets);
         enemy = createEnemy(gameData);
         enemy.setIsActive(true);
-        world.addEntity(enemy);
+        //world.addEntity(enemy);
 
     }
 

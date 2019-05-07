@@ -85,7 +85,7 @@ public class Map {
         float radians = 3.1415f / 2;
 
         Rock rock = new Rock();
-        rock.setRadius(15);
+        rock.setRadius(30);
         rock.add(new PositionPart(x, y, radians));
         rock.add(new CollisionPart());
         rock.setEntityType(EntityType.STATIC_OBSTACLE);
