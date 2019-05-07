@@ -1,7 +1,8 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.EntityType;
-import dk.sdu.cookie.castle.common.data.Entityparts.*;
+import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
+import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
@@ -125,52 +126,36 @@ public class Map {
             while (i <= exitCount && !freeRooms.isEmpty()) {
                 // Generates the random direction.
                 int index = (int) (Math.random() * 4);
-                DoorPosition direction = doorPositions[index];
-                // Calculates the opponent direction.
-                DoorPosition oppoDirection = doorPositions[(index + 2) % 4];
+                DoorPosition doorPosition = doorPositions[index];
+                // Calculates the opposite direction.
+                DoorPosition oppositeDirection = doorPosition.getOpposite();
                 // Random selecting the neighbor room.
                 int neighbor = (int) (Math.random() * freeRooms.size());
-                // If the room dosent have an exit at that direction
-                Point p = Point.add(currentRoom.getPoint(), getPointDirection(direction));
-                if (currentRoom.checkIfFree(direction) && !usedPoints.contains(p)) {
-                    Door currentRoomDoor = currentRoom.setDoor(direction, freeRooms.get(neighbor));
+                // If the room doesn't have an exit at that direction
+                Point p = Point.add(currentRoom.getPoint(), doorPosition.getPointDirection());
+                if (currentRoom.checkIfFree(doorPosition) && !usedPoints.contains(p)) {
+                    Door currentRoomDoor = new Door(doorPosition, freeRooms.get(neighbor));
+                    currentRoom.setDoor(currentRoomDoor);
                     world.addEntity(currentRoomDoor);
-                    // sets coordinates to every freeroom.
+                    // sets coordinates to every free room.
                     freeRooms.get(neighbor).setPoint(p);
                     usedPoints.add(p);
                     // Sets the neighbor rooms exit to be the current room.
-                    Door neighborRoomDoor = freeRooms.get(neighbor).setDoor(oppoDirection, currentRoom);
+                    Door neighborRoomDoor = new Door(oppositeDirection, currentRoom);
+                    freeRooms.get(neighbor).setDoor(neighborRoomDoor);
+
                     world.addEntity(neighborRoomDoor);
                     // Adds the neighbor room to the queue.
                     roomsToProcess.add(freeRooms.get(neighbor));
                     // Remove the neighbor room from the free rooms ArrayList.
                     freeRooms.remove(freeRooms.get(neighbor));
-
                 }
                 i++;
             }
         }
-
     }
 
-    private Point getPointDirection(DoorPosition d) {
-        switch (d) {
-            case BOTTOM:
-                return new Point(0, -1);
-            case TOP:
-                return new Point(0, 1);
-            case RIGHT:
-                return new Point(1, 0);
-            case LEFT:
-                return new Point(-1, 0);
-            default:
-                throw new AssertionError(d.name());
-
-        }
-
-    }
-
-    public void installEnemyCreate(IEnemyCreate iEnemyCreate) {;
+    public void installEnemyCreate(IEnemyCreate iEnemyCreate) {
         enemyCreate = iEnemyCreate;
     }
 

@@ -4,7 +4,6 @@ import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.ItemPart;
-import dk.sdu.cookie.castle.common.data.Entityparts.LifePart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
@@ -26,7 +25,7 @@ public class ItemProcessing implements IEntityProcessingService {
             CollisionPart collisionPart = item.getPart(CollisionPart.class);
             ItemPart itemPart = item.getPart(ItemPart.class);
 
-            if (collisionPart.getHit() && collisionPart.getCollidingEntity().getEntityType() == EntityType.PLAYER) {
+            if (collisionPart.getIsHit() && collisionPart.getCollidingEntity().getEntityType() == EntityType.PLAYER) {
                 world.removeEntity(item);
             }
 

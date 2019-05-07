@@ -8,14 +8,12 @@ import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
-import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.Iterator;
 
 public class MapProcessing implements IEntityProcessingService {
 
     private float angle = 0;
-    private float numPoints = 6;
     private float radians = 3.1415f / 2 + (float) Math.random();
 
     @Override
@@ -23,42 +21,37 @@ public class MapProcessing implements IEntityProcessingService {
         for (Entity door : world.getEntities(Door.class)) {
             if (!door.isActive()) continue;
 
-            CollisionPart collisionPart = door.getPart(CollisionPart.class);
-            if (collisionPart.getHit()) {
-                switch (collisionPart.getCollidingEntity().getEntityType()) {
-                    case PLAYER:
-                        // Changes current room to the door room
-                        Room room = ((Door) door).getLeadsTo();
-                        unloadRoom(world);
-                        loadRoom(room, world);
-                        PositionPart doorPos = door.getPart(PositionPart.class);
-                        PositionPart playerPos = collisionPart.getCollidingEntity().getPart(PositionPart.class);
-                        if (DoorPosition.TOP.getPositionPart() == doorPos) {
-                            PositionPart bottom = DoorPosition.BOTTOM.getPositionPart();
-                            playerPos.setPosition(bottom.getX(), bottom.getY() + 35);
-                        } else if (DoorPosition.BOTTOM.getPositionPart() == doorPos) {
-                            PositionPart top = DoorPosition.TOP.getPositionPart();
-                            playerPos.setPosition(top.getX(), top.getY() - 35);
-                        } else if (DoorPosition.LEFT.getPositionPart() == doorPos) {
-                            PositionPart right = DoorPosition.RIGHT.getPositionPart();
-                            playerPos.setPosition(right.getX() - 35, right.getY());
-                        } else {
-                            PositionPart left = DoorPosition.LEFT.getPositionPart();
-                            playerPos.setPosition(left.getX() + 35, left.getY());
-                        }
-                        break;
-                }
-                collisionPart.setIsHit(false);
-            }
+            handleDoorCollision((Door) door, world);
             updateShape(door);
         }
+
         for (Entity rock : world.getEntities(Rock.class)) {
             if (!rock.isActive()) continue;
             updateShape(rock);
         }
     }
 
+    private void handleDoorCollision(Door door, World world) {
+        CollisionPart collisionPart = door.getPart(CollisionPart.class);
+
+        if (!collisionPart.getIsHit()) return;
+
+        switch (collisionPart.getCollidingEntity().getEntityType()) {
+            case PLAYER:
+                // Changes current room to the door room
+                Room room = door.getLeadsTo();
+                unloadRoom(world);
+                loadRoom(room, world);
+                PositionPart playerPos = collisionPart.getCollidingEntity().getPart(PositionPart.class);
+                playerPos.setPosition(door.getPosition().getOpposite().getSpawnPosition());
+                break;
+        }
+
+        collisionPart.setIsHit(false);
+    }
+
     private void updateShape(Entity entity) {
+        float numPoints = 6;
         float[] shapeX = entity.getShapeX();
         float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
@@ -106,6 +99,4 @@ public class MapProcessing implements IEntityProcessingService {
         }
         Map.getInstance().setCurrentRoom(nextRoom);
     }
-
-
 }

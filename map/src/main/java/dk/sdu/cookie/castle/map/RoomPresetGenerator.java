@@ -2,18 +2,21 @@ package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RoomPresetGenerator {
+class RoomPresetGenerator {
     private List<RoomPreset> roomPresets;
     private Random random;
     private int numberOfPresets = 2;
 
-    public RoomPresetGenerator() {
+    RoomPresetGenerator() {
         roomPresets = new ArrayList<>();
         random = new Random();
         loadPresets();
@@ -51,7 +54,7 @@ public class RoomPresetGenerator {
         }
     }
 
-    public RoomPreset getRandomRoomPreset() {
+    RoomPreset getRandomRoomPreset() {
         return roomPresets.get(random.nextInt((roomPresets.size())));
     }
 }
