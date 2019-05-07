@@ -6,6 +6,7 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.AIService;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.util.*;
 
@@ -33,6 +34,13 @@ public class AStar implements AIService {
         LinkedList<Point> route = new LinkedList<>();
         Point startGrid = toGrid(start);
         Point endGrid = toGrid(end);
+
+        if(grid[pointToIndex(endGrid)]) {
+            endGrid = searchForEmptyTile(endGrid);
+            if (endGrid == null) {
+                return route;
+            }
+        }
 
         if (startGrid.getX() == endGrid.getX() && startGrid.getY() == endGrid.getY()) {
             route.add(end);
@@ -65,6 +73,43 @@ public class AStar implements AIService {
         return route;
     }
 
+    private Point searchForEmptyTile(Point point) {
+        Point direction = new Point(0, 1);
+        int length = 1;
+        int count = 0;
+        while(count < 100) {
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < length; j++) {
+                    point = Point.add(point, direction);
+                    count++;
+                    if (point.getX() < 0 || point.getX() >= WIDTH_OF_GRID || point.getY() < 0 || point.getY() >= HEIGHT_OF_GRID) break;
+                    if (!grid[pointToIndex(point)]) {
+                        return point;
+                    }
+                }
+                direction = rotatePoint(direction);
+            }
+            length++;
+        }
+        return null;
+    }
+
+    private Point rotatePoint(Point point) {
+        if (point.getX() == 0 && point.getY() == 1) {
+            return new Point(1, 0);
+        } else if (point.getX() == 1 && point.getY() == 0) {
+            return new Point(0, -1);
+        } else if (point.getX() == 0 && point.getY() == -1) {
+            return new Point(-1, 0);
+        } else {
+            return new Point(0, 1);
+        }
+    }
+
+    private int pointToIndex(Point point) {
+        return WIDTH_OF_GRID * (int) point.getY() + (int) point.getX();
+    }
+
 
     /**
      * Calculating the heuristic for calculating the route to the player
@@ -84,7 +129,7 @@ public class AStar implements AIService {
      */
     private void findNeighbours(Node parent, Node end) {
         ArrayList<Node> neighbors = new ArrayList<>();
-        int index = WIDTH_OF_GRID * (int) parent.getPoint().getY() + (int) parent.getPoint().getX();
+        int index = pointToIndex(parent.getPoint());
 
         //Linked if-statements for finding neighbours of a given node, based on the math of the grid
         //the AI uses on top of the map

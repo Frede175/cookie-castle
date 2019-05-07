@@ -69,6 +69,8 @@ public class EnemyProcessing implements IEntityProcessingService {
                     } else {
                         aiMovingPart.setShouldMove(true);
                     }
+                } else {
+                    aiMovingPart.setShouldMove(true);
                 }
             }
 

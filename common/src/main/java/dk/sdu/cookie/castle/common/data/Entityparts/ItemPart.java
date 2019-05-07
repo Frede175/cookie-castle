@@ -86,6 +86,8 @@ public class ItemPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
-        
+        if (timer != null) {
+            timer.process(gameData, entity);
+        }
     }
 }
