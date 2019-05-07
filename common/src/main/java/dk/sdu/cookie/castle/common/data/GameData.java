@@ -3,9 +3,7 @@ package dk.sdu.cookie.castle.common.data;
 import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.events.Event;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -81,11 +79,13 @@ public class GameData {
         activeAssets.put(asset.getId(), asset);
     }
 
-    public void addAssets(Map<String, Asset> assets) {
-        activeAssets.putAll(assets);
+    public void addAssets(Collection<Asset> assets) {
+        for (Asset asset : assets) {
+            addAsset(asset);
+        }
     }
 
-    public void removeAssets(Map<String, Asset> assets) {
-        activeAssets.keySet().removeAll(assets.keySet());
+    public void removeAssets(Set<String> keys) {
+        activeAssets.keySet().removeAll(keys);
     }
 }

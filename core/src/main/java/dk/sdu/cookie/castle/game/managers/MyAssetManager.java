@@ -10,6 +10,8 @@ import dk.sdu.cookie.castle.common.assets.AssetType;
 import dk.sdu.cookie.castle.common.assets.FileType;
 import dk.sdu.cookie.castle.common.data.GameData;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,9 +40,9 @@ public class MyAssetManager extends AssetManager {
 
         System.out.println("Active assets: " + gameData.getActiveAssets().size());
 
-        for (Map.Entry<String, Asset> asset : gameData.getActiveAssets().entrySet()) {
-            if (!loadedAssets.containsKey(asset.getKey())) {
-                loadAsset(asset.getValue(), true);
+        for (Asset asset : gameData.getActiveAssets().values()) {
+            if (!loadedAssets.containsKey(asset.getId())) {
+                loadAsset(asset, true);
             }
         }
 
@@ -75,9 +77,9 @@ public class MyAssetManager extends AssetManager {
      */
     private void initializeLocalAssets() {
         // Initialize local assets
-        Map<String, Asset> assets = new ConcurrentHashMap<>();
+        Collection<Asset> assets = new ArrayList<>();
         Asset background = new Asset("background", AssetType.TEXTURE, FileType.PNG);
-        assets.put(background.getId(), background);
+        assets.add(background);
         backgroundId = background.getId();
 
         AssetLoader.loadAssets(this.getClass(), assets);
@@ -89,9 +91,9 @@ public class MyAssetManager extends AssetManager {
      *
      * @param assets Assets mapped by their id
      */
-    private void loadAssets(Map<String, Asset> assets) {
-        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
-            loadAsset(asset.getValue(), false);
+    private void loadAssets(Collection<Asset> assets) {
+        for (Asset asset : assets) {
+            loadAsset(asset, false);
         }
     }
 

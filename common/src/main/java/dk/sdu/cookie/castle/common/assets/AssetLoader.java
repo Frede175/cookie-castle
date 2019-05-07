@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.common.assets;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,11 +12,11 @@ public class AssetLoader {
      * @param c      Caller class for the getting resources from its classloader
      * @param assets Map of assets to have their data loaded
      */
-    public static Map<String, String> loadAssets(Class c, Map<String, Asset> assets) {
+    public static Map<String, String> loadAssets(Class c, Collection<Asset> assets) {
         Map<String, String> returnMap = new ConcurrentHashMap<>();
-        for (Map.Entry<String, Asset> asset : assets.entrySet()) {
-            loadAssetData(c, asset.getValue());
-            returnMap.put(asset.getValue().getName(), asset.getValue().getId());
+        for (Asset asset : assets) {
+            loadAssetData(c, asset);
+            returnMap.put(asset.getName(), asset.getId());
         }
 
         return returnMap;

@@ -17,6 +17,8 @@ import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 import dk.sdu.cookie.castle.game.managers.GameInputProcessor;
 import dk.sdu.cookie.castle.game.managers.MyAssetManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -60,6 +62,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+        Collection<Entity> entities = new ArrayList<>(world.getEntities());
         // Ensure that all assets have been loaded before continuing
         if (!assetManager.update(gameData)) {
             return;
@@ -72,23 +75,31 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
+        update();
+
         batch.begin();
 
         // Draw background
         Texture background = assetManager.getBackground();
         batch.draw(background, 0, 0);
-        drawEntities();
+        drawEntities(entities);
         batch.end();
 
-        draw();
-        update();
+        draw(entities);
     }
 
-    private void drawEntities() {
-        for (Entity entity : world.getEntities()) {
+    private void drawEntities(Collection<Entity> entities) {
+        for (Entity entity : entities) {
             if (entity.isActive() && entity.getCurrentTextureId() != null && !entity.getCurrentTextureId().isEmpty()) {
                 PositionPart position = entity.getPart(PositionPart.class);
-                batch.draw(assetManager.get(entity.getCurrentTextureId(), Texture.class), position.getX(), position.getY());
+                Texture texture = assetManager.get(entity.getCurrentTextureId(), Texture.class);
+                float halfWidth = texture.getWidth() / 2f;
+                float halfHeight = texture.getHeight() / 2f;
+                batch.draw(texture, position.getX() - halfWidth, position.getY() - halfHeight,
+                        halfWidth, halfHeight, texture.getWidth(), texture.getHeight(),
+                        1, 1, (float) (position.getRadians() * 180 / Math.PI),
+                        0,0,texture.getWidth(), texture.getHeight(), false,false);
+
             }
         }
     }
@@ -105,8 +116,8 @@ public class Game implements ApplicationListener {
         }
     }
 
-    private void draw() {
-        for (Entity entity : world.getEntities()) {
+    private void draw(Collection<Entity> entities) {
+        for (Entity entity : entities) {
             if (!entity.isActive()) continue;
 
             sr.setColor(1, 1, 1, 1);
