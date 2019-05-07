@@ -24,20 +24,10 @@ public class Entity implements Serializable {
     private float radius;
     private Map<Class, EntityPart> parts;
     private EntityType entityType;
-    private Map<String, Asset> assets;
-    private Map<String, String> assetReferences;
     private String currentTextureId;
 
     public Entity() {
         parts = new ConcurrentHashMap<>();
-    }
-
-    public void initializeAssets(Class c, Map<String, Asset> assets) {
-        System.out.println("Initializing assets for class: " + this.getClass());
-        if (assets.size() > 0) {
-            assetReferences = AssetLoader.loadAssets(c, assets);
-            this.assets = assets;
-        }
     }
 
     public void add(EntityPart part) {
@@ -88,18 +78,8 @@ public class Entity implements Serializable {
         return entityType;
     }
 
-    public Map<String, Asset> getAssets() {
-        return assets;
-    }
-
-    public void setCurrentTexture(String name) {
-        if (assetReferences == null) {
-            System.out.println("Assets have not been loaded");
-            return;
-        }
-
-        currentTextureId = assetReferences.get(name);
-        System.out.println("setting texture id: " + currentTextureId + " name: " + name);
+    public void setCurrentTexture(String id) {
+        currentTextureId = id;
     }
 
     public String getCurrentTextureId() {

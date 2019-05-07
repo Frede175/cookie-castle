@@ -32,6 +32,8 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));
         }
 
+        enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookie"));
+
         enemy.setShapeY(shapeY);
         enemy.setShapeX(shapeX);
 
