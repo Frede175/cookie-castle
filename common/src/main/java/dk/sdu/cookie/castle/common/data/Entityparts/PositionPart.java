@@ -3,7 +3,6 @@ package dk.sdu.cookie.castle.common.data.Entityparts;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
-
 public class PositionPart implements EntityPart {
 
     private float x;
@@ -43,6 +42,11 @@ public class PositionPart implements EntityPart {
     public void setPosition(float newX, float newY) {
         x = newX;
         y = newY;
+    }
+
+    public void setPosition(PositionPart position) {
+        x = position.getX();
+        y = position.getY();
     }
 
     @Override

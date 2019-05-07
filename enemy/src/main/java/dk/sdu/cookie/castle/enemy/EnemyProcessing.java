@@ -45,7 +45,7 @@ public class EnemyProcessing implements IEntityProcessingService {
             ShootingPart shootingPart = enemy.getPart(ShootingPart.class);
             WeaponPart weaponPart = enemy.getPart(WeaponPart.class);
 
-            if (collisionPart.getHit()) {
+            if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
                         break;

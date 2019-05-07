@@ -6,7 +6,6 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.AIService;
-import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.util.*;
 
@@ -35,11 +34,9 @@ public class AStar implements AIService {
         Point startGrid = toGrid(start);
         Point endGrid = toGrid(end);
 
-        if(grid[pointToIndex(endGrid)]) {
+        if (grid[pointToIndex(endGrid)]) {
             endGrid = searchForEmptyTile(endGrid);
-            if (endGrid == null) {
-                return route;
-            }
+            if (endGrid == null) return route;
         }
 
         if (startGrid.getX() == endGrid.getX() && startGrid.getY() == endGrid.getY()) {
@@ -58,9 +55,9 @@ public class AStar implements AIService {
             usedNodes.add(nextNode);
             nextNode = fringe.poll();
         }
-        
+
         //Check if the next node is the end-node (the node where the player is/was)
-        if (nextNode.equals(endNode)) {
+        if (nextNode != null & nextNode.equals(endNode)) {
             route.addFirst(end);
             nextNode = nextNode.getParent();
             // while the next node has a parent, keep adding the next nodes parent to the route towards the player
@@ -77,12 +74,13 @@ public class AStar implements AIService {
         Point direction = new Point(0, 1);
         int length = 1;
         int count = 0;
-        while(count < 100) {
+        while (count < 100) {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < length; j++) {
                     point = Point.add(point, direction);
                     count++;
-                    if (point.getX() < 0 || point.getX() >= WIDTH_OF_GRID || point.getY() < 0 || point.getY() >= HEIGHT_OF_GRID) break;
+                    if (point.getX() < 0 || point.getX() >= WIDTH_OF_GRID || point.getY() < 0 || point.getY() >= HEIGHT_OF_GRID)
+                        break;
                     if (!grid[pointToIndex(point)]) {
                         return point;
                     }
@@ -113,8 +111,9 @@ public class AStar implements AIService {
 
     /**
      * Calculating the heuristic for calculating the route to the player
+     *
      * @param start point
-     * @param end point
+     * @param end   point
      * @return void
      */
     private double calculateHeuristic(Point start, Point end) {
@@ -124,6 +123,7 @@ public class AStar implements AIService {
     /**
      * Finding the neighbours of a given node, based on the path from start to end
      * to be able to find our way towards the player/end of the path
+     *
      * @param parent
      * @param end
      */
@@ -137,7 +137,6 @@ public class AStar implements AIService {
             neighbors.add(createNode(1, 0, parent, end, STRAIGHT_COST));
         }
         if (index % WIDTH_OF_GRID != 0 && !grid[index - 1]) {
-
             neighbors.add(createNode(-1, 0, parent, end, STRAIGHT_COST));
         }
         if (index - WIDTH_OF_GRID + 1 >= 0 && index % WIDTH_OF_GRID != WIDTH_OF_GRID - 1 && !grid[index - WIDTH_OF_GRID + 1]) {
@@ -159,14 +158,14 @@ public class AStar implements AIService {
             neighbors.add(createNode(1, 1, parent, end, DIAGONAL_COST));
         }
 
-        //Loop for checking wether a node is previously walked on
+        //Loop for checking whether a node is previously walked on
         for (Node node : neighbors) {
             //If it is not in the previously marked nodes, and is not in the fringe, it is added to the fringe
             if (usedNodes.contains(node)) continue;
             if (!fringe.contains(node)) {
                 fringe.add(node);
-            //checks for each node in the fringe if there is another node in the fringe that is better
-            //compared to the one we are standing on, based on the cost and heuristic of the pathfinding
+                //checks for each node in the fringe if there is another node in the fringe that is better
+                //compared to the one we are standing on, based on the cost and heuristic of the pathfinding
             } else {
                 for (Node temp : fringe) {
                     if (temp.equals(node)) {
@@ -183,6 +182,7 @@ public class AStar implements AIService {
     /**
      * Updates the grid based on the obstacles/objects that are loaded in when a new room is loaded
      * Also places the walls of the room
+     *
      * @param world
      * @param gameData
      */
@@ -212,6 +212,7 @@ public class AStar implements AIService {
 
     /**
      * Method for calculating a point to a grid coordinate #quickMaths
+     *
      * @param point
      * @return Point
      */
@@ -242,11 +243,12 @@ public class AStar implements AIService {
 
     /**
      * Creates a node with a heuristic for the AStar to use when needed
-     * @param x parents x-value
-     * @param y parents y-value
+     *
+     * @param x      parents x-value
+     * @param y      parents y-value
      * @param parent parent-node reference
-     * @param end the end-point of the astar
-     * @param cost to the goal
+     * @param end    the end-point of the astar
+     * @param cost   to the goal
      * @return
      */
     private Node createNode(int x, int y, Node parent, Node end, float cost) {
