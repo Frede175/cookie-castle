@@ -25,12 +25,11 @@ public class EnemyCreate implements IEnemyCreate {
         float[] shapeX = new float[3];
         float[] shapeY = new float[3];
 
-        float maxSpeed = 150;
+        float maxSpeed = 100;
         float radians = 3.1415f / 2;
 
         Enemy enemy = new Enemy();
 
-        enemy.add(new AIMovingPart(maxSpeed));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new CollisionPart());
         enemy.setEntityType(EntityType.ENEMY);
@@ -42,6 +41,7 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.setEnemyType(EnemyType.RANGED);
             enemy.add(new LifePart(6, 1, 6, 1));
             enemy.setRadius(15);
+            maxSpeed = 150;
         }
 
         if (enemyType == EnemyType.MELEE) {
@@ -49,7 +49,10 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.setEnemyType(EnemyType.MELEE);
             enemy.add(new LifePart(3, 1, 3, 1));
             enemy.setRadius(25);
+            maxSpeed = 185;
         }
+
+        enemy.add(new AIMovingPart(maxSpeed));
 
         enemy.setShapeY(shapeY);
         enemy.setShapeX(shapeX);
