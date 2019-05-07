@@ -40,14 +40,14 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.add(weaponPart);
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));
             enemy.setEnemyType(EnemyType.RANGED);
-            enemy.add(new LifePart(3, 1, 1, 1));
+            enemy.add(new LifePart(6, 1, 6, 1));
             enemy.setRadius(15);
         }
 
         if (enemyType == EnemyType.MELEE) {
             enemy.add(new DamagePart(3f));
             enemy.setEnemyType(EnemyType.MELEE);
-            enemy.add(new LifePart(1, 1, 1, 1));
+            enemy.add(new LifePart(3, 1, 3, 1));
             enemy.setRadius(25);
         }
 
