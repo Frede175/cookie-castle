@@ -42,8 +42,10 @@ public class ShootingPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        System.out.println(canShoot);
         if (!canShoot) {
             nextShot -= gameData.getDelta();
+            System.out.println(nextShot);
             if (nextShot <= 0) {
                 nextShot = updateTime;
                 canShoot = true;

@@ -21,6 +21,7 @@ public class WeaponPart implements EntityPart {
      * The attack speed of the weapon in rounds per second.
      */
     private float attackSpeed;
+    private float buffedAttackSpeed = attackSpeed;
 
     public float getRange() {
         return range;
@@ -31,7 +32,7 @@ public class WeaponPart implements EntityPart {
     }
 
     public float getAttackSpeed() {
-        return attackSpeed;
+        return buffedAttackSpeed;
     }
 
     /**
@@ -53,12 +54,16 @@ public class WeaponPart implements EntityPart {
         InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
 
         buffedDamage = damage;
+        buffedAttackSpeed = attackSpeed;
         if (inventoryPart != null) {
             for (ItemPart itemPart : inventoryPart.getItemParts()) {
                 if (!itemPart.isWeapon()) {
                     BuffPart buffPart = itemPart.getBuff();
                     if (buffPart.getBuffType() == BuffType.DAMAGE) {
                         buffedDamage *= buffPart.getMultiplier();
+                    }
+                    if (buffPart.getBuffType() == BuffType.ATTACK_SPEED) {
+                        buffedAttackSpeed *= buffPart.getMultiplier();
                     }
                 }
             }
