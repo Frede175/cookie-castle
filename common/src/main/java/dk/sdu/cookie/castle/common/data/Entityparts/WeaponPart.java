@@ -63,7 +63,6 @@ public class WeaponPart implements EntityPart {
                         buffedDamage *= buffPart.getMultiplier();
                     }
                     if (buffPart.getBuffType() == BuffType.ATTACK_SPEED) {
-                        System.out.println("attack speed buff active");
                         buffedAttackSpeed *= buffPart.getMultiplier();
                     }
                 }
