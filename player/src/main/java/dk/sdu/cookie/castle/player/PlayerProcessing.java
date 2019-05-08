@@ -57,8 +57,9 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             inventoryPart.process(gameData, player);
-            shootingPart.process(gameData, player);
             weaponPart.process(gameData, player);
+            shootingPart.updateShootingSpeed(weaponPart.getAttackSpeed());
+            shootingPart.process(gameData, player);
 
             updateShape(player);
         }
