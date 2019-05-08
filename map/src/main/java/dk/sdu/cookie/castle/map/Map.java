@@ -74,7 +74,6 @@ public class Map {
             if (itemCreate != null) {
                 for (PositionPart positionPart : roomPreset.getItemPositions()) {
                     // TODO add random enemy type
-                    System.out.println("Adding item");
                     entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.SUGAR, world));
                 }
             }
