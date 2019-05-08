@@ -2,7 +2,7 @@ package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
-import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Room {
     private List<String> entityList;
-    private Point point;
+    private Vector2f point;
     private List<DoorPosition> exits;
 
 

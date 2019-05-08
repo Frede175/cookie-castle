@@ -19,7 +19,6 @@ public class EnemyCreate implements IEnemyCreate {
         float radians = 3.1415f / 2;
 
         Entity enemy = new Enemy();
-        enemy.setRadius(8);
         enemy.add(new AIMovingPart(maxSpeed));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(1, 1, 1, 1));

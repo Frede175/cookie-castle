@@ -73,6 +73,7 @@ public class MapProcessing implements IEntityProcessingService {
 
         entity.setShapeX(shapeX);
         entity.setShapeY(shapeY);
+        entity.updateMinMax();
     }
 
     /**
