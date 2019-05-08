@@ -28,8 +28,8 @@ public class CollisionPostProcessingTest {
         CollisionPart collisionPart1 = testEntity1.getPart(CollisionPart.class);
         CollisionPart collisionPart2 = testEntity2.getPart(CollisionPart.class);
 
-        assertTrue(collisionPart1.getHit());
-        assertTrue(collisionPart2.getHit());
+        assertTrue(collisionPart1.getIsHit());
+        assertTrue(collisionPart2.getIsHit());
         assertEquals(testEntity1.getID(), collisionPart2.getCollidingEntity().getID());
         assertEquals(testEntity2.getID(), collisionPart1.getCollidingEntity().getID());
 
@@ -49,8 +49,8 @@ public class CollisionPostProcessingTest {
         CollisionPart collisionPart1 = testEntity1.getPart(CollisionPart.class);
         CollisionPart collisionPart2 = testEntity2.getPart(CollisionPart.class);
 
-        assertFalse(collisionPart1.getHit());
-        assertFalse(collisionPart2.getHit());
+        assertFalse(collisionPart1.getIsHit());
+        assertFalse(collisionPart2.getIsHit());
 
     }
 
@@ -68,8 +68,8 @@ public class CollisionPostProcessingTest {
         CollisionPart collisionPart1 = testEntity1.getPart(CollisionPart.class);
         CollisionPart collisionPart2 = testEntity2.getPart(CollisionPart.class);
 
-        assertFalse(collisionPart1.getHit());
-        assertFalse(collisionPart2.getHit());
+        assertFalse(collisionPart1.getIsHit());
+        assertFalse(collisionPart2.getIsHit());
 
     }
 

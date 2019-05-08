@@ -54,6 +54,8 @@ public class EnemyCreate implements IEnemyCreate {
 
         enemy.add(new AIMovingPart(maxSpeed));
 
+        enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookie"));
+
         enemy.setShapeY(shapeY);
         enemy.setShapeX(shapeX);
 

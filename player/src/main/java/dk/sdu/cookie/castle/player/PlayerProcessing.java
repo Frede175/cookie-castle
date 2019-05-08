@@ -28,7 +28,7 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
             shootingPart.setShooting(gameData.getKeys().isDown(GameKeys.SPACE));
 
-            if (collisionPart.getHit()) {
+            if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case ENEMY:
                         if (collisionPart.getCollidingEntity().getPart(DamagePart.class) != null) {

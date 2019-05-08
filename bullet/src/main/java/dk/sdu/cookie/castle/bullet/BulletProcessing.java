@@ -55,7 +55,7 @@ public class BulletProcessing implements IEntityProcessingService {
             }
 
             // Checks what the bullet hits
-            if (collisionPart.getHit()) {
+            if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
                         if (bullet.getEntityType() == EntityType.ENEMY_BULLET) {
