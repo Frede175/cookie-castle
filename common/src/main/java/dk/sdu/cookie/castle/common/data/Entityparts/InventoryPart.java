@@ -75,5 +75,8 @@ public class InventoryPart implements EntityPart {
     public void process(GameData gameData, Entity entity) {
         // Removes ItemPart if it is expired
         itemParts.removeIf(itemPart -> itemPart.hasTimer() && itemPart.getTimer().isExpired());
+        for (ItemPart itemParts : itemParts) {
+            itemParts.process(gameData, entity);
+        }
     }
 }

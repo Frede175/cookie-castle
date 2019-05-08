@@ -1,5 +1,6 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
+import dk.sdu.cookie.castle.common.data.BuffType;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 

@@ -1,5 +1,6 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
+import dk.sdu.cookie.castle.common.data.BuffType;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
@@ -14,22 +15,24 @@ public class WeaponPart implements EntityPart {
      * The damage done by the bullet.
      */
     private float damage;
+    private float buffedDamage;
 
     /**
      * The attack speed of the weapon in rounds per second.
      */
     private float attackSpeed;
+    private float buffedAttackSpeed = attackSpeed;
 
     public float getRange() {
         return range;
     }
 
     public float getDamage() {
-        return damage;
+        return buffedDamage;
     }
 
     public float getAttackSpeed() {
-        return attackSpeed;
+        return buffedAttackSpeed;
     }
 
     /**
@@ -48,6 +51,22 @@ public class WeaponPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
 
+        buffedDamage = damage;
+        buffedAttackSpeed = attackSpeed;
+        if (inventoryPart != null) {
+            for (ItemPart itemPart : inventoryPart.getItemParts()) {
+                if (!itemPart.isWeapon()) {
+                    BuffPart buffPart = itemPart.getBuff();
+                    if (buffPart.getBuffType() == BuffType.DAMAGE) {
+                        buffedDamage *= buffPart.getMultiplier();
+                    }
+                    if (buffPart.getBuffType() == BuffType.ATTACK_SPEED) {
+                        buffedAttackSpeed *= buffPart.getMultiplier();
+                    }
+                }
+            }
+        }
     }
 }

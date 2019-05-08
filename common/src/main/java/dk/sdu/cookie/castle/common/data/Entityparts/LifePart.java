@@ -35,18 +35,9 @@ public class LifePart implements EntityPart {
         this.health = health;
     }
 
-    public boolean isHit() {
-        return isHit;
-    }
-
-    public void setIsHit(boolean isHit) {
-        this.isHit = isHit;
-    }
-
     public boolean isDead() {
         return dead;
     }
-
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -99,6 +90,7 @@ public class LifePart implements EntityPart {
 
         // Regens health
         health += buffedHealthRegen * gameData.getDelta();
+        damageReduction += buffedDamageReduction;
         if (health > maxHealth) health = maxHealth;
 
         if (health <= 0) {
