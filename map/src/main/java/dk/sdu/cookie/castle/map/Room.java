@@ -38,11 +38,11 @@ public class Room {
         entityList.remove(entity);
     }
 
-    public void setPoint(Point point) {
+    public void setPoint(Vector2f point) {
         this.point = point;
     }
 
-    public Point getPoint() {
+    public Vector2f getPoint() {
         return point;
     }
 
@@ -53,7 +53,7 @@ public class Room {
     public Door setDoor(DoorPosition position, Room room) {
         exits.add(position);
         Door door = new Door(room);
-        door.setRadius(26);
+
         door.add(position.getPositionPart());
         door.add(new CollisionPart());
         door.setEntityType(EntityType.DOOR);

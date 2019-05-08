@@ -2,10 +2,10 @@ package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
-import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
@@ -85,7 +85,7 @@ public class Map {
         float radians = 3.1415f / 2;
 
         Rock rock = new Rock();
-        rock.setRadius(30);
+
         rock.add(new PositionPart(x, y, radians));
         rock.add(new CollisionPart());
         rock.setEntityType(EntityType.STATIC_OBSTACLE);
@@ -106,14 +106,14 @@ public class Map {
 
         // Sets the start room to the first free room.
         Room startRoom = freeRooms.get(0);
-        startRoom.setPoint(new Point(0, 0));
+        startRoom.setPoint(new Vector2f(0, 0));
         // Creates the queue where all the rooms that needs to be processed is stored.
         Queue<Room> roomsToProcess = new LinkedList<>();
         // Adds the first free room to the queue.
         roomsToProcess.add(freeRooms.remove(0));
         // used to hold the used coordinates, for rooms not to have duplicate coordinates.
-        Set<Point> usedPoints = new HashSet<>();
-        usedPoints.add(new Point(0, 0));
+        Set<Vector2f> usedPoints = new HashSet<>();
+        usedPoints.add(new Vector2f(0, 0));
         // As long as the queue is not empty.
         while (!roomsToProcess.isEmpty()) {
             // Gets the next room in the queue.
@@ -131,7 +131,7 @@ public class Map {
                 // Random selecting the neighbor room.
                 int neighbor = (int) (Math.random() * freeRooms.size());
                 // If the room dosent have an exit at that direction
-                Point p = Point.add(currentRoom.getPoint(), getPointDirection(direction));
+                Vector2f p = currentRoom.getPoint().add(getPointDirection(direction));
                 if (currentRoom.checkIfFree(direction) && !usedPoints.contains(p)) {
                     Door currentRoomDoor = currentRoom.setDoor(direction, freeRooms.get(neighbor));
                     world.addEntity(currentRoomDoor);
@@ -153,16 +153,16 @@ public class Map {
 
     }
 
-    private Point getPointDirection(DoorPosition d) {
+    private Vector2f getPointDirection(DoorPosition d) {
         switch (d) {
             case BOTTOM:
-                return new Point(0, -1);
+                return new Vector2f(0, -1);
             case TOP:
-                return new Point(0, 1);
+                return new Vector2f(0, 1);
             case RIGHT:
-                return new Point(1, 0);
+                return new Vector2f(1, 0);
             case LEFT:
-                return new Point(-1, 0);
+                return new Vector2f(-1, 0);
             default:
                 throw new AssertionError(d.name());
 

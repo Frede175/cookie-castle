@@ -51,13 +51,8 @@ public class Entity implements Serializable {
         return min;
     }
 
-    public void setMinMax(Vector2f min, Vector2f max) {
-        this.min = min;
-        this.max = max;
-    }
-
     public void updateMinMax() {
-        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE, maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE;
+        float minX = Float.POSITIVE_INFINITY, minY = Float.POSITIVE_INFINITY, maxX = Float.NEGATIVE_INFINITY, maxY = Float.NEGATIVE_INFINITY;
 
         for (int i = 0; i < shapeX.length; i++) {
             float x = shapeX[i];
