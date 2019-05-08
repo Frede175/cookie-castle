@@ -172,7 +172,7 @@ public class Map {
         enemyCreate = null;
     }
 
-    public void installItemCreate( IItemCreate iItemCreate) {
+    public void installItemCreate(IItemCreate iItemCreate) {
         itemCreate = iItemCreate;
     }
 
