@@ -11,7 +11,7 @@ public class TimerPart implements EntityPart {
     private boolean hasStarted = false;
 
     public TimerPart(float weaponRange) {
-        duration = weaponRange / Constants.BULLET_SPEED;
+            duration = weaponRange;
     }
 
     public float getDuration() {

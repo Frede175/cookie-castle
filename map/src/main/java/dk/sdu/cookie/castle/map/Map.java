@@ -7,6 +7,8 @@ import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
+import dk.sdu.cookie.castle.common.item.IItemCreate;
+import dk.sdu.cookie.castle.common.item.ItemType;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
@@ -22,6 +24,7 @@ public class Map {
     private static Map map = null;
 
     private static IEnemyCreate enemyCreate;
+    private static IItemCreate itemCreate;
 
     private RoomPresetGenerator roomPresetGenerator;
 
@@ -65,10 +68,16 @@ public class Map {
             if (enemyCreate != null) {
                 for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
                     // TODO add random enemy type
-                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.RANGED, world));
+                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.MELEE, world));
                 }
             }
             // TODO do the same as enemyCreate with itemCreate
+            if (itemCreate != null) {
+                for (PositionPart positionPart : roomPreset.getItemPositions()) {
+                    // TODO add random enemy type
+                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.SUGAR, world));
+                }
+            }
             for (PositionPart positionPart : roomPreset.getRockPositions()) {
                 Rock rock = createRock(positionPart.getX(), positionPart.getY());
                 world.addEntity(rock);
@@ -160,6 +169,14 @@ public class Map {
     }
 
     public void uninstallEnemyCreate() {
-        this.enemyCreate = null;
+        enemyCreate = null;
+    }
+
+    public void installItemCreate(IItemCreate iItemCreate) {
+        itemCreate = iItemCreate;
+    }
+
+    public void uninstallItemCreate() {
+        itemCreate = null;
     }
 }
