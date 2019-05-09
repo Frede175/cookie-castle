@@ -20,6 +20,7 @@ public class PlayerProcessing implements IEntityProcessingService {
             CollisionPart collisionPart = player.getPart(CollisionPart.class);
             InventoryPart inventoryPart = player.getPart(InventoryPart.class);
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
+            WeaponPart weaponPart = player.getPart(WeaponPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
@@ -27,9 +28,13 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
             shootingPart.setShooting(gameData.getKeys().isDown(GameKeys.SPACE));
 
-            if (collisionPart.getHit()) {
+            if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case ENEMY:
+                        if (collisionPart.getCollidingEntity().getPart(DamagePart.class) != null) {
+                            DamagePart enemyDamagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
+                            lifePart.setHealth(lifePart.getHealth() - enemyDamagePart.getDamage());
+                        }
                         break;
                     case ENEMY_BULLET:
                         DamagePart damagePart = collisionPart.getCollidingEntity().getPart(DamagePart.class);
@@ -52,6 +57,8 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             inventoryPart.process(gameData, player);
+            weaponPart.process(gameData, player);
+            shootingPart.updateShootingSpeed(weaponPart.getAttackSpeed());
             shootingPart.process(gameData, player);
 
             updateShape(player);

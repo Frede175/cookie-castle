@@ -1,16 +1,9 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.Entity;
-import dk.sdu.cookie.castle.common.data.EntityType;
-import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
-import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MapPlugin implements IGamePluginService {
     @Override

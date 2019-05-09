@@ -36,9 +36,7 @@ public class AStar implements AIService {
 
         if(grid[Vector2fToIndex(endGrid)]) {
             endGrid = searchForEmptyTile(endGrid);
-            if (endGrid == null) {
-                return route;
-            }
+            if (endGrid == null) return route;
         }
 
         if (startGrid.getX() == endGrid.getX() && startGrid.getY() == endGrid.getY()) {
@@ -57,9 +55,9 @@ public class AStar implements AIService {
             usedNodes.add(nextNode);
             nextNode = fringe.poll();
         }
-        
+
         //Check if the next node is the end-node (the node where the player is/was)
-        if (nextNode.equals(endNode)) {
+        if (nextNode != null & nextNode.equals(endNode)) {
             route.addFirst(end);
             nextNode = nextNode.getParent();
             // while the next node has a parent, keep adding the next nodes parent to the route towards the player
@@ -76,7 +74,7 @@ public class AStar implements AIService {
         Vector2f direction = new Vector2f(0, 1);
         int length = 1;
         int count = 0;
-        while(count < 100) {
+        while (count < 100) {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < length; j++) {
                     point = point.add(direction);
@@ -112,8 +110,9 @@ public class AStar implements AIService {
 
     /**
      * Calculating the heuristic for calculating the route to the player
+     *
      * @param start Vector2f
-     * @param end Vector2f
+     * @param end   Vector2f
      * @return void
      */
     private double calculateHeuristic(Vector2f start, Vector2f end) {
@@ -123,6 +122,7 @@ public class AStar implements AIService {
     /**
      * Finding the neighbours of a given node, based on the path from start to end
      * to be able to find our way towards the player/end of the path
+     *
      * @param parent
      * @param end
      */
@@ -136,7 +136,6 @@ public class AStar implements AIService {
             neighbors.add(createNode(1, 0, parent, end, STRAIGHT_COST));
         }
         if (index % WIDTH_OF_GRID != 0 && !grid[index - 1]) {
-
             neighbors.add(createNode(-1, 0, parent, end, STRAIGHT_COST));
         }
         if (index - WIDTH_OF_GRID + 1 >= 0 && index % WIDTH_OF_GRID != WIDTH_OF_GRID - 1 && !grid[index - WIDTH_OF_GRID + 1]) {
@@ -158,14 +157,14 @@ public class AStar implements AIService {
             neighbors.add(createNode(1, 1, parent, end, DIAGONAL_COST));
         }
 
-        //Loop for checking wether a node is previously walked on
+        //Loop for checking whether a node is previously walked on
         for (Node node : neighbors) {
             //If it is not in the previously marked nodes, and is not in the fringe, it is added to the fringe
             if (usedNodes.contains(node)) continue;
             if (!fringe.contains(node)) {
                 fringe.add(node);
-            //checks for each node in the fringe if there is another node in the fringe that is better
-            //compared to the one we are standing on, based on the cost and heuristic of the pathfinding
+                //checks for each node in the fringe if there is another node in the fringe that is better
+                //compared to the one we are standing on, based on the cost and heuristic of the pathfinding
             } else {
                 for (Node temp : fringe) {
                     if (temp.equals(node)) {
@@ -182,6 +181,7 @@ public class AStar implements AIService {
     /**
      * Updates the grid based on the obstacles/objects that are loaded in when a new room is loaded
      * Also places the walls of the room
+     *
      * @param world
      * @param gameData
      */
@@ -244,8 +244,9 @@ public class AStar implements AIService {
 
     /**
      * Creates a node with a heuristic for the AStar to use when needed
-     * @param x parents x-value
-     * @param y parents y-value
+     *
+     * @param x      parents x-value
+     * @param y      parents y-value
      * @param parent parent-node reference
      * @param end the end-Vector2f of the astar
      * @param cost to the goal

@@ -52,7 +52,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new InventoryPart());
 
         // Starting weapon for the player
-        WeaponPart weaponPart = new WeaponPart(300f, 10f, 5f);
+        WeaponPart weaponPart = new WeaponPart(300f, 2f, 5f);
         player.add(weaponPart);
 
         player.setShapeY(shapeY);

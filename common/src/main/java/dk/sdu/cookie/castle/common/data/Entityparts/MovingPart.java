@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
 
+import dk.sdu.cookie.castle.common.data.BuffType;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 
@@ -45,13 +46,14 @@ public class MovingPart implements EntityPart {
             for (ItemPart itemPart : inventoryPart.getItemParts()) {
                 if (!itemPart.isWeapon()) {
                     BuffPart buffPart = itemPart.getBuff();
-                    buffedSpeed *= buffPart.getMultiplier();
+                    if (buffPart.getBuffType() == BuffType.MOVEMENT_SPEED) {
+                        buffedSpeed *= buffPart.getMultiplier();
+                    }
                 }
             }
         }
 
         buffedSpeed *= gameData.getDelta();
-
         if (left) {
             positionPart.setRadians(3.1415f);
             deltaX -= buffedSpeed;

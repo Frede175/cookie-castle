@@ -1,6 +1,5 @@
 package dk.sdu.cookie.castle.common.data.Entityparts;
 
-
 import dk.sdu.cookie.castle.common.data.Constants;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -12,7 +11,7 @@ public class TimerPart implements EntityPart {
     private boolean hasStarted = false;
 
     public TimerPart(float weaponRange) {
-        duration = weaponRange / Constants.BULLET_SPEED;
+            duration = weaponRange;
     }
 
     public float getDuration() {
@@ -32,7 +31,6 @@ public class TimerPart implements EntityPart {
         if (hasStarted) {
             if (duration > 0) {
                 duration -= gameData.getDelta();
-                System.out.println("Duration: " + duration);
             } else {
                 isExpired = true;
             }

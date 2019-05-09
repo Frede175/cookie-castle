@@ -1,10 +1,13 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.EntityType;
-import dk.sdu.cookie.castle.common.data.Entityparts.*;
+import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
+import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
+import dk.sdu.cookie.castle.common.item.IItemCreate;
+import dk.sdu.cookie.castle.common.item.ItemType;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
@@ -21,6 +24,7 @@ public class Map {
     private static Map map = null;
 
     private static IEnemyCreate enemyCreate;
+    private static IItemCreate itemCreate;
 
     private RoomPresetGenerator roomPresetGenerator;
 
@@ -64,10 +68,16 @@ public class Map {
             if (enemyCreate != null) {
                 for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
                     // TODO add random enemy type
-                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.RANGED, world));
+                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.MELEE, world));
                 }
             }
             // TODO do the same as enemyCreate with itemCreate
+            if (itemCreate != null) {
+                for (PositionPart positionPart : roomPreset.getItemPositions()) {
+                    // TODO add random enemy type
+                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.SUGAR, world));
+                }
+            }
             for (PositionPart positionPart : roomPreset.getRockPositions()) {
                 Rock rock = createRock(positionPart.getX(), positionPart.getY());
                 world.addEntity(rock);
@@ -125,56 +135,48 @@ public class Map {
             while (i <= exitCount && !freeRooms.isEmpty()) {
                 // Generates the random direction.
                 int index = (int) (Math.random() * 4);
-                DoorPosition direction = doorPositions[index];
-                // Calculates the opponent direction.
-                DoorPosition oppoDirection = doorPositions[(index + 2) % 4];
+                DoorPosition doorPosition = doorPositions[index];
+                // Calculates the opposite direction.
+                DoorPosition oppositeDirection = doorPosition.getOpposite();
                 // Random selecting the neighbor room.
                 int neighbor = (int) (Math.random() * freeRooms.size());
-                // If the room dosent have an exit at that direction
-                Vector2f p = currentRoom.getPoint().add(getPointDirection(direction));
-                if (currentRoom.checkIfFree(direction) && !usedPoints.contains(p)) {
-                    Door currentRoomDoor = currentRoom.setDoor(direction, freeRooms.get(neighbor));
+                // If the room doesn't have an exit at that direction
+                Vector2f p = currentRoom.getPoint().add(doorPosition.getPointDirection());
+                if (currentRoom.checkIfFree(doorPosition) && !usedPoints.contains(p)) {
+                    Door currentRoomDoor = new Door(doorPosition, freeRooms.get(neighbor));
+                    currentRoom.setDoor(currentRoomDoor);
                     world.addEntity(currentRoomDoor);
-                    // sets coordinates to every freeroom.
+                    // sets coordinates to every free room.
                     freeRooms.get(neighbor).setPoint(p);
                     usedPoints.add(p);
                     // Sets the neighbor rooms exit to be the current room.
-                    Door neighborRoomDoor = freeRooms.get(neighbor).setDoor(oppoDirection, currentRoom);
+                    Door neighborRoomDoor = new Door(oppositeDirection, currentRoom);
+                    freeRooms.get(neighbor).setDoor(neighborRoomDoor);
+
                     world.addEntity(neighborRoomDoor);
                     // Adds the neighbor room to the queue.
                     roomsToProcess.add(freeRooms.get(neighbor));
                     // Remove the neighbor room from the free rooms ArrayList.
                     freeRooms.remove(freeRooms.get(neighbor));
-
                 }
                 i++;
             }
         }
-
     }
 
-    private Vector2f getPointDirection(DoorPosition d) {
-        switch (d) {
-            case BOTTOM:
-                return new Vector2f(0, -1);
-            case TOP:
-                return new Vector2f(0, 1);
-            case RIGHT:
-                return new Vector2f(1, 0);
-            case LEFT:
-                return new Vector2f(-1, 0);
-            default:
-                throw new AssertionError(d.name());
-
-        }
-
-    }
-
-    public void installEnemyCreate(IEnemyCreate iEnemyCreate) {;
+    public void installEnemyCreate(IEnemyCreate iEnemyCreate) {
         enemyCreate = iEnemyCreate;
     }
 
     public void uninstallEnemyCreate() {
-        this.enemyCreate = null;
+        enemyCreate = null;
+    }
+
+    public void installItemCreate(IItemCreate iItemCreate) {
+        itemCreate = iItemCreate;
+    }
+
+    public void uninstallItemCreate() {
+        itemCreate = null;
     }
 }

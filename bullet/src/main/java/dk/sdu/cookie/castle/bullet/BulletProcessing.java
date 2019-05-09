@@ -1,10 +1,7 @@
 package dk.sdu.cookie.castle.bullet;
 
-import dk.sdu.cookie.castle.common.data.Entity;
-import dk.sdu.cookie.castle.common.data.EntityType;
+import dk.sdu.cookie.castle.common.data.*;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
-import dk.sdu.cookie.castle.common.data.GameData;
-import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 
@@ -58,7 +55,7 @@ public class BulletProcessing implements IEntityProcessingService {
             }
 
             // Checks what the bullet hits
-            if (collisionPart.getHit()) {
+            if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case PLAYER:
                         if (bullet.getEntityType() == EntityType.ENEMY_BULLET) {
@@ -106,7 +103,7 @@ public class BulletProcessing implements IEntityProcessingService {
         b.add(new CollisionPart());
         WeaponPart entityWeaponPart = entity.getPart(WeaponPart.class);
         b.add(new DamagePart(entityWeaponPart.getDamage()));
-        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange());
+        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange() / Constants.BULLET_SPEED);
         b.add(timerPart);
         timerPart.setHasStarted(true);
 

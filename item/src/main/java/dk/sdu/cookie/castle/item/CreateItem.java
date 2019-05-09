@@ -10,6 +10,15 @@ import dk.sdu.cookie.castle.common.item.ItemType;
 
 public class CreateItem implements IItemCreate {
 
+    /**
+     * This method creates an Item
+     *
+     * @param x The X coordinate of the spawn position
+     * @param y The Y coordinate of the spawn position
+     * @param itemType The type of item it is
+     * @param world The world the item is to be spawned into
+     * @return The ID of the item
+     */
     @Override
     public String createItem(float x, float y, ItemType itemType, World world) {
         float[] shapeX = new float[6];
@@ -23,7 +32,7 @@ public class CreateItem implements IItemCreate {
         item.setShapeX(shapeX);
         item.setShapeY(shapeY);
         item.setEntityType(EntityType.ITEM);
-
+        world.addEntity(item);
         return item.getID();
     }
 }
