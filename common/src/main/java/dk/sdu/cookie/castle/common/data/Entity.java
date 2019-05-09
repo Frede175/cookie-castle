@@ -29,6 +29,7 @@ public class Entity implements Serializable {
 
     public Entity() {
         parts = new ConcurrentHashMap<>();
+        //updateMinMax();
     }
 
     public void add(EntityPart part) {

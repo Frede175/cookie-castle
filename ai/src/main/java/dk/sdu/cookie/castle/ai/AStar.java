@@ -193,8 +193,12 @@ public class AStar implements AIService {
                 case REMOVABLE_OBSTACLE:
                 case WALL:
                     PositionPart positionPart = entity.getPart(PositionPart.class);
+                    if (entity.getMax() == null || entity.getMin() == null) {
+                        continue;
+                    }
                     Vector2f min = toGrid(entity.getMin());
                     Vector2f max = toGrid(entity.getMax());
+
                     for (float y = min.getY(); y <= max.getY(); y++) {
                         for (float x = min.getX(); x <= max.getX(); x++) {
                             if (y < 0 || y > gameData.getDisplayHeight() || x < 0 || x > gameData.getDisplayWidth())
@@ -210,13 +214,13 @@ public class AStar implements AIService {
 
     /**
      * Method for calculating a Vector2f to a grid coordinate #quickMaths
-     * @param Vector2f
+     * @param point
      * @return Vector2f
      */
-    private Vector2f toGrid(Vector2f Vector2f) {
+    private Vector2f toGrid(Vector2f point) {
         // TODO If you place an entity off the map, then in the edge there will be a blocked path
-        int xGridCoordinate = (int) Vector2f.getX() / SIZE_OF_CELL;
-        int yGridCoordinate = (int) Vector2f.getY() / SIZE_OF_CELL;
+        int xGridCoordinate = (int) point.getX() / SIZE_OF_CELL;
+        int yGridCoordinate = (int) point.getY() / SIZE_OF_CELL;
         if (xGridCoordinate < 0) {
             xGridCoordinate = 0;
         }
