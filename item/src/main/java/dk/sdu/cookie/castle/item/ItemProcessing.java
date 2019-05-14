@@ -11,10 +11,8 @@ import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
 public class ItemProcessing implements IEntityProcessingService {
-
-    private float angle = 0;
-    private float numPoints = 6;
-    private float radians = 3.1415f / 2 + (float) Math.random();
+    
+    private float radians = 0;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -43,10 +41,37 @@ public class ItemProcessing implements IEntityProcessingService {
         float x = positionPart.getX();
         float y = positionPart.getY();
 
-        for (int i = 0; i < numPoints; i++) {
-            shapeX[i] = x + (float) Math.cos(angle + radians) * 26;
-            shapeY[i] = y + (float) Math.sin(angle + radians) * 26;
-            angle += 2 * 3.1415f / numPoints;
+        switch (((Item) entity).getItemType()) {
+            case ENERGYDRINK:
+                shapeX[0] = x + (float) Math.cos(radians + Math.PI / 8 * 3) * 28;
+                shapeY[0] = y + (float) Math.sin(radians + Math.PI / 8 * 3) * 28;
+                shapeX[1] = x + (float) Math.cos(radians - Math.PI / 8 * 3) * 28;
+                shapeY[1] = y + (float) Math.sin(radians - Math.PI / 8 * 3) * 28;
+                shapeX[2] = x + (float) Math.cos(radians - Math.PI / 8 * 5) * 28;
+                shapeY[2] = y + (float) Math.sin(radians - Math.PI / 8 * 5) * 28;
+                shapeX[3] = x + (float) Math.cos(radians + Math.PI / 8 * 5) * 28;
+                shapeY[3] = y + (float) Math.sin(radians + Math.PI / 8 * 5) * 28;
+                break;
+            case PROTEINSHAKE:
+                shapeX[0] = x + (float) Math.cos(radians + Math.PI / 8 * 3) * 25;
+                shapeY[0] = y + (float) Math.sin(radians + Math.PI / 8 * 3) * 25;
+                shapeX[1] = x + (float) Math.cos(radians - Math.PI / 8 * 3) * 25;
+                shapeY[1] = y + (float) Math.sin(radians - Math.PI / 8 * 3) * 25;
+                shapeX[2] = x + (float) Math.cos(radians - Math.PI / 8 * 5) * 25;
+                shapeY[2] = y + (float) Math.sin(radians - Math.PI / 8 * 5) * 25;
+                shapeX[3] = x + (float) Math.cos(radians + Math.PI / 8 * 5) * 25;
+                shapeY[3] = y + (float) Math.sin(radians + Math.PI / 8 * 5) * 25;
+                break;
+            case SUGAR:
+                shapeX[0] = x + (float) Math.cos(radians - Math.PI / 16) * 23;
+                shapeY[0] = y + (float) Math.sin(radians - Math.PI / 16) * 23;
+                shapeX[1] = x + (float) Math.cos(radians - Math.PI / 2) * 20;
+                shapeY[1] = y + (float) Math.sin(radians - Math.PI / 2) * 20;
+                shapeX[2] = x + (float) Math.cos(radians - Math.PI + Math.PI / 16) * 23;
+                shapeY[2] = y + (float) Math.sin(radians - Math.PI + Math.PI / 16) * 23;
+                shapeX[3] = x + (float) Math.cos(radians + Math.PI / 2) * 23;
+                shapeY[3] = y + (float) Math.sin(radians + Math.PI / 2) * 23;
+                break;
         }
 
         entity.setShapeX(shapeX);
