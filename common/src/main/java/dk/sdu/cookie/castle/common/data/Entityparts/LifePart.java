@@ -7,6 +7,8 @@ import dk.sdu.cookie.castle.common.data.GameData;
 
 import java.util.Map;
 
+import static dk.sdu.cookie.castle.common.data.BuffType.HEALTH_REGEN;
+
 public class LifePart implements EntityPart {
 
     private boolean dead = false;
@@ -70,18 +72,15 @@ public class LifePart implements EntityPart {
 
                 // Checks if the item is a buff
                 if (!itemPart.isWeapon()) {
-
-                    // Gets all buffs
-                    for (ItemPart itemPart1 : inventoryPart.getItemParts()) {
-                        switch (itemPart1.getBuff().getBuffType()) {
-
-                            case DAMAGE_REDUCTION:
-                                buffedDamageReduction += itemPart1.getBuff().getMultiplier();
-                            case HEALTH_REGEN:
-                                buffedHealthRegen += itemPart1.getBuff().getMultiplier();
-                            default:
-                                break;
-                        }
+                    switch (itemPart.getBuff().getBuffType()) {
+                        case DAMAGE_REDUCTION:
+                            buffedDamageReduction += itemPart.getBuff().getMultiplier();
+                            break;
+                        case HEALTH_REGEN:
+                            buffedHealthRegen += itemPart.getBuff().getMultiplier();
+                            break;
+                        default:
+                            break;
                     }
 
                 }

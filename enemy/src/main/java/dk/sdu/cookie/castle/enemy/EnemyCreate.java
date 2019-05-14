@@ -50,7 +50,7 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.add(new DamagePart(3f));
             enemy.setEnemyType(EnemyType.MELEE);
             enemy.add(new LifePart(3, 1, 3, 1));
-            maxSpeed = 185;
+            maxSpeed = 160;
         }
 
         enemy.add(new AIMovingPart(maxSpeed));

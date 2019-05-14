@@ -32,7 +32,7 @@ public class BulletProcessing implements IEntityProcessingService {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
                     Vector2f positionVector = new Vector2f(positionPart.getRadians());
                     positionVector.mult(entity.getMin().distance(entity.getMax()));
-                    //Add entity radius to initial position to avoid immideate collision.
+                    //Add entity radius to initial position to avoid immediate collision.
                     Entity bullet = createBullet(positionPart.getX() + positionVector.getX(), positionPart.getY() + positionVector.getY(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
                     shootingPart.setCanShoot(false);
@@ -70,8 +70,10 @@ public class BulletProcessing implements IEntityProcessingService {
                             world.removeEntity(bullet);
                         }
                         break;
-
+                    case ITEM:
+                        break;
                     default:
+                        world.removeEntity(bullet);
                         break;
                 }
                 collisionPart.setIsHit(false);

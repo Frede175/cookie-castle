@@ -18,8 +18,8 @@ public class Door extends Entity {
         super.add(new CollisionPart());
         super.setEntityType(DOOR);
         this.leadsTo = connection;
-        setShapeX(new float[6]);
-        setShapeY(new float[6]);
+        setShapeX(new float[8]);
+        setShapeY(new float[8]);
     }
 
     public Room getLeadsTo() {
