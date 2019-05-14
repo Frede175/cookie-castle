@@ -28,6 +28,9 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
             shootingPart.setShooting(gameData.getKeys().isDown(GameKeys.SPACE));
 
+            //Collision check
+            //Take damage if collision is with bullet
+            //Pick up item if the collision is with an entity of type "item"
             if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case ENEMY:
@@ -49,6 +52,7 @@ public class PlayerProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
+            //Processing all the player parts (keeping them updated as the game runs)
             lifePart.process(gameData, player);
             if (lifePart.isDead()) {
                 world.removeEntity(player);
@@ -65,6 +69,10 @@ public class PlayerProcessing implements IEntityProcessingService {
         }
     }
 
+    /**
+     * Updates the graphical aspect of the players position
+     * @param entity
+     */
     private void updateShape(Entity entity) {
         float radius = 8;
         float[] shapeX = entity.getShapeX();
