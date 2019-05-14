@@ -28,29 +28,29 @@ public enum DoorPosition {
      * @param displayHeight Display pixel height
      */
     public void setPosition(int displayWidth, int displayHeight) {
-        int margin = 150; // This is the margin in pixels from the edges
-        int verticalOffset = 20; // Fix vertical alignment for top and bottom
+        int marginX = 136; // This is the margin for left and right edges
+        int marginY = 106; // This is the margin for top and bottom edges
 
         switch (this) {
             case TOP:
                 positionPart.setX(displayWidth / 2);
-                positionPart.setY(displayHeight - margin + verticalOffset);
+                positionPart.setY(displayHeight - marginY);
                 positionPart.setRadians(0);
                 break;
             case RIGHT:
-                positionPart.setX(displayWidth - margin);
+                positionPart.setX(displayWidth - marginX);
                 positionPart.setY(displayHeight / 2);
-                positionPart.setRadians(1.5708f);
+                positionPart.setRadians((float) Math.PI * 1.5f);
                 break;
             case BOTTOM:
                 positionPart.setX(displayWidth / 2);
-                positionPart.setY(margin - verticalOffset);
-                positionPart.setRadians(3.14159f);
+                positionPart.setY(marginY);
+                positionPart.setRadians((float) Math.PI);
                 break;
             case LEFT:
-                positionPart.setX(margin);
+                positionPart.setX(marginX);
                 positionPart.setY(displayHeight / 2);
-                positionPart.setRadians(4.71239f);
+                positionPart.setRadians((float) Math.PI / 2);
                 break;
         }
     }
@@ -85,7 +85,7 @@ public enum DoorPosition {
      * @return PositionPart
      */
     public PositionPart getSpawnPosition() {
-        int offset = 35;
+        int offset = 40;
 
         switch (this) {
             case TOP:

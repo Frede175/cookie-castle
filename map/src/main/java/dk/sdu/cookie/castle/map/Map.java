@@ -90,16 +90,16 @@ public class Map {
     }
 
     private Rock createRock(float x, float y) {
-        float[] shapeX = new float[6];
-        float[] shapeY = new float[6];
-        float radians = 3.1415f / 2;
+        float[] shapeX = new float[8];
+        float[] shapeY = new float[8];
+        float radians = 3.1415f * (float) Math.random();
 
         Rock rock = new Rock();
 
         rock.add(new PositionPart(x, y, radians));
         rock.add(new CollisionPart());
         rock.setEntityType(EntityType.STATIC_OBSTACLE);
-
+        rock.setCurrentTexture(MapPlugin.getAssetId("rock"));
         rock.setShapeY(shapeY);
         rock.setShapeX(shapeX);
 
@@ -144,6 +144,7 @@ public class Map {
                 Vector2f p = currentRoom.getPoint().add(doorPosition.getPointDirection());
                 if (currentRoom.checkIfFree(doorPosition) && !usedPoints.contains(p)) {
                     Door currentRoomDoor = new Door(doorPosition, freeRooms.get(neighbor));
+                    currentRoomDoor.setCurrentTexture(MapPlugin.getAssetId("door"));
                     currentRoom.setDoor(currentRoomDoor);
                     world.addEntity(currentRoomDoor);
                     // sets coordinates to every free room.
@@ -151,6 +152,7 @@ public class Map {
                     usedPoints.add(p);
                     // Sets the neighbor rooms exit to be the current room.
                     Door neighborRoomDoor = new Door(oppositeDirection, currentRoom);
+                    neighborRoomDoor.setCurrentTexture(MapPlugin.getAssetId("door"));
                     freeRooms.get(neighbor).setDoor(neighborRoomDoor);
 
                     world.addEntity(neighborRoomDoor);

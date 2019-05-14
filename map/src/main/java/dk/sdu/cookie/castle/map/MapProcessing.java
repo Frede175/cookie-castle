@@ -13,8 +13,6 @@ import java.util.Iterator;
 
 public class MapProcessing implements IEntityProcessingService {
 
-    private float angle = 0;
-    private float radians = 3.1415f / 2 + (float) Math.random();
 
     @Override
     public void process(GameData gameData, World world) {
@@ -22,14 +20,16 @@ public class MapProcessing implements IEntityProcessingService {
             if (!door.isActive()) continue;
 
             handleDoorCollision((Door) door, world);
-            updateShape(door);
+            updateDoor(door);
         }
 
         for (Entity rock : world.getEntities(Rock.class)) {
             if (!rock.isActive()) continue;
-            updateShape(rock);
+            updateRock(rock);
         }
     }
+
+
 
     private void handleDoorCollision(Door door, World world) {
         CollisionPart collisionPart = door.getPart(CollisionPart.class);
@@ -50,23 +50,61 @@ public class MapProcessing implements IEntityProcessingService {
         collisionPart.setIsHit(false);
     }
 
-    private void updateShape(Entity entity) {
-        float numPoints = 6;
+    private void updateDoor(Entity entity) {
         float[] shapeX = entity.getShapeX();
         float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
+        float radians = positionPart.getRadians();
 
-        for (int i = 0; i < numPoints; i++) {
-            shapeX[i] = x + (float) Math.cos(angle + radians) * 26;
-            shapeY[i] = y + (float) Math.sin(angle + radians) * 26;
-            angle += 2 * 3.1415f / numPoints;
-        }
+        shapeX[0] = x + (float) Math.cos(radians + 0.2f) * 35.69f;
+        shapeY[0] = y + (float) Math.sin(radians + 0.2f) * 35.69f;
+        shapeX[1] = x + (float) Math.cos(radians - 0.2f) * 35.69f;
+        shapeY[1] = y + (float) Math.sin(radians - 0.2f) * 35.69f;
+        shapeX[2] = x + (float) Math.cos(radians - 0.25f) * 27;
+        shapeY[2] = y + (float) Math.sin(radians - 0.25f) * 27;
+        shapeX[3] = x + (float) Math.cos(radians - 0.44f) * 28.8f;
+        shapeY[3] = y + (float) Math.sin(radians - 0.44f) * 28.8f;
+        shapeX[4] = x + (float) Math.cos(radians - 0.65f) * 20.1f;
+        shapeY[4] = y + (float) Math.sin(radians - 0.65f) * 20.1f;
+        shapeX[5] = x + (float) Math.cos(radians - 0.40f) * 17.2f;
+        shapeY[5] = y + (float) Math.sin(radians - 0.40f) * 17.2f;
+        shapeX[6] = x + (float) Math.cos(radians - Math.PI + 0.2f) * 35.69f;
+        shapeY[6] = y + (float) Math.sin(radians - Math.PI + 0.2f) * 35.69f;
+        shapeX[7] = x + (float) Math.cos(radians - Math.PI - 0.2f) * 35.69f;
+        shapeY[7] = y + (float) Math.sin(radians - Math.PI - 0.2f) * 35.69f;
 
-        entity.setShapeX(shapeX);
-        entity.setShapeY(shapeY);
         entity.updateMinMax();
+    }
+
+    private void updateRock(Entity entity) {
+        float[] shapeX = entity.getShapeX();
+        float[] shapeY = entity.getShapeY();
+        PositionPart positionPart = entity.getPart(PositionPart.class);
+        float x = positionPart.getX();
+        float y = positionPart.getY();
+        float radians = positionPart.getRadians();
+
+        shapeX[0] = x + (float) Math.cos(radians + 0.5f) * 26.16f;
+        shapeY[0] = y + (float) Math.sin(radians + 0.5f) * 19.35f;
+        shapeX[1] = x + (float) Math.cos(radians - 0.34f) * 28.59f;
+        shapeY[1] = y + (float) Math.sin(radians - 0.34f) * 21.19f;
+        shapeX[2] = x + (float) Math.cos(radians - 0.89f) * 25.68f;
+        shapeY[2] = y + (float) Math.sin(radians - 0.89f) * 19.03f;
+        shapeX[3] = x + (float) Math.cos(radians - 2.18f) * 25.24f;
+        shapeY[3] = y + (float) Math.sin(radians - 2.18f) * 18.7f;
+        shapeX[4] = x + (float) Math.cos(radians - 2.75f) * 28.05f;
+        shapeY[4] = y + (float) Math.sin(radians - 2.75f) * 20.76f;
+        shapeX[5] = x + (float) Math.cos(radians + 2.75f) * 30.27f;
+        shapeY[5] = y + (float) Math.sin(radians + 2.75f) * 22.78f;
+        shapeX[6] = x + (float) Math.cos(radians + 2.44f) * 31.08f;
+        shapeY[6] = y + (float) Math.sin(radians + 2.44f) * 22.97f;
+        shapeX[7] = x + (float) Math.cos(radians + 1.67f) * 20.59f;
+        shapeY[7] = y + (float) Math.sin(radians + 1.67f) * 15.24f;
+
+        entity.updateMinMax();
+
     }
 
     /**
