@@ -57,7 +57,7 @@ public class AStar implements AIService {
         }
 
         //Check if the next node is the end-node (the node where the player is/was)
-        if (nextNode != null & nextNode.equals(endNode)) {
+        if (nextNode != null && nextNode.equals(endNode)) {
             route.addFirst(end);
             nextNode = nextNode.getParent();
             // while the next node has a parent, keep adding the next nodes parent to the route towards the player
