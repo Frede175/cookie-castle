@@ -36,8 +36,8 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     private Entity createPlayer(GameData gameData) {
-        float[] shapeX = new float[3];
-        float[] shapeY = new float[3];
+        float[] shapeX = new float[9];
+        float[] shapeY = new float[9];
         float maxSpeed = 200;
         float x = gameData.getDisplayWidth() / 2f;
         float y = gameData.getDisplayHeight() / 2f;
@@ -49,11 +49,11 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(10, 1, 10, 1));
         player.add(new CollisionPart());
-        player.add(new InventoryPart());
 
-        // Starting weapon for the player
+        InventoryPart inventory = new InventoryPart();
         WeaponPart weaponPart = new WeaponPart(300f, 2f, 5f);
-        player.add(weaponPart);
+        inventory.addItem(new ItemPart(weaponPart));
+        player.add(inventory);
 
         player.setShapeY(shapeY);
         player.setShapeX(shapeX);
