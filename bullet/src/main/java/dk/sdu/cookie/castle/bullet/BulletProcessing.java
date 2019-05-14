@@ -117,6 +117,8 @@ public class BulletProcessing implements IEntityProcessingService {
             b.setEntityType(EntityType.ENEMY_BULLET);
         }
 
+        b.setCurrentTexture(BulletPlugin.getAssets().get("bullet"));
+
         return b;
     }
 
