@@ -42,7 +42,7 @@ public class ItemProcessing implements IEntityProcessingService {
         float y = positionPart.getY();
 
         switch (((Item) entity).getItemType()) {
-            case ENERGYDRINK:
+            case ENERGY_DRINK:
                 shapeX[0] = x + (float) Math.cos(radians + Math.PI / 8 * 3) * 28;
                 shapeY[0] = y + (float) Math.sin(radians + Math.PI / 8 * 3) * 28;
                 shapeX[1] = x + (float) Math.cos(radians - Math.PI / 8 * 3) * 28;
@@ -52,7 +52,7 @@ public class ItemProcessing implements IEntityProcessingService {
                 shapeX[3] = x + (float) Math.cos(radians + Math.PI / 8 * 5) * 28;
                 shapeY[3] = y + (float) Math.sin(radians + Math.PI / 8 * 5) * 28;
                 break;
-            case PROTEINSHAKE:
+            case PROTEIN_SHAKE:
                 shapeX[0] = x + (float) Math.cos(radians + Math.PI / 8 * 3) * 25;
                 shapeY[0] = y + (float) Math.sin(radians + Math.PI / 8 * 3) * 25;
                 shapeX[1] = x + (float) Math.cos(radians - Math.PI / 8 * 3) * 25;

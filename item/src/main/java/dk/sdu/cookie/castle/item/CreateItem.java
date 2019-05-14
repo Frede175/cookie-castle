@@ -1,6 +1,5 @@
 package dk.sdu.cookie.castle.item;
 
-import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.World;
@@ -33,10 +32,10 @@ public class CreateItem implements IItemCreate {
         item.setItemType(itemType);
 
         switch (itemType) {
-            case ENERGYDRINK:
+            case ENERGY_DRINK:
                 item.setCurrentTexture(ItemPlugin.getAssets().get("energyDrink"));
                 break;
-            case PROTEINSHAKE:
+            case PROTEIN_SHAKE:
                 item.setCurrentTexture(ItemPlugin.getAssets().get("shake"));
                 break;
             case SUGAR:

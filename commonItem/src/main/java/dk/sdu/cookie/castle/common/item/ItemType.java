@@ -4,8 +4,8 @@ import dk.sdu.cookie.castle.common.data.BuffType;
 
 public enum ItemType {
 
-    ENERGYDRINK(BuffType.ATTACK_SPEED, 20),
-    PROTEINSHAKE(BuffType.DAMAGE, 10),
+    ENERGY_DRINK(BuffType.ATTACK_SPEED, 20),
+    PROTEIN_SHAKE(BuffType.DAMAGE, 10),
     SUGAR(BuffType.MOVEMENT_SPEED, 10);
 
 
