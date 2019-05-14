@@ -7,8 +7,6 @@ import dk.sdu.cookie.castle.common.data.GameKeys;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
-import java.nio.file.WatchEvent;
-
 public class PlayerProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
