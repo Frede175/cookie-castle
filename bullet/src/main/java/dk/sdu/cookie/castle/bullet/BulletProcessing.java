@@ -21,8 +21,11 @@ public class BulletProcessing implements IEntityProcessingService {
         for (Entity entity : world.getEntities()) {
             if (!entity.isActive()) continue;
 
-            if (entity.getPart(ShootingPart.class) != null && entity.getPart(WeaponPart.class) != null) {
-                ShootingPart shootingPart = entity.getPart(ShootingPart.class);
+            ShootingPart shootingPart;
+            InventoryPart inventoryPart;
+
+            if ((shootingPart = entity.getPart(ShootingPart.class)) != null && (inventoryPart = entity.getPart(InventoryPart.class)) != null) {
+                if (inventoryPart.getCurrentWeapon() == null) continue;
 
                 //Shoot if isShooting is true, ie. space is pressed and the weapon is not on cooldown, ie. can't shoot
                 if (shootingPart.isShooting() && shootingPart.canShoot()) {
@@ -101,9 +104,10 @@ public class BulletProcessing implements IEntityProcessingService {
         b.add(new LifePart(1));
         b.add(new BulletMovingPart());
         b.add(new CollisionPart());
-        WeaponPart entityWeaponPart = entity.getPart(WeaponPart.class);
-        b.add(new DamagePart(entityWeaponPart.getDamage()));
-        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange() / Constants.BULLET_SPEED);
+        InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
+        WeaponPart weaponPart = inventoryPart.getCurrentWeapon().getWeapon();
+        b.add(new DamagePart(weaponPart.getDamage()));
+        TimerPart timerPart = new TimerPart(weaponPart.getRange() / Constants.BULLET_SPEED);
         b.add(timerPart);
         timerPart.setHasStarted(true);
 

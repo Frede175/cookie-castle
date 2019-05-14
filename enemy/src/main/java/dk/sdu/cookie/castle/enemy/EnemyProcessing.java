@@ -11,6 +11,8 @@ import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.services.ILineOfSightService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 
+import java.nio.file.WatchEvent;
+
 public class EnemyProcessing implements IEntityProcessingService {
 
     private static ILineOfSightService lineOfSightService;
@@ -44,7 +46,12 @@ public class EnemyProcessing implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
             CollisionPart collisionPart = enemy.getPart(CollisionPart.class);
             ShootingPart shootingPart = enemy.getPart(ShootingPart.class);
-            WeaponPart weaponPart = enemy.getPart(WeaponPart.class);
+            InventoryPart inventoryPart = enemy.getPart(InventoryPart.class);
+            WeaponPart weaponPart = null;
+            if (inventoryPart != null) {
+                weaponPart = inventoryPart.getCurrentWeapon().getWeapon();
+            }
+
 
             if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
@@ -83,7 +90,7 @@ public class EnemyProcessing implements IEntityProcessingService {
                 world.removeEntity(enemy);
             }
             if (((Enemy) enemy).getEnemyType() == EnemyType.RANGED) {
-                weaponPart.process(gameData, enemy);
+                inventoryPart.process(gameData, enemy);
                 shootingPart.updateShootingSpeed(weaponPart.getAttackSpeed());
                 shootingPart.process(gameData, enemy);
             }

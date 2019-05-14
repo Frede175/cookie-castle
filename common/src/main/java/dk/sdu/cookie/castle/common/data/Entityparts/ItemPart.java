@@ -89,5 +89,11 @@ public class ItemPart implements EntityPart {
         if (timer != null) {
             timer.process(gameData, entity);
         }
+        if (weapon != null) {
+            weapon.process(gameData, entity);
+        }
+        if (buff != null) {
+            buff.process(gameData, entity);
+        }
     }
 }

@@ -7,6 +7,8 @@ import dk.sdu.cookie.castle.common.data.GameKeys;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 
+import java.nio.file.WatchEvent;
+
 public class PlayerProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
@@ -19,8 +21,8 @@ public class PlayerProcessing implements IEntityProcessingService {
             LifePart lifePart = player.getPart(LifePart.class);
             CollisionPart collisionPart = player.getPart(CollisionPart.class);
             InventoryPart inventoryPart = player.getPart(InventoryPart.class);
+            WeaponPart weaponPart = inventoryPart.getCurrentWeapon().getWeapon();
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
-            WeaponPart weaponPart = player.getPart(WeaponPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
@@ -61,7 +63,6 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             inventoryPart.process(gameData, player);
-            weaponPart.process(gameData, player);
             shootingPart.updateShootingSpeed(weaponPart.getAttackSpeed());
             shootingPart.process(gameData, player);
 

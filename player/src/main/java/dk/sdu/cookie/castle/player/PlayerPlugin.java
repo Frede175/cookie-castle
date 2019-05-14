@@ -49,11 +49,11 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(10, 1, 10, 1));
         player.add(new CollisionPart());
-        player.add(new InventoryPart());
 
-        // Starting weapon for the player
+        InventoryPart inventory = new InventoryPart();
         WeaponPart weaponPart = new WeaponPart(300f, 2f, 5f);
-        player.add(weaponPart);
+        inventory.addItem(new ItemPart(weaponPart));
+        player.add(inventory);
 
         player.setShapeY(shapeY);
         player.setShapeX(shapeX);
