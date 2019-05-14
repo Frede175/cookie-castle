@@ -28,7 +28,7 @@ public class MapPlugin implements IGamePluginService {
         }
 
         // skal initiate singleton og kalde "generateNewMap" func
-        Map.getInstance().generateMap(3, world);
+        Map.getInstance().generateMap(10, world);
         Map.getInstance().setCurrentRoom(Map.getInstance().getListOfRooms().get(0));
         for (String s : Map.getInstance().getCurrentRoom().getEntityList()) {
             world.getEntity(s).setIsActive(true);

@@ -92,7 +92,7 @@ public class Map {
     private Rock createRock(float x, float y) {
         float[] shapeX = new float[8];
         float[] shapeY = new float[8];
-        float radians = 0;
+        float radians = 3.1415f * (float) Math.random();
 
         Rock rock = new Rock();
 
