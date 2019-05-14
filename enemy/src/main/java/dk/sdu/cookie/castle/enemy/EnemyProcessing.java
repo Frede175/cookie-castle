@@ -11,8 +11,6 @@ import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.services.ILineOfSightService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 
-import java.nio.file.WatchEvent;
-
 public class EnemyProcessing implements IEntityProcessingService {
 
     private static ILineOfSightService lineOfSightService;
