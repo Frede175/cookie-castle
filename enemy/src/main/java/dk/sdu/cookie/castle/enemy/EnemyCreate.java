@@ -22,8 +22,8 @@ public class EnemyCreate implements IEnemyCreate {
      */
     @Override
     public String createEnemy(float x, float y, EnemyType enemyType, World world) {
-        float[] shapeX = new float[3];
-        float[] shapeY = new float[3];
+        float[] shapeX = new float[9];
+        float[] shapeY = new float[9];
 
         float maxSpeed = 100;
         float radians = 3.1415f / 2;
