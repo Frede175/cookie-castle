@@ -32,6 +32,7 @@ public class EnemyPlugin implements IGamePluginService {
     private void initializeAssets(GameData gameData) {
         Collection<Asset> loadingAssets = new ArrayList<>();
         loadingAssets.add(new Asset("cookie", AssetType.TEXTURE, FileType.PNG));
+        loadingAssets.add(new Asset("cookieRanged", AssetType.TEXTURE, FileType.PNG));
         assets = AssetLoader.loadAssets(this.getClass(), loadingAssets);
         gameData.addAssets(loadingAssets);
     }

@@ -116,11 +116,28 @@ public class EnemyProcessing implements IEntityProcessingService {
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
 
-        for (int i = 0; i < shapeX.length; i++) {
-            shapeX[i] = (float) (x + Math.cos(radians - angle) * radius);
-            shapeY[i] = (float) (y + Math.sin(radians - angle) * radius);
-            angle += Math.PI / 4.5;
+
+        if (((Enemy) entity).getEnemyType() == EnemyType.MELEE) {
+            for (int i = 0; i < shapeX.length; i++) {
+                shapeX[i] = (float) (x + Math.cos(radians - angle) * radius);
+                shapeY[i] = (float) (y + Math.sin(radians - angle) * radius);
+                angle += Math.PI / 4.5;
+            }
+        } else {
+            for (int i = 0; i < shapeX.length; i++) {
+                if (i == 0) {
+                    shapeX[i] = (float) (x + Math.cos(radians - angle) * (radius + 10));
+                    shapeY[i] = (float) (y + Math.sin(radians - angle) * (radius + 10));
+                } else {
+                    shapeX[i] = (float) (x + Math.cos(radians - angle) * radius);
+                    shapeY[i] = (float) (y + Math.sin(radians - angle) * radius);
+                }
+
+                angle += Math.PI / 4.5;
+            }
         }
+
+
 
         entity.setShapeX(shapeX);
         entity.setShapeY(shapeY);
