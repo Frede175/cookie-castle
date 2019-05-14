@@ -36,8 +36,8 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     private Entity createPlayer(GameData gameData) {
-        float[] shapeX = new float[3];
-        float[] shapeY = new float[3];
+        float[] shapeX = new float[9];
+        float[] shapeY = new float[9];
         float maxSpeed = 200;
         float x = gameData.getDisplayWidth() / 2f;
         float y = gameData.getDisplayHeight() / 2f;
