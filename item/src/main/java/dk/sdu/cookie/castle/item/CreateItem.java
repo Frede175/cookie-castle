@@ -20,7 +20,7 @@ public class CreateItem implements IItemCreate {
      * @return The ID of the item
      */
     @Override
-    public String createItem(float x, float y, ItemType itemType, World world) {
+    public Entity createItem(float x, float y, ItemType itemType, World world) {
         float[] shapeX = new float[6];
         float[] shapeY = new float[6];
 
@@ -33,6 +33,6 @@ public class CreateItem implements IItemCreate {
         item.setShapeY(shapeY);
         item.setEntityType(EntityType.ITEM);
         world.addEntity(item);
-        return item.getID();
+        return item;
     }
 }

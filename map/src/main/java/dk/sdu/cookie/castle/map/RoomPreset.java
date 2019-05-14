@@ -1,44 +1,34 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
+import dk.sdu.cookie.castle.map.entities.EntityPreset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 // Class containing presets for rooms that can be generated "randomly" when game/level is initiated
-public class RoomPreset {
+class RoomPreset {
+    private Map<EntityPreset, List<PositionPart>> entityPresetPositions;
 
-    private List<PositionPart> enemyPositions;
-    private List<PositionPart> itemPositions;
-    private List<PositionPart> rockPositions;
+    RoomPreset() {
+        entityPresetPositions = new ConcurrentHashMap<>();
 
-    public RoomPreset() {
-        enemyPositions = new ArrayList<>();
-        itemPositions = new ArrayList<>();
-        rockPositions = new ArrayList<>();
+        for (EntityPreset entityPreset : EntityPreset.values()) {
+            entityPresetPositions.put(entityPreset, new ArrayList<>());
+        }
     }
 
-    public void addEnemyPosition(PositionPart positionPart) {
-        enemyPositions.add(positionPart);
+    void addEntityPosition(EntityPreset entityPreset, PositionPart position) {
+        entityPresetPositions.get(entityPreset).add(position);
     }
 
-    public void addItemPosition(PositionPart positionPart) {
-        itemPositions.add(positionPart);
+    Map<EntityPreset, List<PositionPart>> getEntityPositions() {
+        return entityPresetPositions;
     }
 
-    public void addRockPosition(PositionPart positionPart) {
-        rockPositions.add(positionPart);
-    }
-
-    public List<PositionPart> getEnemyPositions() {
-        return enemyPositions;
-    }
-
-    public List<PositionPart> getItemPositions() {
-        return itemPositions;
-    }
-
-    public List<PositionPart> getRockPositions() {
-        return rockPositions;
+    List<PositionPart> getEntityPositions(EntityPreset entityPreset) {
+        return entityPresetPositions.get(entityPreset);
     }
 }

@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
+import dk.sdu.cookie.castle.map.entities.EntityPreset;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,29 +30,37 @@ class RoomPresetGenerator {
                 InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
                 BufferedReader br = new BufferedReader(isr);
                 List<String> entities = new ArrayList<>();
-                br.lines().forEach(line -> entities.add(line));
-                RoomPreset roomPreset = new RoomPreset();
-                for (String entity : entities) {
-                    String[] entityData = entity.split(" ");
-                    PositionPart positionPart = new PositionPart(Integer.valueOf(entityData[1]), Integer.valueOf(entityData[2]), 0);
-                    switch (Integer.valueOf(entityData[0])) {
-                        case 1:
-                            roomPreset.addEnemyPosition(positionPart);
-                            break;
-                        case 2:
-                            roomPreset.addItemPosition(positionPart);
-                            break;
-                        case 3:
-                            roomPreset.addRockPosition(positionPart);
-                            break;
-                    }
-                }
-                roomPresets.add(roomPreset);
+                br.lines().forEach(entities::add);
+                roomPresets.add(createRoomPreset(entities));
             } catch (IOException e) {
                 System.out.println("Doesn't exist");
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Create a room preset from provided strings
+     *
+     * @param entities Specifies EntityPreset key and coordinates of an entity
+     * @return RoomPreset populated with entity positions
+     */
+    private RoomPreset createRoomPreset(List<String> entities) {
+        RoomPreset roomPreset = new RoomPreset();
+
+        for (String entity : entities) {
+            String[] entityData = entity.split(" ");
+            int entityPresetKey = Integer.valueOf(entityData[0]);
+            PositionPart positionPart = new PositionPart(Integer.valueOf(entityData[1]), Integer.valueOf(entityData[2]), 0);
+
+            try {
+                roomPreset.addEntityPosition(EntityPreset.getPreset(Integer.valueOf(entityData[0])), positionPart);
+            } catch (Exception e) {
+                System.out.println("EntityPreset for key " + entityPresetKey + " not found.");
+            }
+        }
+
+        return roomPreset;
     }
 
     RoomPreset getRandomRoomPreset() {

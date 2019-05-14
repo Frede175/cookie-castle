@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
@@ -10,41 +11,70 @@ import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MapProcessing implements IEntityProcessingService {
-
+    private Map map = Map.getInstance();
     private float angle = 0;
     private float radians = 3.1415f / 2 + (float) Math.random();
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity door : world.getEntities(Door.class)) {
-            if (!door.isActive()) continue;
-
-            handleDoorCollision((Door) door, world);
-            updateShape(door);
-        }
-
-        for (Entity rock : world.getEntities(Rock.class)) {
-            if (!rock.isActive()) continue;
-            updateShape(rock);
-        }
+        handleEntities(world);
     }
+
+    private void handleEntities(World world) {
+        java.util.Map<String, Entity> entities = new ConcurrentHashMap<>();
+
+        for (Entity entity : world.getEntities()) {
+            if (!entity.isActive()) continue;
+
+            if (map.getCurrentRoom().getDefaultState().containsKey(entity)) entities.put(entity.getID(), entity);
+
+            if (entity.getClass() == Door.class) {
+                handleDoorCollision((Door) entity, world);
+                updateShape(entity);
+            }
+
+            if (entity.getClass() == Rock.class) {
+                updateShape(entity);
+            }
+        }
+
+//        saveRoomState(entities);
+    }
+
+//    private void saveRoomState(java.util.Map<String, Entity> activeEntities) {
+//        for (Iterator<String> it = map.getCurrentRoom().getEntities().iterator(); it.hasNext(); ) {
+////        for (Iterator<java.util.Map.Entry<Entity, PositionPart>> it = map.getCurrentRoom().getDefaultState().entrySet().iterator(); it.hasNext(); ) {
+//            String e = it.next();
+//
+//            // Check if entity has been removed from the world
+//            if (!activeEntities.containsValue(e)) {
+//                // Remove bullets
+//                if (e.getEntityType().equals(EntityType.ENEMY_BULLET) || e.getEntityType().equals(EntityType.PLAYER_BULLET))
+//                // Bypass state saving if bundles are unloaded
+//                if (map.isEnemyPluginActive() && e.getEntityType().equals(EntityType.ENEMY)) {
+//                    System.out.println("Removing enemy");
+//                    it.remove();
+//                }
+//                if (map.isItemPluginActive() && e.getEntityType().equals(EntityType.ITEM)) it.remove();
+//            }
+//        }
+//    }
 
     private void handleDoorCollision(Door door, World world) {
         CollisionPart collisionPart = door.getPart(CollisionPart.class);
 
         if (!collisionPart.getIsHit()) return;
 
-        switch (collisionPart.getCollidingEntity().getEntityType()) {
-            case PLAYER:
-                // Changes current room to the door room
-                Room room = door.getLeadsTo();
-                unloadRoom(world);
-                loadRoom(room, world);
-                PositionPart playerPos = collisionPart.getCollidingEntity().getPart(PositionPart.class);
-                playerPos.setPosition(door.getPosition().getOpposite().getSpawnPosition());
-                break;
+        if (collisionPart.getCollidingEntity().getEntityType().equals(EntityType.PLAYER)) {
+            // Changes current room to the door room
+            Room room = door.getLeadsTo();
+            unloadRoom(world);
+            loadRoom(room, world);
+            PositionPart playerPos = collisionPart.getCollidingEntity().getPart(PositionPart.class);
+            playerPos.setPosition(door.getPosition().getOpposite().getSpawnPosition());
         }
 
         collisionPart.setIsHit(false);
@@ -76,12 +106,12 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void unloadRoom(World world) {
-        for (Iterator<String> it = Map.getInstance().getCurrentRoom().getEntityList().iterator(); it.hasNext(); ) {
+        for (Iterator<String> it = map.getCurrentRoom().getEntities().iterator(); it.hasNext(); ) {
             String ID = it.next();
 
             if (world.containsEntity(ID)) {
-                world.getEntity(ID).setIsActive(false);
-            } else {
+//                world.getEntity(ID).setIsActive(false);
+                world.removeEntity(ID);
                 it.remove();
             }
         }
@@ -95,9 +125,17 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void loadRoom(Room nextRoom, World world) {
-        for (String s : nextRoom.getEntityList()) {
-            world.getEntity(s).setIsActive(true);
+        world.removeBullets();
+
+        for (java.util.Map.Entry<Entity, PositionPart> e : nextRoom.getDefaultState().entrySet()) {
+            PositionPart p = e.getKey().getPart(PositionPart.class);
+            p.setPosition(e.getValue());
+            e.getKey().setIsActive(true);
+            world.addEntity(e.getKey());
         }
-        Map.getInstance().setCurrentRoom(nextRoom);
+//        for (String s : nextRoom.getEntities()) {
+//            world.getEntity(s).setIsActive(true);
+//        }
+        map.setCurrentRoom(nextRoom);
     }
 }

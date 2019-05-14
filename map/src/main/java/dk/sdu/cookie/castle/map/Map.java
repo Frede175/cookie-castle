@@ -1,20 +1,20 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.EntityType;
-import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
+import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
 import dk.sdu.cookie.castle.common.item.IItemCreate;
-import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.item.ItemType;
 import dk.sdu.cookie.castle.common.util.Vector2f;
+import dk.sdu.cookie.castle.map.entities.EntityPreset;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Map class (Singleton)
@@ -33,27 +33,29 @@ public class Map {
     private Room currentRoom;
 
     //Singleton
-    public static Map getInstance() {
+    static Map getInstance() {
         if (map == null) {
             map = new Map();
         }
         return map;
     }
 
+    // This somehow needs to be public
     public Map() {
         listOfRooms = new ArrayList<>();
         roomPresetGenerator = new RoomPresetGenerator();
     }
 
-    public void setCurrentRoom(Room room) {
+    void setCurrentRoom(Room room) {
+        room.loadDefaultState();
         currentRoom = room;
     }
 
-    public Room getCurrentRoom() {
+    Room getCurrentRoom() {
         return currentRoom;
     }
 
-    public List<Room> getListOfRooms() {
+    List<Room> getListOfRooms() {
         return listOfRooms;
     }
 
@@ -63,50 +65,60 @@ public class Map {
 
     private ArrayList<Room> createRooms(int roomCount, World world) {
         ArrayList<Room> rooms = new ArrayList<>();
+
         for (int i = 0; i < roomCount; i++) {
-            List<String> entityList = new ArrayList<>();
             RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
-            if (enemyCreate != null) {
-                EnemyType[] enemyTypes = EnemyType.values();
-                for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
-                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), enemyTypes[(int) (Math.random() * enemyTypes.length)], world));
-                }
-            }
-            if (itemCreate != null) {
-                ItemType[] itemTypes = ItemType.values();
-                for (PositionPart positionPart : roomPreset.getItemPositions()) {
-                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), itemTypes[(int) (Math.random() * itemTypes.length)], world));
-                }
-            }
-            for (PositionPart positionPart : roomPreset.getRockPositions()) {
-                Rock rock = createRock(positionPart.getX(), positionPart.getY());
-                world.addEntity(rock);
-                entityList.add(rock.getID());
-            }
-            Room room = new Room(entityList);
-            rooms.add(room);
+            rooms.add(createRoom(roomPreset, world));
         }
+
         return rooms;
     }
 
-    private Rock createRock(float x, float y) {
-        float[] shapeX = new float[6];
-        float[] shapeY = new float[6];
-        float radians = 3.1415f / 2;
+    private Room createRoom(RoomPreset preset, World world) {
+        java.util.Map<Entity, PositionPart> entities = createEntities(preset.getEntityPositions(), world);
 
-        Rock rock = new Rock();
-
-        rock.add(new PositionPart(x, y, radians));
-        rock.add(new CollisionPart());
-        rock.setEntityType(EntityType.STATIC_OBSTACLE);
-
-        rock.setShapeY(shapeY);
-        rock.setShapeX(shapeX);
-
-        return rock;
+        return new Room(entities);
     }
 
-    public void generateMap(int numberOfRooms, World world) {
+    private java.util.Map<Entity, PositionPart> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
+        java.util.Map<Entity, PositionPart> returnEntities = new ConcurrentHashMap<>();
+
+        for (java.util.Map.Entry<EntityPreset, List<PositionPart>> presetListEntry : entities.entrySet()) {
+            for (PositionPart position : presetListEntry.getValue()) {
+                returnEntities.put(createEntity(presetListEntry.getKey(), position, world), position);
+            }
+        }
+
+        return returnEntities;
+    }
+
+    private Entity createEntity(EntityPreset entityPreset, PositionPart position, World world) {
+        Entity entity = null;
+
+        switch (entityPreset) {
+            case ENEMY:
+                if (enemyCreate == null) break;
+
+                EnemyType enemyType = EnemyType.values()[(int) (Math.random() * EnemyType.values().length)];
+                entity = enemyCreate.createEnemy(position.getX(), position.getY(), enemyType, world);
+                break;
+            case ITEM:
+                if (itemCreate == null) break;
+
+                ItemType itemType = ItemType.values()[(int) (Math.random() * ItemType.values().length)];
+                entity = itemCreate.createItem(position.getX(), position.getY(), itemType, world);
+                break;
+            case ROCK:
+                Rock rock = new Rock(position.getX(), position.getY());
+                world.addEntity(rock);
+                entity = rock;
+                break;
+        }
+
+        return entity;
+    }
+
+    void generateMap(int numberOfRooms, World world) {
         // Creates the ArrayList that contains all the free rooms.
         ArrayList<Room> freeRooms = createRooms(numberOfRooms, world);
 
@@ -162,6 +174,14 @@ public class Map {
                 i++;
             }
         }
+    }
+
+    boolean isEnemyPluginActive() {
+        return enemyCreate != null;
+    }
+
+    boolean isItemPluginActive() {
+        return itemCreate != null;
     }
 
     public void installEnemyCreate(IEnemyCreate iEnemyCreate) {
