@@ -34,6 +34,7 @@ public class EnemyCreate implements IEnemyCreate {
         enemy.setEntityType(EntityType.ENEMY);
 
         if (enemyType == EnemyType.RANGED) {
+            enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookieRanged"));
             WeaponPart weaponPart = new WeaponPart(500f, 2f, 3f);
             enemy.add(weaponPart);
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));
@@ -43,6 +44,7 @@ public class EnemyCreate implements IEnemyCreate {
         }
 
         if (enemyType == EnemyType.MELEE) {
+            enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookie"));
             enemy.add(new DamagePart(3f));
             enemy.setEnemyType(EnemyType.MELEE);
             enemy.add(new LifePart(3, 1, 3, 1));
@@ -50,8 +52,6 @@ public class EnemyCreate implements IEnemyCreate {
         }
 
         enemy.add(new AIMovingPart(maxSpeed));
-
-        enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookieRanged"));
 
         enemy.setShapeY(shapeY);
         enemy.setShapeX(shapeX);
