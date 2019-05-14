@@ -1,24 +1,24 @@
 package dk.sdu.cookie.castle.ai;
 
-import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 // The node class is used for the AStar AI
 // Nodes contain the information for the AStar, to find the best choice of movement towards the goal
 public class Node implements Comparable<Node> {
-    private Point point;
+    private Vector2f Vector2f;
     private double heuristic;
     private float cost;
     private Node parent;
 
-    public Node(Point point, double heuristic, float cost, Node parent) {
-        this.point = point;
+    public Node(Vector2f Vector2f, double heuristic, float cost, Node parent) {
+        this.Vector2f = Vector2f;
         this.heuristic = heuristic;
         this.cost = cost;
         this.parent = parent;
     }
 
-    public Point getPoint() {
-        return point;
+    public Vector2f getPoint() {
+        return Vector2f;
     }
 
     public double getHeuristic() {
@@ -49,7 +49,7 @@ public class Node implements Comparable<Node> {
     public boolean equals(Object o) {
         if (o instanceof Node) {
             Node other = ((Node) o);
-            return point.getX() == other.getPoint().getX() && point.getY() == other.getPoint().getY();
+            return Vector2f.getX() == other.getPoint().getX() && Vector2f.getY() == other.getPoint().getY();
         }
         return false;
     }

@@ -21,7 +21,7 @@ public class Raycasting implements ILineOfSightService {
         Line2D rayline = new Line2D.Float(start.getX(), start.getY(), end.getX(), end.getY());
 
         for (Entity entity : world.getEntities()) {
-            if (entity.getEntityType() != EntityType.STATIC_OBSTACLE
+            if (!entity.isActive() || entity.getEntityType() != EntityType.STATIC_OBSTACLE
                     && entity.getEntityType() != EntityType.REMOVABLE_OBSTACLE
                     && entity.getEntityType() != EntityType.WALL) {
                 continue;

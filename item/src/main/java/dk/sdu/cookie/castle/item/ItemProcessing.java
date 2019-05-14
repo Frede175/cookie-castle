@@ -51,6 +51,7 @@ public class ItemProcessing implements IEntityProcessingService {
 
         entity.setShapeX(shapeX);
         entity.setShapeY(shapeY);
+        entity.updateMinMax();
     }
 }
 

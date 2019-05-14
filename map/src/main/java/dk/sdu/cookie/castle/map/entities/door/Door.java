@@ -17,7 +17,6 @@ public class Door extends Entity {
         super.add(position.getPositionPart());
         super.add(new CollisionPart());
         super.setEntityType(DOOR);
-        super.setRadius(26);
         this.leadsTo = connection;
         setShapeX(new float[6]);
         setShapeY(new float[6]);
