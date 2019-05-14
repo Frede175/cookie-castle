@@ -74,4 +74,9 @@ public class Vector2f {
         return (float) Math.sqrt(diffX * diffX + diffY * diffY);
     }
 
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
 }

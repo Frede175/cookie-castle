@@ -1,18 +1,18 @@
 package dk.sdu.cookie.castle.map.entities.door;
 
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
-import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 public enum DoorPosition {
-    TOP(new Point(0, 1)),
-    RIGHT(new Point(1, 0)),
-    BOTTOM(new Point(0, -1)),
-    LEFT(new Point(-1, 0));
+    TOP(new Vector2f(0, 1)),
+    RIGHT(new Vector2f(1, 0)),
+    BOTTOM(new Vector2f(0, -1)),
+    LEFT(new Vector2f(-1, 0));
 
     private PositionPart positionPart;
-    private Point pointDirection;
+    private Vector2f pointDirection;
 
-    DoorPosition(Point pointDirection) {
+    DoorPosition(Vector2f pointDirection) {
         positionPart = new PositionPart(0, 0, 0);
         this.pointDirection = pointDirection;
     }
@@ -75,7 +75,7 @@ public enum DoorPosition {
         }
     }
 
-    public Point getPointDirection() {
+    public Vector2f getPointDirection() {
         return pointDirection;
     }
 

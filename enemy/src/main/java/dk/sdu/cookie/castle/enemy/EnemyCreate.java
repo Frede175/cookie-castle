@@ -22,14 +22,13 @@ public class EnemyCreate implements IEnemyCreate {
      */
     @Override
     public String createEnemy(float x, float y, EnemyType enemyType, World world) {
-        float[] shapeX = new float[3];
-        float[] shapeY = new float[3];
+        float[] shapeX = new float[9];
+        float[] shapeY = new float[9];
 
         float maxSpeed = 100;
         float radians = 3.1415f / 2;
 
         Enemy enemy = new Enemy();
-
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new CollisionPart());
         enemy.setEntityType(EntityType.ENEMY);
@@ -40,7 +39,6 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));
             enemy.setEnemyType(EnemyType.RANGED);
             enemy.add(new LifePart(6, 1, 6, 1));
-            enemy.setRadius(15);
             maxSpeed = 150;
         }
 
@@ -48,7 +46,6 @@ public class EnemyCreate implements IEnemyCreate {
             enemy.add(new DamagePart(3f));
             enemy.setEnemyType(EnemyType.MELEE);
             enemy.add(new LifePart(3, 1, 3, 1));
-            enemy.setRadius(25);
             maxSpeed = 185;
         }
 

@@ -2,7 +2,6 @@ package dk.sdu.cookie.castle.common.data.Entityparts;
 
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
-import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.util.LinkedList;
@@ -12,7 +11,7 @@ public class AIMovingPart implements EntityPart {
     private final float UPDATE_TIME = 0.5f;
 
     private float speed;
-    private LinkedList<Point> route = new LinkedList<>();
+    private LinkedList<Vector2f> route = new LinkedList<>();
     private boolean update = true;
     private boolean shouldMove = true;
 
@@ -22,7 +21,7 @@ public class AIMovingPart implements EntityPart {
         return update;
     }
 
-    public void setRoute(LinkedList<Point> route) {
+    public void setRoute(LinkedList<Vector2f> route) {
         update = false;
         this.route = route;
     }

@@ -4,6 +4,7 @@ import dk.sdu.cookie.castle.common.data.*;
 import dk.sdu.cookie.castle.common.data.Entityparts.AIMovingPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.util.LinkedList;
 
@@ -44,7 +45,7 @@ public class AIProcessing implements IEntityProcessingService {
                 // Updates the list of points to walk to get to the player
                 if (AIMovingPart.needUpdate()) {
                     PositionPart positionPart = enemy.getPart(PositionPart.class);
-                    LinkedList<Point> route = aStar.calculateRoute(new Point(positionPart.getX(), positionPart.getY()), new Point(playerPos.getX(), playerPos.getY()));
+                    LinkedList<Vector2f> route = aStar.calculateRoute(new Vector2f(positionPart.getX(), positionPart.getY()), new Vector2f(playerPos.getX(), playerPos.getY()));
                     AIMovingPart.setRoute(route);
                 }
             }

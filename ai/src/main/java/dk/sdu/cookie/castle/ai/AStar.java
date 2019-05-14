@@ -3,9 +3,9 @@ package dk.sdu.cookie.castle.ai;
 import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
-import dk.sdu.cookie.castle.common.data.Point;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.AIService;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.util.*;
 
@@ -27,14 +27,14 @@ public class AStar implements AIService {
     }
 
     @Override
-    public LinkedList<Point> calculateRoute(Point start, Point end) {
+    public LinkedList<Vector2f> calculateRoute(Vector2f start, Vector2f end) {
         fringe.clear();
         usedNodes.clear();
-        LinkedList<Point> route = new LinkedList<>();
-        Point startGrid = toGrid(start);
-        Point endGrid = toGrid(end);
+        LinkedList<Vector2f> route = new LinkedList<>();
+        Vector2f startGrid = toGrid(start);
+        Vector2f endGrid = toGrid(end);
 
-        if (grid[pointToIndex(endGrid)]) {
+        if(grid[Vector2fToIndex(endGrid)]) {
             endGrid = searchForEmptyTile(endGrid);
             if (endGrid == null) return route;
         }
@@ -57,12 +57,12 @@ public class AStar implements AIService {
         }
 
         //Check if the next node is the end-node (the node where the player is/was)
-        if (nextNode != null & nextNode.equals(endNode)) {
+        if (nextNode != null && nextNode.equals(endNode)) {
             route.addFirst(end);
             nextNode = nextNode.getParent();
             // while the next node has a parent, keep adding the next nodes parent to the route towards the player
             while (nextNode.getParent() != null) {
-                route.addFirst(new Point(nextNode.getPoint().getX() * SIZE_OF_CELL, nextNode.getPoint().getY() * SIZE_OF_CELL));
+                route.addFirst(new Vector2f(nextNode.getPoint().getX() * SIZE_OF_CELL, nextNode.getPoint().getY() * SIZE_OF_CELL));
                 nextNode = nextNode.getParent();
             }
         }
@@ -70,53 +70,52 @@ public class AStar implements AIService {
         return route;
     }
 
-    private Point searchForEmptyTile(Point point) {
-        Point direction = new Point(0, 1);
+    private Vector2f searchForEmptyTile(Vector2f point) {
+        Vector2f direction = new Vector2f(0, 1);
         int length = 1;
         int count = 0;
         while (count < 100) {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < length; j++) {
-                    point = Point.add(point, direction);
+                    point = point.add(direction);
                     count++;
-                    if (point.getX() < 0 || point.getX() >= WIDTH_OF_GRID || point.getY() < 0 || point.getY() >= HEIGHT_OF_GRID)
-                        break;
-                    if (!grid[pointToIndex(point)]) {
+                    if (point.getX() < 0 || point.getX() >= WIDTH_OF_GRID || point.getY() < 0 || point.getY() >= HEIGHT_OF_GRID) break;
+                    if (!grid[Vector2fToIndex(point)]) {
                         return point;
                     }
                 }
-                direction = rotatePoint(direction);
+                direction = rotateVector2f(direction);
             }
             length++;
         }
         return null;
     }
 
-    private Point rotatePoint(Point point) {
-        if (point.getX() == 0 && point.getY() == 1) {
-            return new Point(1, 0);
-        } else if (point.getX() == 1 && point.getY() == 0) {
-            return new Point(0, -1);
-        } else if (point.getX() == 0 && point.getY() == -1) {
-            return new Point(-1, 0);
+    private Vector2f rotateVector2f(Vector2f Vector2f) {
+        if (Vector2f.getX() == 0 && Vector2f.getY() == 1) {
+            return new Vector2f(1, 0);
+        } else if (Vector2f.getX() == 1 && Vector2f.getY() == 0) {
+            return new Vector2f(0, -1);
+        } else if (Vector2f.getX() == 0 && Vector2f.getY() == -1) {
+            return new Vector2f(-1, 0);
         } else {
-            return new Point(0, 1);
+            return new Vector2f(0, 1);
         }
     }
 
-    private int pointToIndex(Point point) {
-        return WIDTH_OF_GRID * (int) point.getY() + (int) point.getX();
+    private int Vector2fToIndex(Vector2f Vector2f) {
+        return WIDTH_OF_GRID * (int) Vector2f.getY() + (int) Vector2f.getX();
     }
 
 
     /**
      * Calculating the heuristic for calculating the route to the player
      *
-     * @param start point
-     * @param end   point
+     * @param start Vector2f
+     * @param end   Vector2f
      * @return void
      */
-    private double calculateHeuristic(Point start, Point end) {
+    private double calculateHeuristic(Vector2f start, Vector2f end) {
         return Math.sqrt(((end.getX() - start.getX()) * (end.getX() - start.getX())) + (end.getY() - start.getY()) * (end.getY() - start.getY()));
     }
 
@@ -129,7 +128,7 @@ public class AStar implements AIService {
      */
     private void findNeighbours(Node parent, Node end) {
         ArrayList<Node> neighbors = new ArrayList<>();
-        int index = pointToIndex(parent.getPoint());
+        int index = Vector2fToIndex(parent.getPoint());
 
         //Linked if-statements for finding neighbours of a given node, based on the math of the grid
         //the AI uses on top of the map
@@ -194,9 +193,12 @@ public class AStar implements AIService {
                 case REMOVABLE_OBSTACLE:
                 case WALL:
                     PositionPart positionPart = entity.getPart(PositionPart.class);
-                    float radius = entity.getRadius();
-                    Point min = toGrid(new Point(positionPart.getX() - radius, positionPart.getY() - radius));
-                    Point max = toGrid(new Point(positionPart.getX() + radius, positionPart.getY() + radius));
+                    if (entity.getMax() == null || entity.getMin() == null) {
+                        continue;
+                    }
+                    Vector2f min = toGrid(entity.getMin());
+                    Vector2f max = toGrid(entity.getMax());
+
                     for (float y = min.getY(); y <= max.getY(); y++) {
                         for (float x = min.getX(); x <= max.getX(); x++) {
                             if (y < 0 || y > gameData.getDisplayHeight() || x < 0 || x > gameData.getDisplayWidth())
@@ -211,12 +213,11 @@ public class AStar implements AIService {
 
 
     /**
-     * Method for calculating a point to a grid coordinate #quickMaths
-     *
+     * Method for calculating a Vector2f to a grid coordinate #quickMaths
      * @param point
-     * @return Point
+     * @return Vector2f
      */
-    private Point toGrid(Point point) {
+    private Vector2f toGrid(Vector2f point) {
         // TODO If you place an entity off the map, then in the edge there will be a blocked path
         int xGridCoordinate = (int) point.getX() / SIZE_OF_CELL;
         int yGridCoordinate = (int) point.getY() / SIZE_OF_CELL;
@@ -232,13 +233,13 @@ public class AStar implements AIService {
         if (yGridCoordinate >= HEIGHT_OF_GRID) {
             yGridCoordinate = HEIGHT_OF_GRID - 1;
         }
-        return new Point(xGridCoordinate, yGridCoordinate);
+        return new Vector2f(xGridCoordinate, yGridCoordinate);
     }
 
-    private Point toGame(int index) {
+    private Vector2f toGame(int index) {
         int y = index / WIDTH_OF_GRID * SIZE_OF_CELL + SIZE_OF_CELL / 2;
         int x = index % WIDTH_OF_GRID * SIZE_OF_CELL + SIZE_OF_CELL / 2;
-        return new Point(x, y);
+        return new Vector2f(x, y);
     }
 
     /**
@@ -247,12 +248,12 @@ public class AStar implements AIService {
      * @param x      parents x-value
      * @param y      parents y-value
      * @param parent parent-node reference
-     * @param end    the end-point of the astar
-     * @param cost   to the goal
+     * @param end the end-Vector2f of the astar
+     * @param cost to the goal
      * @return
      */
     private Node createNode(int x, int y, Node parent, Node end, float cost) {
-        Point newPoint = new Point(parent.getPoint().getX() + x, parent.getPoint().getY() + y);
-        return new Node(newPoint, calculateHeuristic(newPoint, end.getPoint()), cost + parent.getCost(), parent);
+        Vector2f newVector2f = new Vector2f(parent.getPoint().getX() + x, parent.getPoint().getY() + y);
+        return new Node(newVector2f, calculateHeuristic(newVector2f, end.getPoint()), cost + parent.getCost(), parent);
     }
 }

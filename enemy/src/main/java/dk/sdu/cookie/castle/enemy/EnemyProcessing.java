@@ -83,6 +83,8 @@ public class EnemyProcessing implements IEntityProcessingService {
                 world.removeEntity(enemy);
             }
             if (((Enemy) enemy).getEnemyType() == EnemyType.RANGED) {
+                weaponPart.process(gameData, enemy);
+                shootingPart.updateShootingSpeed(weaponPart.getAttackSpeed());
                 shootingPart.process(gameData, enemy);
             }
 
@@ -105,6 +107,8 @@ public class EnemyProcessing implements IEntityProcessingService {
      * @param entity The entity, which shape is about to be updated
      */
     private void updateShape(Entity entity) {
+        float radius = 20;
+        float angle = 0;
         float[] shapeX = entity.getShapeX();
         float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
@@ -112,16 +116,14 @@ public class EnemyProcessing implements IEntityProcessingService {
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
 
-        shapeX[0] = (float) (x + Math.cos(radians) * entity.getRadius());
-        shapeY[0] = (float) (y + Math.sin(radians) * entity.getRadius());
-
-        shapeX[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * entity.getRadius());
-        shapeY[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * entity.getRadius());
-
-        shapeX[2] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * entity.getRadius());
-        shapeY[2] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * entity.getRadius());
+        for (int i = 0; i < shapeX.length; i++) {
+            shapeX[i] = (float) (x + Math.cos(radians - angle) * radius);
+            shapeY[i] = (float) (y + Math.sin(radians - angle) * radius);
+            angle += Math.PI / 4.5;
+        }
 
         entity.setShapeX(shapeX);
         entity.setShapeY(shapeY);
+        entity.updateMinMax();
     }
 }

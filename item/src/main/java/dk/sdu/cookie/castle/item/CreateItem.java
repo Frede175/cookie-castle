@@ -28,7 +28,6 @@ public class CreateItem implements IItemCreate {
 
         item.add(new ItemPart(new TimerPart(itemType.getTimer()), new BuffPart(itemType.getBuffType(), 1.8f)));
         item.add(new PositionPart(x, y, 0));
-        item.setRadius(30);
         item.add(new CollisionPart());
         item.setShapeX(shapeX);
         item.setShapeY(shapeY);

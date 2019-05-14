@@ -16,6 +16,7 @@ import dk.sdu.cookie.castle.common.services.IGamePluginService;
 import dk.sdu.cookie.castle.common.services.IPostEntityProcessingService;
 import dk.sdu.cookie.castle.game.managers.GameInputProcessor;
 import dk.sdu.cookie.castle.game.managers.MyAssetManager;
+import dk.sdu.cookie.castle.game.wall.WallPlugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +40,7 @@ public class Game implements ApplicationListener {
     public Game() {
         gameData.setDisplayWidth(displayWidth);
         gameData.setDisplayHeight(displayHeight);
+        installPlugin(new WallPlugin());
     }
 
     @Override
