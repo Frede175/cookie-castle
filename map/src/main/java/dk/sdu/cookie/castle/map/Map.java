@@ -7,6 +7,7 @@ import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
 import dk.sdu.cookie.castle.common.item.IItemCreate;
+import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.item.ItemType;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.Rock;
@@ -66,16 +67,15 @@ public class Map {
             List<String> entityList = new ArrayList<>();
             RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
             if (enemyCreate != null) {
+                EnemyType[] enemyTypes = EnemyType.values();
                 for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
-                    // TODO add random enemy type
-                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.MELEE, world));
+                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), enemyTypes[(int) (Math.random() * enemyTypes.length)], world));
                 }
             }
-            // TODO do the same as enemyCreate with itemCreate
             if (itemCreate != null) {
+                ItemType[] itemTypes = ItemType.values();
                 for (PositionPart positionPart : roomPreset.getItemPositions()) {
-                    // TODO add random enemy type
-                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.SUGAR, world));
+                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), itemTypes[(int) (Math.random() * itemTypes.length)], world));
                 }
             }
             for (PositionPart positionPart : roomPreset.getRockPositions()) {
