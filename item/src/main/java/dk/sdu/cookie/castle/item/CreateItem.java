@@ -1,6 +1,5 @@
 package dk.sdu.cookie.castle.item;
 
-import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.World;
@@ -21,17 +20,31 @@ public class CreateItem implements IItemCreate {
      */
     @Override
     public String createItem(float x, float y, ItemType itemType, World world) {
-        float[] shapeX = new float[6];
-        float[] shapeY = new float[6];
+        float[] shapeX = new float[4];
+        float[] shapeY = new float[4];
 
-        Entity item = new Item();
+        Item item = new Item();
 
         item.add(new ItemPart(new TimerPart(itemType.getTimer()), new BuffPart(itemType.getBuffType(), 1.8f)));
         item.add(new PositionPart(x, y, 0));
         item.add(new CollisionPart());
+        item.setEntityType(EntityType.ITEM);
+        item.setItemType(itemType);
+
+        switch (itemType) {
+            case ENERGY_DRINK:
+                item.setCurrentTexture(ItemPlugin.getAssets().get("energyDrink"));
+                break;
+            case PROTEIN_SHAKE:
+                item.setCurrentTexture(ItemPlugin.getAssets().get("shake"));
+                break;
+            case SUGAR:
+                item.setCurrentTexture(ItemPlugin.getAssets().get("sugar"));
+                break;
+        }
         item.setShapeX(shapeX);
         item.setShapeY(shapeY);
-        item.setEntityType(EntityType.ITEM);
+
         world.addEntity(item);
         return item.getID();
     }
