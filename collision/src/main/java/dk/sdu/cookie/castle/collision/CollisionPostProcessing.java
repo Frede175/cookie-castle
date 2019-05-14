@@ -22,13 +22,13 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         int size = 0;
         for (Entity e : world.getEntities()) {
-            if (e.isActive()) size++;
+            if (e.isActive() && e.getMin() != null && e.getMax() != null) size++;
         }
         AABB[] aabbArray = new AABB[size];
         {
             int i = 0;
             for (Entity entity : world.getEntities()) {
-                if (!entity.isActive()) continue;
+                if (!entity.isActive() || entity.getMin() == null || entity.getMax() == null) continue;
 
                 aabbArray[i++] = new AABB(entity);
             }

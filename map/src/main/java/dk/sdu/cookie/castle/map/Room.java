@@ -1,6 +1,6 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.Point;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Room {
     private List<String> entityList;
-    private Point point;
+    private Vector2f point;
     private List<DoorPosition> exits;
 
     public void setEntityList(List<String> entityList) {
@@ -33,11 +33,11 @@ public class Room {
         entityList.remove(entity);
     }
 
-    void setPoint(Point point) {
+    void setPoint(Vector2f point) {
         this.point = point;
     }
 
-    Point getPoint() {
+    Vector2f getPoint() {
         return point;
     }
 

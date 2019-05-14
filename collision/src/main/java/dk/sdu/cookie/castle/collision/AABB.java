@@ -20,11 +20,11 @@ class AABB {
         PositionPart part = entity.getPart(PositionPart.class);
         if (part != null) {
 
-            minPoint[0] = part.getX() - entity.getRadius();
-            minPoint[1] = part.getY() - entity.getRadius();
+            minPoint[0] = entity.getMin().getX();
+            minPoint[1] = entity.getMin().getY();
 
-            maxPoint[0] = part.getX() + entity.getRadius();
-            maxPoint[1] = part.getY() + entity.getRadius();
+            maxPoint[0] = entity.getMax().getX();
+            maxPoint[1] = entity.getMax().getY();
         }
 
     }

@@ -3,6 +3,7 @@ package dk.sdu.cookie.castle.common.data;
 import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.data.Entityparts.EntityPart;
 import dk.sdu.cookie.castle.common.assets.AssetLoader;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -21,13 +22,14 @@ public class Entity implements Serializable {
 
     private float[] shapeX = new float[4];
     private float[] shapeY = new float[4];
-    private float radius;
+    private Vector2f min, max;
     private Map<Class, EntityPart> parts;
     private EntityType entityType;
     private String currentTextureId;
 
     public Entity() {
         parts = new ConcurrentHashMap<>();
+        //updateMinMax();
     }
 
     public void add(EntityPart part) {
@@ -42,12 +44,28 @@ public class Entity implements Serializable {
         return (E) parts.get(partClass);
     }
 
-    public void setRadius(float r) {
-        radius = r;
+    public Vector2f getMax() {
+        return max;
     }
 
-    public float getRadius() {
-        return radius;
+    public Vector2f getMin() {
+        return min;
+    }
+
+    public void updateMinMax() {
+        float minX = Float.POSITIVE_INFINITY, minY = Float.POSITIVE_INFINITY, maxX = Float.NEGATIVE_INFINITY, maxY = Float.NEGATIVE_INFINITY;
+
+        for (int i = 0; i < shapeX.length; i++) {
+            float x = shapeX[i];
+            float y = shapeY[i];
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+        }
+
+        min = new Vector2f(minX, minY);
+        max = new Vector2f(maxX, maxY);
     }
 
     public String getID() {
