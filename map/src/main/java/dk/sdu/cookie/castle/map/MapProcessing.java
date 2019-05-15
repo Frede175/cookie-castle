@@ -152,6 +152,7 @@ public class MapProcessing implements IEntityProcessingService {
         for (String s : nextRoom.getEntities()) {
             world.getEntity(s).setIsActive(true);
         }
-        Map.getInstance().setCurrentRoom(nextRoom);
+
+        map.setCurrentRoom(nextRoom);
     }
 }

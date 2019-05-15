@@ -16,7 +16,7 @@ public class Room {
     private List<String> entities;
     private Vector2f point;
     private List<DoorPosition> exits;
-    
+
     Room(List<String> entities) {
         this.entities = entities;
         exits = new ArrayList<>();
