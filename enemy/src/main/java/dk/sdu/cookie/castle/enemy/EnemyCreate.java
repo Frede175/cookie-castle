@@ -9,19 +9,17 @@ import dk.sdu.cookie.castle.common.enemy.EnemyType;
 import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
 
 public class EnemyCreate implements IEnemyCreate {
-
-
     /**
      * This method creates an enemy unit.
      *
      * @param x         The starting x position of the Enemy
      * @param y         The starting y position of the Enemy
-     * @param enemyType A type to determined wether if the enemy is Melee or Ranged
+     * @param enemyType A type to determined whether the enemy is Melee or Ranged
      * @param world     The World the enemy is to be added to
      * @return The ID of the enemy
      */
     @Override
-    public String createEnemy(float x, float y, EnemyType enemyType, World world) {
+    public Entity createEnemy(float x, float y, EnemyType enemyType, World world) {
         float[] shapeX = new float[9];
         float[] shapeY = new float[9];
 
@@ -60,6 +58,6 @@ public class EnemyCreate implements IEnemyCreate {
 
         world.addEntity(enemy);
 
-        return enemy.getID();
+        return enemy;
     }
 }

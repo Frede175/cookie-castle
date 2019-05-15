@@ -1,5 +1,6 @@
 package dk.sdu.cookie.castle.map;
 
+import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
@@ -12,25 +13,29 @@ import java.util.List;
  * Used to contain all the entities for the current room in a list
  */
 public class Room {
-    private List<String> entityList;
+    private List<String> entities;
     private Vector2f point;
     private List<DoorPosition> exits;
 
-    public void setEntityList(List<String> entityList) {
-        this.entityList = entityList;
-    }
-
-    List<String> getEntityList() {
-        return entityList;
-    }
-
-    Room(List<String> entityList) {
-        this.entityList = entityList;
+    Room(List<String> entities) {
+        this.entities = entities;
         exits = new ArrayList<>();
     }
 
+    List<String> getEntities() {
+        return entities;
+    }
+
+    void setEntities(List<String> entities) {
+        this.entities = entities;
+    }
+
+    private void addEntity(Entity entity) {
+        entities.add(entity.getID());
+    }
+
     public void removeEntity(String entity) {
-        entityList.remove(entity);
+        entities.remove(entity);
     }
 
     void setPoint(Vector2f point) {
@@ -47,7 +52,7 @@ public class Room {
 
     void setDoor(Door door) {
         exits.add(door.getPosition());
-        entityList.add(door.getID());
+        addEntity(door);
     }
 
     public List<DoorPosition> getExits() {

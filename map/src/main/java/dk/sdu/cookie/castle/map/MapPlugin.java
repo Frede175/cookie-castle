@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapPlugin implements IGamePluginService {
-
+    private Map map = Map.getInstance();
     private static java.util.Map<String, String> assets = new ConcurrentHashMap<>();
 
     @Override
@@ -28,10 +28,10 @@ public class MapPlugin implements IGamePluginService {
         }
 
         // skal initiate singleton og kalde "generateNewMap" func
-        Map.getInstance().generateMap(10, world);
-        Map.getInstance().setCurrentRoom(Map.getInstance().getListOfRooms().get(0));
-        for (String s : Map.getInstance().getCurrentRoom().getEntityList()) {
-            world.getEntity(s).setIsActive(true);
+        map.generateMap(10, world);
+        map.setCurrentRoom(map.getListOfRooms().get(0));
+        for (String e : map.getCurrentRoom().getEntities()) {
+            world.getEntity(e).setIsActive(true);
         }
     }
 

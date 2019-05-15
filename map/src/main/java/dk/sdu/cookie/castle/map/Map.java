@@ -9,6 +9,7 @@ import dk.sdu.cookie.castle.common.enemy.IEnemyCreate;
 import dk.sdu.cookie.castle.common.item.IItemCreate;
 import dk.sdu.cookie.castle.common.item.ItemType;
 import dk.sdu.cookie.castle.common.util.Vector2f;
+import dk.sdu.cookie.castle.map.entities.EntityPreset;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
@@ -31,28 +32,29 @@ public class Map {
     private List<Room> listOfRooms;
     private Room currentRoom;
 
-    //Singleton
-    public static Map getInstance() {
+    // Singleton
+    static Map getInstance() {
         if (map == null) {
             map = new Map();
         }
         return map;
     }
 
+    // This somehow needs to be public
     public Map() {
         listOfRooms = new ArrayList<>();
         roomPresetGenerator = new RoomPresetGenerator();
     }
 
-    public void setCurrentRoom(Room room) {
+    void setCurrentRoom(Room room) {
         currentRoom = room;
     }
 
-    public Room getCurrentRoom() {
+    Room getCurrentRoom() {
         return currentRoom;
     }
 
-    public List<Room> getListOfRooms() {
+    List<Room> getListOfRooms() {
         return listOfRooms;
     }
 
@@ -62,31 +64,57 @@ public class Map {
 
     private ArrayList<Room> createRooms(int roomCount, World world) {
         ArrayList<Room> rooms = new ArrayList<>();
+
         for (int i = 0; i < roomCount; i++) {
-            List<String> entityList = new ArrayList<>();
             RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
-            if (enemyCreate != null) {
-                for (PositionPart positionPart : roomPreset.getEnemyPositions()) {
-                    // TODO add random enemy type
-                    entityList.add(enemyCreate.createEnemy(positionPart.getX(), positionPart.getY(), EnemyType.MELEE, world));
-                }
-            }
-            // TODO do the same as enemyCreate with itemCreate
-            if (itemCreate != null) {
-                for (PositionPart positionPart : roomPreset.getItemPositions()) {
-                    // TODO add random enemy type
-                    entityList.add(itemCreate.createItem(positionPart.getX(), positionPart.getY(), ItemType.SUGAR, world));
-                }
-            }
-            for (PositionPart positionPart : roomPreset.getRockPositions()) {
-                Rock rock = createRock(positionPart.getX(), positionPart.getY());
-                world.addEntity(rock);
-                entityList.add(rock.getID());
-            }
-            Room room = new Room(entityList);
-            rooms.add(room);
+            rooms.add(createRoom(roomPreset, world));
         }
+
         return rooms;
+    }
+
+    private Room createRoom(RoomPreset preset, World world) {
+        List<String> entities = createEntities(preset.getEntityPositions(), world);
+
+        return new Room(entities);
+    }
+
+    private List<String> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
+        List<String> returnEntities = new ArrayList<>();
+
+        for (java.util.Map.Entry<EntityPreset, List<PositionPart>> presetListEntry : entities.entrySet()) {
+            for (PositionPart position : presetListEntry.getValue()) {
+                returnEntities.add(createEntity(presetListEntry.getKey(), position, world));
+            }
+        }
+
+        return returnEntities;
+    }
+
+    private String createEntity(EntityPreset entityPreset, PositionPart position, World world) {
+        String entityId = null;
+
+        switch (entityPreset) {
+            case ENEMY:
+                if (enemyCreate == null) break;
+
+                EnemyType enemyType = EnemyType.values()[(int) (Math.random() * EnemyType.values().length)];
+                entityId = enemyCreate.createEnemy(position.getX(), position.getY(), enemyType, world).getID();
+                break;
+            case ITEM:
+                if (itemCreate == null) break;
+
+                ItemType itemType = ItemType.values()[(int) (Math.random() * ItemType.values().length)];
+                entityId = itemCreate.createItem(position.getX(), position.getY(), itemType, world).getID();
+                break;
+            case ROCK:
+                Rock rock = createRock(position.getX(), position.getY());
+                world.addEntity(rock);
+                entityId = rock.getID();
+                break;
+        }
+
+        return entityId;
     }
 
     private Rock createRock(float x, float y) {
@@ -106,7 +134,7 @@ public class Map {
         return rock;
     }
 
-    public void generateMap(int numberOfRooms, World world) {
+    void generateMap(int numberOfRooms, World world) {
         // Creates the ArrayList that contains all the free rooms.
         ArrayList<Room> freeRooms = createRooms(numberOfRooms, world);
 
@@ -164,6 +192,14 @@ public class Map {
                 i++;
             }
         }
+    }
+
+    boolean isEnemyPluginActive() {
+        return enemyCreate != null;
+    }
+
+    boolean isItemPluginActive() {
+        return itemCreate != null;
     }
 
     public void installEnemyCreate(IEnemyCreate iEnemyCreate) {

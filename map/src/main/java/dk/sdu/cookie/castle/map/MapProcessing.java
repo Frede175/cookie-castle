@@ -14,24 +14,27 @@ import dk.sdu.cookie.castle.map.entities.door.Door;
 import java.util.Iterator;
 
 public class MapProcessing implements IEntityProcessingService {
-
+    private Map map = Map.getInstance();
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity door : world.getEntities(Door.class)) {
-            if (!door.isActive()) continue;
-
-            handleDoorCollision((Door) door, world);
-            updateDoor(door);
-        }
-
-        for (Entity rock : world.getEntities(Rock.class)) {
-            if (!rock.isActive()) continue;
-            updateRock(rock);
-        }
+        handleEntities(world);
     }
 
+    private void handleEntities(World world) {
+        for (Entity entity : world.getEntities()) {
+            if (!entity.isActive()) continue;
 
+            if (entity.getClass() == Door.class) {
+                handleDoorCollision((Door) entity, world);
+                updateDoor(entity);
+            }
+
+            if (entity.getClass() == Rock.class) {
+                updateRock(entity);
+            }
+        }
+    }
 
     private void handleDoorCollision(Door door, World world) {
         CollisionPart collisionPart = door.getPart(CollisionPart.class);
@@ -116,7 +119,6 @@ public class MapProcessing implements IEntityProcessingService {
         shapeY[7] = y + (float) Math.sin(radians + 1.67f) * 15.24f;
 
         entity.updateMinMax();
-
     }
 
     /**
@@ -126,7 +128,9 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void unloadRoom(World world) {
-        for (Iterator<String> it = Map.getInstance().getCurrentRoom().getEntityList().iterator(); it.hasNext(); ) {
+        world.removeBullets();
+
+        for (Iterator<String> it = map.getCurrentRoom().getEntities().iterator(); it.hasNext(); ) {
             String ID = it.next();
 
             if (world.containsEntity(ID)) {
@@ -145,9 +149,10 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void loadRoom(Room nextRoom, World world) {
-        for (String s : nextRoom.getEntityList()) {
+        for (String s : nextRoom.getEntities()) {
             world.getEntity(s).setIsActive(true);
         }
-        Map.getInstance().setCurrentRoom(nextRoom);
+
+        map.setCurrentRoom(nextRoom);
     }
 }

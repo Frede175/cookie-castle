@@ -1,5 +1,6 @@
 package dk.sdu.cookie.castle.item;
 
+import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.*;
 import dk.sdu.cookie.castle.common.data.World;
@@ -19,7 +20,7 @@ public class CreateItem implements IItemCreate {
      * @return The ID of the item
      */
     @Override
-    public String createItem(float x, float y, ItemType itemType, World world) {
+    public Entity createItem(float x, float y, ItemType itemType, World world) {
         float[] shapeX = new float[4];
         float[] shapeY = new float[4];
 
@@ -46,6 +47,6 @@ public class CreateItem implements IItemCreate {
         item.setShapeY(shapeY);
 
         world.addEntity(item);
-        return item.getID();
+        return item;
     }
 }
