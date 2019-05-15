@@ -56,9 +56,9 @@ public class World {
     }
 
     public void removeBullets() {
-        for (Entity e : entityMap.values()) {
+        for (Entity e : getEntities()) {
             if (e.getEntityType().equals(EntityType.PLAYER_BULLET) || e.getEntityType().equals(EntityType.ENEMY_BULLET)) {
-                e.setIsActive(false);
+                removeEntity(e.getID());
             }
         }
     }
