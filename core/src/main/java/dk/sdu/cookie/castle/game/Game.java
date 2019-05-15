@@ -90,28 +90,6 @@ public class Game implements ApplicationListener {
         draw(entities);
     }
 
-    private void draw(Collection<Entity> entities) {
-        for (Entity entity : entities) {
-            if (!entity.isActive()) continue;
-
-            sr.setColor(1, 1, 1, 1);
-
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            float[] shapeX = entity.getShapeX();
-            float[] shapeY = entity.getShapeY();
-
-            for (int i = 0, j = shapeX.length - 1;
-                 i < shapeX.length;
-                 j = i++) {
-
-                sr.line(shapeX[i], shapeY[i], shapeX[j], shapeY[j]);
-            }
-
-            sr.end();
-        }
-    }
-
     private void drawEntities(Collection<Entity> entities) {
         for (Entity entity : entities) {
             if (entity.isActive() && entity.getCurrentTextureId() != null && !entity.getCurrentTextureId().isEmpty()) {
@@ -137,6 +115,28 @@ public class Game implements ApplicationListener {
         // Post Update
         for (IPostEntityProcessingService postEntityProcessorService : postProcessingServices) {
             postEntityProcessorService.process(gameData, world);
+        }
+    }
+
+    private void draw(Collection<Entity> entities) {
+        for (Entity entity : entities) {
+            if (!entity.isActive()) continue;
+
+            sr.setColor(1, 1, 1, 1);
+
+            sr.begin(ShapeRenderer.ShapeType.Line);
+
+            float[] shapeX = entity.getShapeX();
+            float[] shapeY = entity.getShapeY();
+
+            for (int i = 0, j = shapeX.length - 1;
+                 i < shapeX.length;
+                 j = i++) {
+
+                sr.line(shapeX[i], shapeY[i], shapeX[j], shapeY[j]);
+            }
+
+            sr.end();
         }
     }
 
