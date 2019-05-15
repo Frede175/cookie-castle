@@ -21,15 +21,18 @@ public class BulletProcessing implements IEntityProcessingService {
         for (Entity entity : world.getEntities()) {
             if (!entity.isActive()) continue;
 
-            if (entity.getPart(ShootingPart.class) != null && entity.getPart(WeaponPart.class) != null) {
-                ShootingPart shootingPart = entity.getPart(ShootingPart.class);
+            ShootingPart shootingPart;
+            InventoryPart inventoryPart;
+
+            if ((shootingPart = entity.getPart(ShootingPart.class)) != null && (inventoryPart = entity.getPart(InventoryPart.class)) != null) {
+                if (inventoryPart.getCurrentWeapon() == null) continue;
 
                 //Shoot if isShooting is true, ie. space is pressed and the weapon is not on cooldown, ie. can't shoot
                 if (shootingPart.isShooting() && shootingPart.canShoot()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
                     Vector2f positionVector = new Vector2f(positionPart.getRadians());
                     positionVector.mult(entity.getMin().distance(entity.getMax()));
-                    //Add entity radius to initial position to avoid immideate collision.
+                    //Add entity radius to initial position to avoid immediate collision.
                     Entity bullet = createBullet(positionPart.getX() + positionVector.getX(), positionPart.getY() + positionVector.getY(), positionPart.getRadians(), entity);
                     shootingPart.setShooting(false);
                     shootingPart.setCanShoot(false);
@@ -67,8 +70,10 @@ public class BulletProcessing implements IEntityProcessingService {
                             world.removeEntity(bullet);
                         }
                         break;
-
+                    case ITEM:
+                        break;
                     default:
+                        world.removeEntity(bullet);
                         break;
                 }
                 collisionPart.setIsHit(false);
@@ -101,9 +106,10 @@ public class BulletProcessing implements IEntityProcessingService {
         b.add(new LifePart(1));
         b.add(new BulletMovingPart());
         b.add(new CollisionPart());
-        WeaponPart entityWeaponPart = entity.getPart(WeaponPart.class);
-        b.add(new DamagePart(entityWeaponPart.getDamage()));
-        TimerPart timerPart = new TimerPart(entityWeaponPart.getRange() / Constants.BULLET_SPEED);
+        InventoryPart inventoryPart = entity.getPart(InventoryPart.class);
+        WeaponPart weaponPart = inventoryPart.getCurrentWeapon().getWeapon();
+        b.add(new DamagePart(weaponPart.getDamage()));
+        TimerPart timerPart = new TimerPart(weaponPart.getRange() / Constants.BULLET_SPEED);
         b.add(timerPart);
         timerPart.setHasStarted(true);
 
@@ -112,6 +118,8 @@ public class BulletProcessing implements IEntityProcessingService {
         } else if (entity.getEntityType() == EntityType.ENEMY) {
             b.setEntityType(EntityType.ENEMY_BULLET);
         }
+
+        b.setCurrentTexture(BulletPlugin.getAssets().get("bullet"));
 
         return b;
     }

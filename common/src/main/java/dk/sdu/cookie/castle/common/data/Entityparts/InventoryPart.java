@@ -71,6 +71,10 @@ public class InventoryPart implements EntityPart {
         }
     }
 
+    public ItemPart getCurrentWeapon() {
+        return currentWeapon;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
         // Removes ItemPart if it is expired

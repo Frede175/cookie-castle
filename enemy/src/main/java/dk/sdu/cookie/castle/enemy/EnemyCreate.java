@@ -14,7 +14,7 @@ public class EnemyCreate implements IEnemyCreate {
      *
      * @param x         The starting x position of the Enemy
      * @param y         The starting y position of the Enemy
-     * @param enemyType A type to determined wether if the enemy is Melee or Ranged
+     * @param enemyType A type to determined whether the enemy is Melee or Ranged
      * @param world     The World the enemy is to be added to
      * @return The ID of the enemy
      */
@@ -32,8 +32,11 @@ public class EnemyCreate implements IEnemyCreate {
         enemy.setEntityType(EntityType.ENEMY);
 
         if (enemyType == EnemyType.RANGED) {
+            enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookieRanged"));
             WeaponPart weaponPart = new WeaponPart(500f, 2f, 3f);
-            enemy.add(weaponPart);
+            InventoryPart inventoryPart = new InventoryPart();
+            inventoryPart.addItem(new ItemPart(weaponPart));
+            enemy.add(inventoryPart);
             enemy.add(new ShootingPart(weaponPart.getAttackSpeed()));
             enemy.setEnemyType(EnemyType.RANGED);
             enemy.add(new LifePart(6, 1, 6, 1));
@@ -41,15 +44,14 @@ public class EnemyCreate implements IEnemyCreate {
         }
 
         if (enemyType == EnemyType.MELEE) {
+            enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookie"));
             enemy.add(new DamagePart(3f));
             enemy.setEnemyType(EnemyType.MELEE);
             enemy.add(new LifePart(3, 1, 3, 1));
-            maxSpeed = 185;
+            maxSpeed = 160;
         }
 
         enemy.add(new AIMovingPart(maxSpeed));
-
-        enemy.setCurrentTexture(EnemyPlugin.getAssetId("cookie"));
 
         enemy.setShapeY(shapeY);
         enemy.setShapeX(shapeX);

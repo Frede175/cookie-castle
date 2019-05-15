@@ -1,6 +1,7 @@
 package dk.sdu.cookie.castle.map;
 
-import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
+import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.enemy.EnemyType;
@@ -14,7 +15,6 @@ import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Map class (Singleton)
@@ -32,7 +32,7 @@ public class Map {
     private List<Room> listOfRooms;
     private Room currentRoom;
 
-    //Singleton
+    // Singleton
     static Map getInstance() {
         if (map == null) {
             map = new Map();
@@ -47,7 +47,6 @@ public class Map {
     }
 
     void setCurrentRoom(Room room) {
-        room.loadDefaultState();
         currentRoom = room;
     }
 
@@ -75,47 +74,64 @@ public class Map {
     }
 
     private Room createRoom(RoomPreset preset, World world) {
-        java.util.Map<Entity, PositionPart> entities = createEntities(preset.getEntityPositions(), world);
+        List<String> entities = createEntities(preset.getEntityPositions(), world);
 
         return new Room(entities);
     }
 
-    private java.util.Map<Entity, PositionPart> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
-        java.util.Map<Entity, PositionPart> returnEntities = new ConcurrentHashMap<>();
+    private List<String> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
+        List<String> returnEntities = new ArrayList<>();
 
         for (java.util.Map.Entry<EntityPreset, List<PositionPart>> presetListEntry : entities.entrySet()) {
             for (PositionPart position : presetListEntry.getValue()) {
-                returnEntities.put(createEntity(presetListEntry.getKey(), position, world), position);
+                returnEntities.add(createEntity(presetListEntry.getKey(), position, world));
             }
         }
 
         return returnEntities;
     }
 
-    private Entity createEntity(EntityPreset entityPreset, PositionPart position, World world) {
-        Entity entity = null;
+    private String createEntity(EntityPreset entityPreset, PositionPart position, World world) {
+        String entityId = null;
 
         switch (entityPreset) {
             case ENEMY:
                 if (enemyCreate == null) break;
 
                 EnemyType enemyType = EnemyType.values()[(int) (Math.random() * EnemyType.values().length)];
-                entity = enemyCreate.createEnemy(position.getX(), position.getY(), enemyType, world);
+                entityId = enemyCreate.createEnemy(position.getX(), position.getY(), enemyType, world).getID();
                 break;
             case ITEM:
                 if (itemCreate == null) break;
 
                 ItemType itemType = ItemType.values()[(int) (Math.random() * ItemType.values().length)];
-                entity = itemCreate.createItem(position.getX(), position.getY(), itemType, world);
+                entityId = itemCreate.createItem(position.getX(), position.getY(), itemType, world).getID();
                 break;
             case ROCK:
-                Rock rock = new Rock(position.getX(), position.getY());
+                Rock rock = createRock(position.getX(), position.getY());
                 world.addEntity(rock);
-                entity = rock;
+                entityId = rock.getID();
                 break;
         }
 
-        return entity;
+        return entityId;
+    }
+
+    private Rock createRock(float x, float y) {
+        float[] shapeX = new float[8];
+        float[] shapeY = new float[8];
+        float radians = 3.1415f * (float) Math.random();
+
+        Rock rock = new Rock();
+
+        rock.add(new PositionPart(x, y, radians));
+        rock.add(new CollisionPart());
+        rock.setEntityType(EntityType.STATIC_OBSTACLE);
+        rock.setCurrentTexture(MapPlugin.getAssetId("rock"));
+        rock.setShapeY(shapeY);
+        rock.setShapeX(shapeX);
+
+        return rock;
     }
 
     void generateMap(int numberOfRooms, World world) {
@@ -156,6 +172,7 @@ public class Map {
                 Vector2f p = currentRoom.getPoint().add(doorPosition.getPointDirection());
                 if (currentRoom.checkIfFree(doorPosition) && !usedPoints.contains(p)) {
                     Door currentRoomDoor = new Door(doorPosition, freeRooms.get(neighbor));
+                    currentRoomDoor.setCurrentTexture(MapPlugin.getAssetId("door"));
                     currentRoom.setDoor(currentRoomDoor);
                     world.addEntity(currentRoomDoor);
                     // sets coordinates to every free room.
@@ -163,6 +180,7 @@ public class Map {
                     usedPoints.add(p);
                     // Sets the neighbor rooms exit to be the current room.
                     Door neighborRoomDoor = new Door(oppositeDirection, currentRoom);
+                    neighborRoomDoor.setCurrentTexture(MapPlugin.getAssetId("door"));
                     freeRooms.get(neighbor).setDoor(neighborRoomDoor);
 
                     world.addEntity(neighborRoomDoor);

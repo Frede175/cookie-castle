@@ -65,20 +65,29 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
                         CollisionPart collisionPart2 = aabbArray[i].getEntity().getPart(CollisionPart.class);
                         Vector2f vector = mtv.getAxis();
 
-                        if (!entity1CanMove || !entity2CanMove) {
-                            if (entity1CanMove) {
-                                if (shape1min) {
-                                    vector = vector.invert();
-                                }
-                                vector = vector.mult(mtv.getDistance());
-                                updatePosition(aabbArray[j].getEntity(), vector);
-                            } else {
-                                if (!shape1min) {
-                                    vector = vector.invert();
-                                }
-                                vector = vector.mult(mtv.getDistance());
-                                updatePosition(aabbArray[i].getEntity(), vector);
+                        boolean shouldMove1 = shouldMove(aabbArray[j].getEntity(), aabbArray[i].getEntity());
+                        boolean shouldMove2 = shouldMove(aabbArray[i].getEntity(), aabbArray[j].getEntity());
+
+                        if (shouldMove1 && shouldMove2) {
+                            if (shape1min) {
+                                vector = vector.invert();
                             }
+                            vector = vector.mult(mtv.getDistance() / 2);
+                            updatePosition(aabbArray[j].getEntity(), vector);
+                            vector = vector.invert();
+                            updatePosition(aabbArray[i].getEntity(), vector);
+                        } else if (shouldMove1) {
+                            if (shape1min) {
+                                vector = vector.invert();
+                            }
+                            vector = vector.mult(mtv.getDistance());
+                            updatePosition(aabbArray[j].getEntity(), vector);
+                        } else if (shouldMove2) {
+                            if (!shape1min) {
+                                vector = vector.invert();
+                            }
+                            vector = vector.mult(mtv.getDistance());
+                            updatePosition(aabbArray[i].getEntity(), vector);
                         }
 
                         collisionPart1.setIsHit(true);
@@ -111,6 +120,38 @@ public class CollisionPostProcessing implements IPostEntityProcessingService {
             y[i] += mtv.getY();
         }
     }
+
+    private boolean shouldMove(Entity entity, Entity other) {
+        switch (entity.getEntityType()) {
+            case PLAYER:
+            case ENEMY:
+                switch (other.getEntityType()) {
+                    case PLAYER:
+                    case ENEMY:
+                    case STATIC_OBSTACLE:
+                    case REMOVABLE_OBSTACLE:
+                    case WALL:
+                    case DOOR:
+                        return true;
+                    case PLAYER_BULLET:
+                    case ENEMY_BULLET:
+                    case ITEM:
+                    default:
+                        return false;
+                }
+            case STATIC_OBSTACLE:
+            case REMOVABLE_OBSTACLE:
+            case WALL:
+            case DOOR:
+            case ITEM:
+            case PLAYER_BULLET:
+            case ENEMY_BULLET:
+            default:
+                return false;
+
+        }
+    }
+
 
     private boolean canMove(Entity entity) {
         return !(entity.getEntityType() == EntityType.DOOR ||

@@ -19,8 +19,8 @@ public class PlayerProcessing implements IEntityProcessingService {
             LifePart lifePart = player.getPart(LifePart.class);
             CollisionPart collisionPart = player.getPart(CollisionPart.class);
             InventoryPart inventoryPart = player.getPart(InventoryPart.class);
+            WeaponPart weaponPart = inventoryPart.getCurrentWeapon().getWeapon();
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
-            WeaponPart weaponPart = player.getPart(WeaponPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
@@ -28,6 +28,9 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
             shootingPart.setShooting(gameData.getKeys().isDown(GameKeys.SPACE));
 
+            //Collision check
+            //Take damage if collision is with bullet
+            //Pick up item if the collision is with an entity of type "item"
             if (collisionPart.getIsHit()) {
                 switch (collisionPart.getCollidingEntity().getEntityType()) {
                     case ENEMY:
@@ -49,6 +52,7 @@ public class PlayerProcessing implements IEntityProcessingService {
                 collisionPart.setIsHit(false);
             }
 
+            //Processing all the player parts (keeping them updated as the game runs)
             lifePart.process(gameData, player);
             if (lifePart.isDead()) {
                 world.removeEntity(player);
@@ -57,7 +61,6 @@ public class PlayerProcessing implements IEntityProcessingService {
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             inventoryPart.process(gameData, player);
-            weaponPart.process(gameData, player);
             shootingPart.updateShootingSpeed(weaponPart.getAttackSpeed());
             shootingPart.process(gameData, player);
 
@@ -65,8 +68,13 @@ public class PlayerProcessing implements IEntityProcessingService {
         }
     }
 
+    /**
+     * Updates the graphical aspect of the players position
+     * @param entity
+     */
     private void updateShape(Entity entity) {
-        float radius = 8;
+        float radius = 25;
+        float angle = 0f;
         float[] shapeX = entity.getShapeX();
         float[] shapeY = entity.getShapeY();
         PositionPart positionPart = entity.getPart(PositionPart.class);
@@ -74,14 +82,16 @@ public class PlayerProcessing implements IEntityProcessingService {
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
 
-        shapeX[0] = (float) (x + Math.cos(radians) * radius);
-        shapeY[0] = (float) (y + Math.sin(radians) * radius);
-
-        shapeX[1] = (float) (x + Math.cos(radians - 4 * 3.1415f / 5) * radius);
-        shapeY[1] = (float) (y + Math.sin(radians - 4 * 3.1145f / 5) * radius);
-
-        shapeX[2] = (float) (x + Math.cos(radians + 4 * 3.1415f / 5) * radius);
-        shapeY[2] = (float) (y + Math.sin(radians + 4 * 3.1415f / 5) * radius);
+        for (int i = 0; i < shapeX.length; i++) {
+            if ( i == 0) {
+                shapeX[i] = (float) (x + Math.cos(radians - angle) * (radius + 10));
+                shapeY[i] = (float) (y + Math.sin(radians - angle) * (radius + 10));
+            } else {
+                shapeX[i] = (float) (x + Math.cos(radians - angle) * radius);
+                shapeY[i] = (float) (y + Math.sin(radians - angle) * radius);
+            }
+            angle += Math.PI / 4.5;
+        }
 
         entity.setShapeX(shapeX);
         entity.setShapeY(shapeY);
