@@ -85,7 +85,7 @@ public enum DoorPosition {
      * @return PositionPart
      */
     public PositionPart getSpawnPosition() {
-        int offset = 40;
+        int offset = 50;
 
         switch (this) {
             case TOP:

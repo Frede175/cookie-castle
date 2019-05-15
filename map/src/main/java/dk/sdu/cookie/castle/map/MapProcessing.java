@@ -1,11 +1,13 @@
 package dk.sdu.cookie.castle.map;
 
 import dk.sdu.cookie.castle.common.data.Entity;
+import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
+import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 
@@ -36,15 +38,25 @@ public class MapProcessing implements IEntityProcessingService {
 
         if (!collisionPart.getIsHit()) return;
 
-        switch (collisionPart.getCollidingEntity().getEntityType()) {
-            case PLAYER:
-                // Changes current room to the door room
-                Room room = door.getLeadsTo();
-                unloadRoom(world);
-                loadRoom(room, world);
-                PositionPart playerPos = collisionPart.getCollidingEntity().getPart(PositionPart.class);
-                playerPos.setPosition(door.getPosition().getOpposite().getSpawnPosition());
-                break;
+        Entity player = collisionPart.getCollidingEntity();
+        if (player.getEntityType() == EntityType.PLAYER) {
+            // Changes current room to the door room
+            Room room = door.getLeadsTo();
+            unloadRoom(world);
+            loadRoom(room, world);
+
+            // Updating player position
+            PositionPart playerPositionPart = player.getPart(PositionPart.class);
+            PositionPart spawnPositionPart = door.getPosition().getOpposite().getSpawnPosition();
+            Vector2f playerPos = new Vector2f(playerPositionPart.getX(), playerPositionPart.getY());
+            Vector2f newPlayerPos = new Vector2f(spawnPositionPart.getX(), spawnPositionPart.getY());
+            Vector2f diff = newPlayerPos.subtract(playerPos);
+            playerPositionPart.setPosition(newPlayerPos.getX(), newPlayerPos.getY());
+            for (int i = 0; i < player.getShapeX().length; i++) {
+                player.getShapeX()[i] = player.getShapeX()[i] + diff.getX();
+                player.getShapeY()[i] = player.getShapeY()[i] + diff.getY();
+            }
+            player.updateMinMax();
         }
 
         collisionPart.setIsHit(false);
