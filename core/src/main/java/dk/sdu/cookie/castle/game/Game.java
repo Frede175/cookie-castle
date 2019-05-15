@@ -86,6 +86,30 @@ public class Game implements ApplicationListener {
         batch.draw(background, 0, 0);
         drawEntities(entities);
         batch.end();
+
+        draw(entities);
+    }
+
+    private void draw(Collection<Entity> entities) {
+        for (Entity entity : entities) {
+            if (!entity.isActive()) continue;
+
+            sr.setColor(1, 1, 1, 1);
+
+            sr.begin(ShapeRenderer.ShapeType.Line);
+
+            float[] shapeX = entity.getShapeX();
+            float[] shapeY = entity.getShapeY();
+
+            for (int i = 0, j = shapeX.length - 1;
+                 i < shapeX.length;
+                 j = i++) {
+
+                sr.line(shapeX[i], shapeY[i], shapeX[j], shapeY[j]);
+            }
+
+            sr.end();
+        }
     }
 
     private void drawEntities(Collection<Entity> entities) {
