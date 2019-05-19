@@ -27,6 +27,9 @@ public class Map {
     private static IEnemyCreate enemyCreate;
     private static IItemCreate itemCreate;
 
+    private boolean enemyLoaded = false;
+    private boolean itemLoaded = false;
+
     private RoomPresetGenerator roomPresetGenerator;
 
     private List<Room> listOfRooms;
@@ -76,7 +79,7 @@ public class Map {
     private Room createRoom(RoomPreset preset, World world) {
         List<String> entities = createEntities(preset.getEntityPositions(), world);
 
-        return new Room(entities);
+        return new Room(entities, preset);
     }
 
     private List<String> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
@@ -91,7 +94,7 @@ public class Map {
         return returnEntities;
     }
 
-    private String createEntity(EntityPreset entityPreset, PositionPart position, World world) {
+    public String createEntity(EntityPreset entityPreset, PositionPart position, World world) {
         String entityId = null;
 
         switch (entityPreset) {
@@ -194,6 +197,22 @@ public class Map {
         }
     }
 
+    boolean isEnemyLoaded() {
+        return enemyLoaded;
+    }
+
+    void setEnemyLoaded(boolean enemyLoaded) {
+        this.enemyLoaded = enemyLoaded;
+    }
+
+    boolean isItemLoaded() {
+        return itemLoaded;
+    }
+
+    void setItemLoaded(boolean itemLoaded) {
+        this.itemLoaded = itemLoaded;
+    }
+
     boolean isEnemyPluginActive() {
         return enemyCreate != null;
     }
@@ -204,10 +223,12 @@ public class Map {
 
     public void installEnemyCreate(IEnemyCreate iEnemyCreate) {
         enemyCreate = iEnemyCreate;
+        Map.getInstance().setEnemyLoaded(true);
     }
 
     public void uninstallEnemyCreate() {
         enemyCreate = null;
+        Map.getInstance().setItemLoaded(true);
     }
 
     public void installItemCreate(IItemCreate iItemCreate) {

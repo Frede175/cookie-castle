@@ -16,10 +16,12 @@ public class Room {
     private List<String> entities;
     private Vector2f point;
     private List<DoorPosition> exits;
+    private RoomPreset roomPreset;
 
-    Room(List<String> entities) {
+    Room(List<String> entities, RoomPreset roomPreset) {
         this.entities = entities;
         exits = new ArrayList<>();
+        this.roomPreset = roomPreset;
     }
 
     List<String> getEntities() {
@@ -57,5 +59,9 @@ public class Room {
 
     public List<DoorPosition> getExits() {
         return exits;
+    }
+
+    public RoomPreset getRoomPreset() {
+        return roomPreset;
     }
 }

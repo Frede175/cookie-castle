@@ -8,6 +8,7 @@ import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
+import dk.sdu.cookie.castle.map.entities.EntityPreset;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 
@@ -19,6 +20,16 @@ public class MapProcessing implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         handleEntities(world);
+        if (map.isEnemyLoaded()) {
+            for (Room room : map.getListOfRooms()) {
+                System.out.println(room);
+                for (PositionPart pos : room.getRoomPreset().getEntityPositions(EntityPreset.ENEMY)) {
+                    System.out.println("Jeg adder");
+                    map.createEntity(EntityPreset.ENEMY, pos, world);
+                }
+            }
+            map.setEnemyLoaded(false);
+        }
     }
 
     private void handleEntities(World world) {
@@ -149,8 +160,14 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void loadRoom(Room nextRoom, World world) {
-        for (String s : nextRoom.getEntities()) {
-            world.getEntity(s).setIsActive(true);
+        for (Iterator<String> it = nextRoom.getEntities().iterator(); it.hasNext(); ) {
+            String ID = it.next();
+
+            if (world.containsEntity(ID)) {
+                world.getEntity(ID).setIsActive(true);
+            } else {
+                it.remove();
+            }
         }
 
         map.setCurrentRoom(nextRoom);
