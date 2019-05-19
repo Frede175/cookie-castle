@@ -94,7 +94,7 @@ public class Map {
         return returnEntities;
     }
 
-    public String createEntity(EntityPreset entityPreset, PositionPart position, World world) {
+    String createEntity(EntityPreset entityPreset, PositionPart position, World world) {
         String entityId = null;
 
         switch (entityPreset) {
@@ -228,11 +228,11 @@ public class Map {
 
     public void uninstallEnemyCreate() {
         enemyCreate = null;
-        Map.getInstance().setItemLoaded(true);
     }
 
     public void installItemCreate(IItemCreate iItemCreate) {
         itemCreate = iItemCreate;
+        Map.getInstance().setItemLoaded(true);
     }
 
     public void uninstallItemCreate() {

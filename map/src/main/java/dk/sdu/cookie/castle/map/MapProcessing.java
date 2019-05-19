@@ -6,12 +6,15 @@ import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.enemy.Enemy;
+import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
 import dk.sdu.cookie.castle.map.entities.EntityPreset;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MapProcessing implements IEntityProcessingService {
@@ -19,16 +22,27 @@ public class MapProcessing implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        handleEntities(world);
         if (map.isEnemyLoaded()) {
-            for (Room room : map.getListOfRooms()) {
-                System.out.println(room);
-                for (PositionPart pos : room.getRoomPreset().getEntityPositions(EntityPreset.ENEMY)) {
-                    System.out.println("Jeg adder");
-                    map.createEntity(EntityPreset.ENEMY, pos, world);
-                }
-            }
+            reloadEntities(EntityPreset.ENEMY, world);
             map.setEnemyLoaded(false);
+        }
+        if (map.isItemLoaded()) {
+            reloadEntities(EntityPreset.ITEM, world);
+            map.setItemLoaded(false);
+        }
+        handleEntities(world);
+    }
+
+    private void reloadEntities(EntityPreset entityPreset, World world) {
+        for (Room room : map.getListOfRooms()) {
+            ArrayList<String> entities = new ArrayList<>();
+            for (PositionPart pos : room.getRoomPreset().getEntityPositions(entityPreset)) {
+                entities.add(map.createEntity(entityPreset, pos, world));
+            }
+            room.setEntities(entities);
+        }
+        for (String s : map.getCurrentRoom().getEntities()) {
+            world.getEntity(s).setIsActive(true);
         }
     }
 
