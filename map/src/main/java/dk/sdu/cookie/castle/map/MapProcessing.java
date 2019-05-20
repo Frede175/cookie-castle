@@ -22,28 +22,26 @@ public class MapProcessing implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        if (map.isEnemyLoaded()) {
+        if (Map.getInstance().isEnemyLoaded()) {
             reloadEntities(EntityPreset.ENEMY, world);
-            map.setEnemyLoaded(false);
+            Map.getInstance().setEnemyLoaded(false);
         }
-        if (map.isItemLoaded()) {
+        if (Map.getInstance().isItemLoaded()) {
             reloadEntities(EntityPreset.ITEM, world);
-            map.setItemLoaded(false);
+            Map.getInstance().setItemLoaded(false);
         }
         handleEntities(world);
     }
 
     private void reloadEntities(EntityPreset entityPreset, World world) {
-        for (Room room : map.getListOfRooms()) {
-            ArrayList<String> entities = new ArrayList<>();
+        for (Room room : Map.getInstance().getListOfRooms()) {
             for (PositionPart pos : room.getRoomPreset().getEntityPositions(entityPreset)) {
-                entities.add(map.createEntity(entityPreset, pos, world));
+                String entity  = Map.getInstance().createEntity(entityPreset, pos, world);
+                room.addEntity(entity);
             }
-            room.setEntities(entities);
         }
-        for (String s : map.getCurrentRoom().getEntities()) {
-            world.getEntity(s).setIsActive(true);
-        }
+
+        loadRoom(Map.getInstance().getCurrentRoom(), world);
     }
 
     private void handleEntities(World world) {

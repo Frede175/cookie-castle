@@ -32,8 +32,8 @@ public class Room {
         this.entities = entities;
     }
 
-    private void addEntity(Entity entity) {
-        entities.add(entity.getID());
+    public void addEntity(String entity) {
+        entities.add(entity);
     }
 
     public void removeEntity(String entity) {
@@ -54,7 +54,7 @@ public class Room {
 
     void setDoor(Door door) {
         exits.add(door.getPosition());
-        addEntity(door);
+        addEntity(door.getID());
     }
 
     public List<DoorPosition> getExits() {

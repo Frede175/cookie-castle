@@ -38,7 +38,6 @@ public class MyAssetManager extends AssetManager {
             return super.update();
         }
 
-        System.out.println("Active assets: " + gameData.getActiveAssets().size());
 
         for (Asset asset : gameData.getActiveAssets().values()) {
             if (!loadedAssets.containsKey(asset.getId())) {
@@ -50,8 +49,6 @@ public class MyAssetManager extends AssetManager {
 
         if (isUpdated) {
             checkForUnusedAssets(activeAssets);
-        } else {
-            System.out.println("Loading assets: " + super.getProgress());
         }
 
         return isUpdated;
@@ -65,7 +62,6 @@ public class MyAssetManager extends AssetManager {
     private void checkForUnusedAssets(Map<String, Asset> activeAssets) {
         for (Map.Entry<String, Asset> asset : loadedAssets.entrySet()) {
             if (!activeAssets.containsKey(asset.getKey())) {
-                System.out.println("Unloading asset: " + asset.getKey());
                 super.unload(asset.getKey());
                 loadedAssets.remove(asset.getKey());
             }
@@ -103,7 +99,6 @@ public class MyAssetManager extends AssetManager {
      * @param asset Asset to be loaded
      */
     private void loadAsset(Asset asset) {
-        System.out.println("Loading asset: " + asset.getName() + " - " + asset.getId());
         FileHandle file = new FileHandle(asset.getId());
         file.write(asset.getData(), false);
         asset.closeInputStream();

@@ -65,21 +65,19 @@ public class Map {
         this.listOfRooms = listOfRooms;
     }
 
-    private ArrayList<Room> createRooms(int roomCount, World world) {
+    private ArrayList<Room> createRooms(int roomCount) {
         ArrayList<Room> rooms = new ArrayList<>();
 
         for (int i = 0; i < roomCount; i++) {
             RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
-            rooms.add(createRoom(roomPreset, world));
+            rooms.add(createRoom(roomPreset));
         }
 
         return rooms;
     }
 
-    private Room createRoom(RoomPreset preset, World world) {
-        List<String> entities = createEntities(preset.getEntityPositions(), world);
-
-        return new Room(entities, preset);
+    private Room createRoom(RoomPreset preset) {
+        return new Room(new ArrayList<>(), preset);
     }
 
     private List<String> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
@@ -139,7 +137,7 @@ public class Map {
 
     void generateMap(int numberOfRooms, World world) {
         // Creates the ArrayList that contains all the free rooms.
-        ArrayList<Room> freeRooms = createRooms(numberOfRooms, world);
+        ArrayList<Room> freeRooms = createRooms(numberOfRooms);
 
         listOfRooms.addAll(freeRooms);
 
