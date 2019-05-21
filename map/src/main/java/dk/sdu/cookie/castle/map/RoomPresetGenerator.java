@@ -15,7 +15,7 @@ import java.util.Random;
 class RoomPresetGenerator {
     private List<RoomPreset> roomPresets;
     private Random random;
-    private int numberOfPresets = 2;
+    private int numberOfPresets = 3;
 
     RoomPresetGenerator() {
         roomPresets = new ArrayList<>();

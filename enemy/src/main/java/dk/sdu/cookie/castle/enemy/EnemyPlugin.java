@@ -42,5 +42,6 @@ public class EnemyPlugin implements IGamePluginService {
         for (Entity entity : world.getEntities(Enemy.class)) {
             world.removeEntity(entity);
         }
+        gameData.removeAssets(assets.values());
     }
 }
