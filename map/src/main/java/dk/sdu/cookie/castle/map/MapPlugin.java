@@ -4,9 +4,12 @@ import dk.sdu.cookie.castle.common.assets.Asset;
 import dk.sdu.cookie.castle.common.assets.AssetLoader;
 import dk.sdu.cookie.castle.common.assets.AssetType;
 import dk.sdu.cookie.castle.common.assets.FileType;
+import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
 import dk.sdu.cookie.castle.common.services.IGamePluginService;
+import dk.sdu.cookie.castle.map.entities.Rock;
+import dk.sdu.cookie.castle.map.entities.door.Door;
 import dk.sdu.cookie.castle.map.entities.door.DoorPosition;
 
 import java.util.ArrayList;
@@ -14,7 +17,6 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapPlugin implements IGamePluginService {
-    private Map map = Map.getInstance();
     private static java.util.Map<String, String> assets = new ConcurrentHashMap<>();
 
     @Override
@@ -28,9 +30,9 @@ public class MapPlugin implements IGamePluginService {
         }
 
         // skal initiate singleton og kalde "generateNewMap" func
-        map.generateMap(10, world);
-        map.setCurrentRoom(map.getListOfRooms().get(0));
-        for (String e : map.getCurrentRoom().getEntities()) {
+        Map.getInstance().generateMap(10, world);
+        Map.getInstance().setCurrentRoom(Map.getInstance().getListOfRooms().get(0));
+        for (String e : Map.getInstance().getCurrentRoom().getEntities()) {
             world.getEntity(e).setIsActive(true);
         }
     }
@@ -49,6 +51,21 @@ public class MapPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
+        for (Room room : Map.getInstance().getListOfRooms()) {
+            if (room == Map.getInstance().getCurrentRoom()) continue;
+            for (String entity : room.getEntities()) {
+                world.removeEntity(entity);
+            }
+        }
 
+        for (Entity entity : world.getEntities()) {
+            if (entity instanceof Door || entity instanceof Rock) {
+                world.removeEntity(entity);
+            }
+        }
+
+        Map.destroy();
+
+        gameData.removeAssets(assets.values());
     }
 }

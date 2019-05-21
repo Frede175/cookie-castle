@@ -47,5 +47,6 @@ public class BulletPlugin implements IGamePluginService {
                 world.removeEntity(e);
             }
         }
+        gameData.removeAssets(assets.values());
     }
 }

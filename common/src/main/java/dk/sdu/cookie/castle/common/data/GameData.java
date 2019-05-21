@@ -85,7 +85,7 @@ public class GameData {
         }
     }
 
-    public void removeAssets(Set<String> keys) {
+    public void removeAssets(Collection<String> keys) {
         activeAssets.keySet().removeAll(keys);
     }
 }

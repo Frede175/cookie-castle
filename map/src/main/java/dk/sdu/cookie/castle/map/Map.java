@@ -1,5 +1,6 @@
 package dk.sdu.cookie.castle.map;
 
+import dk.sdu.cookie.castle.common.data.Entity;
 import dk.sdu.cookie.castle.common.data.EntityType;
 import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
@@ -49,6 +50,10 @@ public class Map {
         roomPresetGenerator = new RoomPresetGenerator();
     }
 
+    public static void destroy() {
+        map =  null;
+    }
+
     void setCurrentRoom(Room room) {
         currentRoom = room;
     }
@@ -65,25 +70,27 @@ public class Map {
         this.listOfRooms = listOfRooms;
     }
 
-    private ArrayList<Room> createRooms(int roomCount) {
+    private ArrayList<Room> createRooms(int roomCount, World world) {
         ArrayList<Room> rooms = new ArrayList<>();
 
         for (int i = 0; i < roomCount; i++) {
             RoomPreset roomPreset = roomPresetGenerator.getRandomRoomPreset();
-            rooms.add(createRoom(roomPreset));
+            rooms.add(createRoom(roomPreset, world));
         }
 
         return rooms;
     }
 
-    private Room createRoom(RoomPreset preset) {
-        return new Room(new ArrayList<>(), preset);
+    private Room createRoom(RoomPreset preset, World world) {
+        List<String> entities = createEntities(preset.getEntityPositions(), world);
+        return new Room(entities, preset);
     }
 
     private List<String> createEntities(java.util.Map<EntityPreset, List<PositionPart>> entities, World world) {
         List<String> returnEntities = new ArrayList<>();
 
         for (java.util.Map.Entry<EntityPreset, List<PositionPart>> presetListEntry : entities.entrySet()) {
+            if (presetListEntry.getKey() != EntityPreset.ROCK) continue;
             for (PositionPart position : presetListEntry.getValue()) {
                 returnEntities.add(createEntity(presetListEntry.getKey(), position, world));
             }
@@ -136,8 +143,13 @@ public class Map {
     }
 
     void generateMap(int numberOfRooms, World world) {
+        for (Entity e : world.getEntities()) {
+            if (e.getEntityType() == EntityType.ENEMY || e.getEntityType() == EntityType.ITEM) {
+                world.removeEntity(e);
+            }
+        }
         // Creates the ArrayList that contains all the free rooms.
-        ArrayList<Room> freeRooms = createRooms(numberOfRooms);
+        ArrayList<Room> freeRooms = createRooms(numberOfRooms, world);
 
         listOfRooms.addAll(freeRooms);
 

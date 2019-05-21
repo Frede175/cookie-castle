@@ -44,5 +44,6 @@ public class ItemPlugin implements IGamePluginService {
         for (Entity entity : world.getEntities(Item.class)) {
             world.removeEntity(entity);
         }
+        gameData.removeAssets(assets.values());
     }
 }
