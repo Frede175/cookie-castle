@@ -16,10 +16,12 @@ public class Room {
     private List<String> entities;
     private Vector2f point;
     private List<DoorPosition> exits;
+    private RoomPreset roomPreset;
 
-    Room(List<String> entities) {
+    Room(List<String> entities, RoomPreset roomPreset) {
         this.entities = entities;
         exits = new ArrayList<>();
+        this.roomPreset = roomPreset;
     }
 
     List<String> getEntities() {
@@ -30,8 +32,8 @@ public class Room {
         this.entities = entities;
     }
 
-    private void addEntity(Entity entity) {
-        entities.add(entity.getID());
+    public void addEntity(String entity) {
+        entities.add(entity);
     }
 
     public void removeEntity(String entity) {
@@ -52,10 +54,14 @@ public class Room {
 
     void setDoor(Door door) {
         exits.add(door.getPosition());
-        addEntity(door);
+        addEntity(door.getID());
     }
 
     public List<DoorPosition> getExits() {
         return exits;
+    }
+
+    public RoomPreset getRoomPreset() {
+        return roomPreset;
     }
 }

@@ -9,7 +9,6 @@ public class Activator {
     private LwjglApplication app;
 
     private void activate(BundleContext context) {
-        System.out.println("Starting Core!");
 
         Game game = new Game();
 

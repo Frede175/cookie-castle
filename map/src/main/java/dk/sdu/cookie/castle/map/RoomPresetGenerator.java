@@ -26,14 +26,12 @@ class RoomPresetGenerator {
     private void loadPresets() {
         for (int i = 1; i <= numberOfPresets; i++) {
             try (InputStream is = this.getClass().getResourceAsStream("/preset" + i + ".txt")) {
-                System.out.println("Does exist: " + is.available());
                 InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
                 BufferedReader br = new BufferedReader(isr);
                 List<String> entities = new ArrayList<>();
                 br.lines().forEach(entities::add);
                 roomPresets.add(createRoomPreset(entities));
             } catch (IOException e) {
-                System.out.println("Doesn't exist");
                 e.printStackTrace();
             }
         }
@@ -50,13 +48,12 @@ class RoomPresetGenerator {
 
         for (String entity : entities) {
             String[] entityData = entity.split(" ");
-            int entityPresetKey = Integer.valueOf(entityData[0]);
             PositionPart positionPart = new PositionPart(Integer.valueOf(entityData[1]), Integer.valueOf(entityData[2]), 0);
 
             try {
                 roomPreset.addEntityPosition(EntityPreset.getPreset(Integer.valueOf(entityData[0])), positionPart);
             } catch (Exception e) {
-                System.out.println("EntityPreset for key " + entityPresetKey + " not found.");
+                e.printStackTrace();
             }
         }
 

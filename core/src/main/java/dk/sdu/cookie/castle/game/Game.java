@@ -45,7 +45,6 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        System.out.println("Game created");
         batch = new SpriteBatch();
         sr = new ShapeRenderer();
         assetManager = new MyAssetManager();

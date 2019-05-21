@@ -23,13 +23,10 @@ public class AssetLoader {
     }
 
     private static void loadAssetData(Class c, Asset asset) {
-        System.out.println("Getting asset: " + asset);
         asset.setData(c.getResourceAsStream(asset.getPath()));
-
         try {
             assert (asset.getData().available() != 0);
         } catch (IOException e) {
-            System.out.println("File not found - try reimporting Maven and rebuild");
             e.printStackTrace();
         }
     }

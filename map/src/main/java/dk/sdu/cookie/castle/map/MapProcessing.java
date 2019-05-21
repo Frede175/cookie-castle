@@ -6,11 +6,15 @@ import dk.sdu.cookie.castle.common.data.Entityparts.CollisionPart;
 import dk.sdu.cookie.castle.common.data.Entityparts.PositionPart;
 import dk.sdu.cookie.castle.common.data.GameData;
 import dk.sdu.cookie.castle.common.data.World;
+import dk.sdu.cookie.castle.common.enemy.Enemy;
+import dk.sdu.cookie.castle.common.item.Item;
 import dk.sdu.cookie.castle.common.services.IEntityProcessingService;
 import dk.sdu.cookie.castle.common.util.Vector2f;
+import dk.sdu.cookie.castle.map.entities.EntityPreset;
 import dk.sdu.cookie.castle.map.entities.Rock;
 import dk.sdu.cookie.castle.map.entities.door.Door;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MapProcessing implements IEntityProcessingService {
@@ -18,7 +22,26 @@ public class MapProcessing implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
+        if (Map.getInstance().isEnemyLoaded()) {
+            reloadEntities(EntityPreset.ENEMY, world);
+            Map.getInstance().setEnemyLoaded(false);
+        }
+        if (Map.getInstance().isItemLoaded()) {
+            reloadEntities(EntityPreset.ITEM, world);
+            Map.getInstance().setItemLoaded(false);
+        }
         handleEntities(world);
+    }
+
+    private void reloadEntities(EntityPreset entityPreset, World world) {
+        for (Room room : Map.getInstance().getListOfRooms()) {
+            for (PositionPart pos : room.getRoomPreset().getEntityPositions(entityPreset)) {
+                String entity  = Map.getInstance().createEntity(entityPreset, pos, world);
+                room.addEntity(entity);
+            }
+        }
+
+        loadRoom(Map.getInstance().getCurrentRoom(), world);
     }
 
     private void handleEntities(World world) {
@@ -149,8 +172,14 @@ public class MapProcessing implements IEntityProcessingService {
      * @param world
      */
     private void loadRoom(Room nextRoom, World world) {
-        for (String s : nextRoom.getEntities()) {
-            world.getEntity(s).setIsActive(true);
+        for (Iterator<String> it = nextRoom.getEntities().iterator(); it.hasNext(); ) {
+            String ID = it.next();
+
+            if (world.containsEntity(ID)) {
+                world.getEntity(ID).setIsActive(true);
+            } else {
+                it.remove();
+            }
         }
 
         map.setCurrentRoom(nextRoom);
